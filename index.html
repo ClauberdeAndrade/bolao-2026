@@ -891,6 +891,31 @@ function BolaoApp() {
     await storageSet(K.matches, updated, true);
     showToast("Resultados simulados lançados! Confira o Ranking.");
   };
+  const simulatePhaseResults = async phaseKey => {
+    const phaseMatches = matches.filter(m => m.phase === phaseKey && m.teamA && m.teamB);
+    if (phaseMatches.length === 0) {
+      showToast("Nenhum confronto com times definidos. Propague os vencedores primeiro.");
+      return;
+    }
+    const scoreOpts = [[2, 0], [1, 0], [0, 1], [1, 2], [2, 1], [3, 1], [1, 3], [2, 2]];
+    const penOpts = ["A", "B"];
+    let pi = 0;
+    const updated = matches.map((m, idx) => {
+      if (m.phase !== phaseKey || !m.teamA || !m.teamB) return m;
+      const [a, b] = scoreOpts[idx % scoreOpts.length];
+      const pen = a === b ? penOpts[pi++ % 2] : null;
+      return {
+        ...m,
+        realScoreA: String(a),
+        realScoreB: String(b),
+        realPenalty: pen,
+        finished: true
+      };
+    });
+    setMatches(updated);
+    await storageSet(K.matches, updated, true);
+    showToast("Resultados de " + phaseKey + " simulados!");
+  };
   const autoFillPicks = async () => {
     const allIds = matches.map(m => m.id);
     const scoreOpts = ["0", "1", "2", "3"];
@@ -1169,6 +1194,7 @@ function BolaoApp() {
     updateMatchField: updateMatchField,
     fillTestData: fillTestData,
     simulateResults: simulateResults,
+    simulatePhaseResults: simulatePhaseResults,
     autoFillPicks: autoFillPicks,
     propagateWinners: propagateWinners,
     clearAllData: clearAllData,
@@ -2011,6 +2037,7 @@ function AdminView({
   resetPin,
   fillTestData,
   simulateResults,
+  simulatePhaseResults,
   autoFillPicks,
   propagateWinners,
   clearAllData,
@@ -2055,6 +2082,25 @@ function AdminView({
     },
     onClick: simulateResults
   }, "🎲 Simular resultados dos 32avos"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12
+    }
+  }, "Após propagar os vencedores, simule os resultados de cada fase seguinte:"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginTop: 6,
+      flexWrap: "wrap"
+    }
+  }, ["oitavas", "quartas", "semis", "final"].map(fase => /*#__PURE__*/React.createElement("button", {
+    key: fase,
+    style: {
+      ...S.smallBtn,
+      flex: 1
+    },
+    onClick: () => simulatePhaseResults(fase)
+  }, "🎲 ", fase.charAt(0).toUpperCase() + fase.slice(1)))), /*#__PURE__*/React.createElement("div", {
     style: {
       ...S.adminHint,
       marginTop: 12
@@ -3039,6 +3085,4 @@ const S = {
   }
 };
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(BolaoApp, null));
-</script>
-</body>
-</html>
+</script></body></html>
