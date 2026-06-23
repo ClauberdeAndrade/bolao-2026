@@ -735,9 +735,21 @@ function BolaoApp() {
       setLoginError("O PIN deve ter 4 dígitos.");
       return;
     }
+    // Lê people diretamente do Firebase para garantir dados atualizados
+    const freshPeople = (await storageGet(K.people, true)) || {};
     if (loginMode === "new") {
+      if (freshPeople[loginName]) {
+        // Pessoa já existe no Firebase — tenta autenticar
+        if (freshPeople[loginName].pin === loginPin) {
+          setPeople(freshPeople);
+          enterSession(loginName);
+        } else {
+          setLoginError("PIN incorreto. Tente novamente.");
+        }
+        return;
+      }
       const updated = {
-        ...people,
+        ...freshPeople,
         [loginName]: {
           pin: loginPin
         }
@@ -745,7 +757,8 @@ function BolaoApp() {
       setPeople(updated);
       await storageSet(K.people, updated, true);
       enterSession(loginName);
-    } else if (people[loginName] && people[loginName].pin === loginPin) {
+    } else if (freshPeople[loginName] && freshPeople[loginName].pin === loginPin) {
+      setPeople(freshPeople);
       enterSession(loginName);
     } else {
       setLoginError("PIN incorreto. Tente novamente.");
