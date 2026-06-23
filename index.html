@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
   <title>Bolão Copa 2026 ⚽</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚽</text></svg>" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x26BD;</text></svg>" />
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -16,46 +16,32 @@
 </head>
 <body>
   <div id="root"></div>
+  <!-- Teams com emojis fora do Babel para evitar problema de parsing -->
+  <script>
+window.TEAMS_DATA = {"Alemanha": "🇩🇪", "Argentina": "🇦🇷", "França": "🇫🇷", "Brasil": "🇧🇷", "Espanha": "🇪🇸", "Inglaterra": "🏴", "Portugal": "🇵🇹", "Países Baixos": "🇳🇱", "Bélgica": "🇧🇪", "Croácia": "🇭🇷", "Uruguai": "🇺🇾", "Marrocos": "🇲🇦", "Colômbia": "🇨🇴", "México": "🇲🇽", "Estados Unidos": "🇺🇸", "Suíça": "🇨🇭", "Japão": "🇯🇵", "Senegal": "🇸🇳", "Equador": "🇪🇨", "Áustria": "🇦🇹", "Canadá": "🇨🇦", "Noruega": "🇳🇴", "Coreia do Sul": "🇰🇷", "Egito": "🇪🇬", "Argélia": "🇩🇿", "Tunísia": "🇹🇳", "Gana": "🇬🇭", "Costa do Marfim": "🇨🇮", "Catar": "🇶🇦", "Arábia Saudita": "🇸🇦", "Austrália": "🇦🇺", "Irã": "🇮🇷", "Paraguai": "🇵🇾", "Panamá": "🇵🇦", "Curaçao": "🇨🇼", "Haiti": "🇭🇹", "Cabo Verde": "🇨🇻", "África do Sul": "🇿🇦", "Jordânia": "🇯🇴", "Uzbequistão": "🇺🇿", "Nova Zelândia": "🇳🇿", "Escócia": "🏴", "Bósnia": "🇧🇦", "R. Tcheca": "🇨🇿", "Turquia": "🇹🇷", "Suécia": "🇸🇪", "RD Congo": "🇨🇩", "Iraque": "🇮🇶"};
+  </script>
   <script type="text/babel" data-presets="react">
 const { useState, useEffect, useCallback, useMemo, useRef, useLayoutEffect } = React;
 
 
-const Trophy = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
-const Lock = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-const Users = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-const Shield = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
-const ChevronRight = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>;
-const Check = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M20 6 9 17l-5-5"/></svg>;
-const RefreshCw = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>;
-const Settings = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
-const Plane = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 2-3.5 3.5L12 11 4.8 6.2a1.5 1.5 0 0 0-1.5.1l-1 .8c-.4.3-.4.9 0 1.2L8 13l-1 3-3 1 1 2 3-1 .9 3.5h.1c.4 1.3 2.1.8 2.1-.5L12 18l4.7 3.2c.3.2.7.2 1-.1l.8-.8c.3-.3.4-.9.3-1.1z"/></svg>;
-const AlertCircle = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
-const Pencil = ({size=16,color="currentColor"}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
+const Trophy = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
+const Lock = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
+const Users = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
+const Shield = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const ChevronRight = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="m9 18 6-6-6-6"/></svg>;
+const Check = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M20 6 9 17l-5-5"/></svg>;
+const RefreshCw = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>;
+const Settings = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
+const Plane = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 2-3.5 3.5L12 11 4.8 6.2a1.5 1.5 0 0 0-1.5.1l-1 .8c-.4.3-.4.9 0 1.2L8 13l-1 3-3 1 1 2 3-1 .9 3.5h.1c.4 1.3 2.1.8 2.1-.5L12 18l4.7 3.2c.3.2.7.2 1-.1l.8-.8c.3-.3.4-.9.3-1.1z"/></svg>;
+const AlertCircle = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
+const Pencil = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
 
 
 /* ===================== DADOS DO TORNEIO ===================== */
 
 // 48 seleções classificadas para a Copa do Mundo 2026 (lista oficial verificada)
-const TEAMS = {
-  // CONMEBOL (6)
-  "Argentina":"🇦🇷","Brasil":"🇧🇷","Uruguai":"🇺🇾","Colômbia":"🇨🇴","Equador":"🇪🇨","Paraguai":"🇵🇾",
-  // UEFA (16)
-  "Alemanha":"🇩🇪","França":"🇫🇷","Inglaterra":"🏴󠁧󠁢󠁥󠁮󠁧󠁿","Espanha":"🇪🇸","Portugal":"🇵🇹",
-  "Bélgica":"🇧🇪","Países Baixos":"🇳🇱","Croácia":"🇭🇷","Suíça":"🇨🇭","Áustria":"🇦🇹",
-  "Noruega":"🇳🇴","Escócia":"🏴󠁧󠁢󠁳󠁣󠁴󠁿","Bósnia":"🇧🇦","R. Tcheca":"🇨🇿","Turquia":"🇹🇷","Suécia":"🇸🇪",
-  // CAF (9)
-  "Marrocos":"🇲🇦","Senegal":"🇸🇳","Egito":"🇪🇬","Costa do Marfim":"🇨🇮","Argélia":"🇩🇿",
-  "África do Sul":"🇿🇦","Tunísia":"🇹🇳","Gana":"🇬🇭","Cabo Verde":"🇨🇻",
-  // AFC (8)
-  "Japão":"🇯🇵","Coreia do Sul":"🇰🇷","Irã":"🇮🇷","Austrália":"🇦🇺",
-  "Arábia Saudita":"🇸🇦","Catar":"🇶🇦","Jordânia":"🇯🇴","Uzbequistão":"🇺🇿",
-  // CONCACAF (6)
-  "Estados Unidos":"🇺🇸","México":"🇲🇽","Canadá":"🇨🇦","Panamá":"🇵🇦","Haiti":"🇭🇹","Curaçao":"🇨🇼",
-  // OFC (1)
-  "Nova Zelândia":"🇳🇿",
-  // Repescagem intercontinental (2)
-  "RD Congo":"🇨🇩","Iraque":"🇮🇶",
-};
+// TEAMS definido externamente como window.TEAMS_DATA
+const TEAMS = window.TEAMS_DATA;
 const teamNames = Object.keys(TEAMS);
 const flag = (name) => TEAMS[name] || "🏳️";
 
