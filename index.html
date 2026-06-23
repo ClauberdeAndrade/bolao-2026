@@ -858,6 +858,11 @@ function BolaoApp() {
       [field]: value
     } : m));
   };
+  const refreshMatches = async () => {
+    fbCache = null; // invalida cache
+    const fresh = await storageGet(K.matches, true);
+    if (fresh && fresh.length) setMatches(fresh);
+  };
   const fillTestData = async () => {
     // Só preenche slots ainda sem times — não sobrescreve os já confirmados
     const used = new Set(matches.filter(m => m.phase === "32avos" && (m.teamA || m.teamB)).flatMap(m => [m.teamA, m.teamB].filter(Boolean)));
@@ -1194,7 +1199,8 @@ function BolaoApp() {
     chooseKeep: chooseKeep,
     chooseRedo: chooseRedo,
     celebrating: celebrating,
-    session: session
+    session: session,
+    refreshMatches: refreshMatches
   }), view === "ranking" && /*#__PURE__*/React.createElement(RankingView, {
     ranking: ranking,
     familyRanking: familyRanking,
@@ -1494,7 +1500,8 @@ function PalpitesView({
   chooseKeep,
   chooseRedo,
   celebrating,
-  session
+  session,
+  refreshMatches
 }) {
   const [activePhase, setActivePhase] = useState("32avos");
   const phaseMatches = matches.filter(m => m.phase === activePhase);
@@ -1505,6 +1512,11 @@ function PalpitesView({
   const flashSaved = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+  const changePhase = key => {
+    setActivePhase(key);
+    // Relê matches do Firebase ao trocar de fase para garantir dados atualizados
+    if (refreshMatches) refreshMatches();
   };
   const PHASE_NEXT = {
     "32avos": "oitavas",
@@ -1538,7 +1550,7 @@ function PalpitesView({
   const goNextPhase = () => {
     const next = PHASE_NEXT[activePhase];
     if (next) {
-      setActivePhase(next);
+      changePhase(next);
       setShowNextPhase(false);
       window.scrollTo({
         top: 0,
@@ -1588,7 +1600,7 @@ function PalpitesView({
     style: S.phaseSelector
   }, PHASES.map(p => /*#__PURE__*/React.createElement("button", {
     key: p.key,
-    onClick: () => setActivePhase(p.key),
+    onClick: () => changePhase(p.key),
     style: {
       ...S.phaseChip,
       ...(activePhase === p.key ? S.phaseChipActive : {}),
