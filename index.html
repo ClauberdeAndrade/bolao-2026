@@ -1750,17 +1750,31 @@ function MatchCard({
     penaltyField: "penalty",
     teamA: tA,
     teamB: tB
-  })), phaseIsReal && /*#__PURE__*/React.createElement("div", null, !isRefeito ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: S.compareBox
-  }, /*#__PURE__*/React.createElement("div", {
-    style: S.compareLine
-  }, /*#__PURE__*/React.createElement("span", {
-    style: S.compareLabel
-  }, "Seu palpite:"), " ", tA ? flag(tA) + " " + tA : "—", " x ", tB ? flag(tB) + " " + tB : "—"), /*#__PURE__*/React.createElement("div", {
-    style: S.compareLine
-  }, /*#__PURE__*/React.createElement("span", {
-    style: S.compareLabel
-  }, "Confronto real:"), " ", match.teamA ? flag(match.teamA) + " " + match.teamA : "—", " x ", match.teamB ? flag(match.teamB) + " " + match.teamB : "—")), /*#__PURE__*/React.createElement(ScoreRow, {
+  })), phaseIsReal && /*#__PURE__*/React.createElement("div", null, !isRefeito ? /*#__PURE__*/React.createElement("div", null, (() => {
+    const timesCorretos = tA === match.teamA && tB === match.teamB;
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        ...S.compareBox,
+        borderLeft: timesCorretos ? "3px solid #2d9e5f" : "3px solid #c0392b"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.compareLine
+    }, /*#__PURE__*/React.createElement("span", {
+      style: S.compareLabel
+    }, "Seu palpite:"), " ", tA ? flag(tA) + " " + tA : "—", " x ", tB ? flag(tB) + " " + tB : "—"), /*#__PURE__*/React.createElement("div", {
+      style: S.compareLine
+    }, /*#__PURE__*/React.createElement("span", {
+      style: S.compareLabel
+    }, "Confronto real:"), " ", match.teamA ? flag(match.teamA) + " " + match.teamA : "—", " x ", match.teamB ? flag(match.teamB) + " " + match.teamB : "—"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        marginTop: 6,
+        fontSize: 11.5,
+        fontFamily: FONT_BODY,
+        color: timesCorretos ? "#7fd99a" : "#f0c060",
+        lineHeight: 1.4
+      }
+    }, timesCorretos ? "✅ Seus times estão certos! Só altere o placar abaixo se quiser." : "⚠️ Os times mudaram em relação ao seu palpite — recomendamos refazer este jogo."));
+  })(), /*#__PURE__*/React.createElement(ScoreRow, {
     pick: pick,
     updatePick: updatePick,
     matchId: match.id,
