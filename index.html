@@ -7,7 +7,6 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x26BD;</text></svg>" />
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0D3B26; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; }
@@ -16,26 +15,232 @@
 </head>
 <body>
   <div id="root"></div>
-  <!-- Teams com emojis fora do Babel para evitar problema de parsing -->
   <script>
 window.TEAMS_DATA = {"Alemanha": "🇩🇪", "Argentina": "🇦🇷", "França": "🇫🇷", "Brasil": "🇧🇷", "Espanha": "🇪🇸", "Inglaterra": "🏴", "Portugal": "🇵🇹", "Países Baixos": "🇳🇱", "Bélgica": "🇧🇪", "Croácia": "🇭🇷", "Uruguai": "🇺🇾", "Marrocos": "🇲🇦", "Colômbia": "🇨🇴", "México": "🇲🇽", "Estados Unidos": "🇺🇸", "Suíça": "🇨🇭", "Japão": "🇯🇵", "Senegal": "🇸🇳", "Equador": "🇪🇨", "Áustria": "🇦🇹", "Canadá": "🇨🇦", "Noruega": "🇳🇴", "Coreia do Sul": "🇰🇷", "Egito": "🇪🇬", "Argélia": "🇩🇿", "Tunísia": "🇹🇳", "Gana": "🇬🇭", "Costa do Marfim": "🇨🇮", "Catar": "🇶🇦", "Arábia Saudita": "🇸🇦", "Austrália": "🇦🇺", "Irã": "🇮🇷", "Paraguai": "🇵🇾", "Panamá": "🇵🇦", "Curaçao": "🇨🇼", "Haiti": "🇭🇹", "Cabo Verde": "🇨🇻", "África do Sul": "🇿🇦", "Jordânia": "🇯🇴", "Uzbequistão": "🇺🇿", "Nova Zelândia": "🇳🇿", "Escócia": "🏴", "Bósnia": "🇧🇦", "R. Tcheca": "🇨🇿", "Turquia": "🇹🇷", "Suécia": "🇸🇪", "RD Congo": "🇨🇩", "Iraque": "🇮🇶"};
-  </script>
-  <script type="text/babel" data-presets="react">
-const { useState, useEffect, useCallback, useMemo, useRef, useLayoutEffect } = React;
+"use strict";
 
-
-const Trophy = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>;
-const Lock = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>;
-const Users = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>;
-const Shield = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
-const ChevronRight = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="m9 18 6-6-6-6"/></svg>;
-const Check = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M20 6 9 17l-5-5"/></svg>;
-const RefreshCw = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/></svg>;
-const Settings = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>;
-const Plane = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 2-3.5 3.5L12 11 4.8 6.2a1.5 1.5 0 0 0-1.5.1l-1 .8c-.4.3-.4.9 0 1.2L8 13l-1 3-3 1 1 2 3-1 .9 3.5h.1c.4 1.3 2.1.8 2.1-.5L12 18l4.7 3.2c.3.2.7.2 1-.1l.8-.8c.3-.3.4-.9.3-1.1z"/></svg>;
-const AlertCircle = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>;
-const Pencil = ({size=16,color="currentColor",style:st}) => <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" style={st}><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>;
-
+const {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+  useLayoutEffect
+} = React;
+const Trophy = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M6 9H4.5a2.5 2.5 0 0 1 0-5H6"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M18 9h1.5a2.5 2.5 0 0 0 0-5H18"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M4 22h16"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M18 2H6v7a6 6 0 0 0 12 0V2Z"
+}));
+const Lock = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("rect", {
+  width: "18",
+  height: "11",
+  x: "3",
+  y: "11",
+  rx: "2",
+  ry: "2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M7 11V7a5 5 0 0 1 10 0v4"
+}));
+const Users = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"
+}), /*#__PURE__*/React.createElement("circle", {
+  cx: "9",
+  cy: "7",
+  r: "4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M22 21v-2a4 4 0 0 0-3-3.87"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M16 3.13a4 4 0 0 1 0 7.75"
+}));
+const Shield = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"
+}));
+const ChevronRight = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "m9 18 6-6-6-6"
+}));
+const Check = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M20 6 9 17l-5-5"
+}));
+const RefreshCw = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M21 3v5h-5"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M8 16H3v5"
+}));
+const Settings = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "3"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+}));
+const Plane = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M17.8 19.2 16 11l3.5-3.5C21 6 21 4 19 4c-2 0-4 2-3.5 3.5L12 11 4.8 6.2a1.5 1.5 0 0 0-1.5.1l-1 .8c-.4.3-.4.9 0 1.2L8 13l-1 3-3 1 1 2 3-1 .9 3.5h.1c.4 1.3 2.1.8 2.1-.5L12 18l4.7 3.2c.3.2.7.2 1-.1l.8-.8c.3-.3.4-.9.3-1.1z"
+}));
+const AlertCircle = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "10"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  x2: "12",
+  y1: "8",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  x2: "12.01",
+  y1: "16",
+  y2: "16"
+}));
+const Pencil = ({
+  size = 16,
+  color = "currentColor",
+  style: st
+}) => /*#__PURE__*/React.createElement("svg", {
+  width: size,
+  height: size,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: color,
+  strokeWidth: "2",
+  style: st
+}, /*#__PURE__*/React.createElement("path", {
+  d: "M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "m15 5 4 4"
+}));
 
 /* ===================== DADOS DO TORNEIO ===================== */
 
@@ -43,101 +248,270 @@ const Pencil = ({size=16,color="currentColor",style:st}) => <svg width={size} he
 // TEAMS definido externamente como window.TEAMS_DATA
 const TEAMS = window.TEAMS_DATA;
 const teamNames = Object.keys(TEAMS);
-const flag = (name) => TEAMS[name] || "🏳️";
-
+const flag = name => TEAMS[name] || "🏳️";
 const FAMILIES = {
-  "Vasco": { color: "#0a0a0a", accent: "#e8e8e8", members: ["Léo","Helena","João","Júlia"] },
-  "Flamengo": { color: "#7a1010", accent: "#ffffff", members: ["Nelson","Clarissa","Bia","Felipe"] },
-  "Santos": { color: "#1a1a1a", accent: "#e8e8e8", members: ["Clauber","Dani","Isabela"] },
-  "São Paulo": { color: "#9c1c1c", accent: "#f5f5f5", members: ["Rodrigo","Bianca","Rafa"] },
+  "Vasco": {
+    color: "#0a0a0a",
+    accent: "#e8e8e8",
+    members: ["Léo", "Helena", "João", "Júlia"]
+  },
+  "Flamengo": {
+    color: "#7a1010",
+    accent: "#ffffff",
+    members: ["Nelson", "Clarissa", "Bia", "Felipe"]
+  },
+  "Santos": {
+    color: "#1a1a1a",
+    accent: "#e8e8e8",
+    members: ["Clauber", "Dani", "Isabela"]
+  },
+  "São Paulo": {
+    color: "#9c1c1c",
+    accent: "#f5f5f5",
+    members: ["Rodrigo", "Bianca", "Rafa"]
+  }
 };
-const ALL_PEOPLE = Object.entries(FAMILIES).flatMap(([fam, d]) => d.members.map(m => ({ name: m, family: fam })));
+const ALL_PEOPLE = Object.entries(FAMILIES).flatMap(([fam, d]) => d.members.map(m => ({
+  name: m,
+  family: fam
+})));
 const ADMIN_NAME = "Clauber";
-
-const PHASES = [
-  { key: "32avos", label: "32 avos de final", short: "32avos", count: 16 },
-  { key: "oitavas", label: "Oitavas de final", short: "Oitavas", count: 8 },
-  { key: "quartas", label: "Quartas de final", short: "Quartas", count: 4 },
-  { key: "semis", label: "Semifinais", short: "Semis", count: 2 },
-  { key: "final", label: "Final", short: "Final", count: 1 },
-];
-
+const PHASES = [{
+  key: "32avos",
+  label: "32 avos de final",
+  short: "32avos",
+  count: 16
+}, {
+  key: "oitavas",
+  label: "Oitavas de final",
+  short: "Oitavas",
+  count: 8
+}, {
+  key: "quartas",
+  label: "Quartas de final",
+  short: "Quartas",
+  count: 4
+}, {
+  key: "semis",
+  label: "Semifinais",
+  short: "Semis",
+  count: 2
+}, {
+  key: "final",
+  label: "Final",
+  short: "Final",
+  count: 1
+}];
 const POINTS = {
-  "32avos":  { vencedor: 2, exato: 3 },
-  oitavas:  { vencedorRefeito: 3, vencedorMantido: 5, exatoRefeito: 4, exatoMantido: 7 },
-  quartas:  { vencedorRefeito: 4, vencedorMantido: 8, exatoRefeito: 5, exatoMantido: 11 },
-  semis:    { vencedorRefeito: 5, vencedorMantido: 12, exatoRefeito: 7, exatoMantido: 16 },
-  final:    { vencedorRefeito: 6, vencedorMantido: 18, exatoRefeito: 8, exatoMantido: 24 },
+  "32avos": {
+    vencedor: 2,
+    exato: 3
+  },
+  oitavas: {
+    vencedorRefeito: 3,
+    vencedorMantido: 5,
+    exatoRefeito: 4,
+    exatoMantido: 7
+  },
+  quartas: {
+    vencedorRefeito: 4,
+    vencedorMantido: 8,
+    exatoRefeito: 5,
+    exatoMantido: 11
+  },
+  semis: {
+    vencedorRefeito: 5,
+    vencedorMantido: 12,
+    exatoRefeito: 7,
+    exatoMantido: 16
+  },
+  final: {
+    vencedorRefeito: 6,
+    vencedorMantido: 18,
+    exatoRefeito: 8,
+    exatoMantido: 24
+  }
 };
 
 // Estrutura oficial da FIFA (códigos J73 a J104), conferida via prints do site oficial.
 // 32avos: origem = posição na fase de grupos (ex: "2A" = 2º do Grupo A; "3EFGIJ" = melhor
 // 3º entre os grupos E/F/G/I/J). Times já conhecidos (sedes) vêm preenchidos.
-const ROUND32 = [
-  { id: "J73", originA: "2A",  originB: "2B"       },
-  { id: "J74", originA: "1E",  originB: "3ABCDF", teamA: "Alemanha" },
-  { id: "J75", originA: "1F",  originB: "2C"       },
-  { id: "J76", originA: "1C",  originB: "2F"       },
-  { id: "J77", originA: "1I",  originB: "3CDFGH"   },
-  { id: "J78", originA: "2E",  originB: "2I"       },
-  { id: "J79", originA: "1A",  originB: "3CEFHI", teamA: "México" },
-  { id: "J80", originA: "1L",  originB: "3EHIJK"   },
-  { id: "J81", originA: "1D",  originB: "3BEFIJ", teamA: "Estados Unidos" },
-  { id: "J82", originA: "1G",  originB: "3AEHIJ"   },
-  { id: "J83", originA: "2K",  originB: "2L"       },
-  { id: "J84", originA: "1H",  originB: "2J"       },
-  { id: "J85", originA: "1B",  originB: "3EFGIJ"   },
-  { id: "J86", originA: "1J",  originB: "2H"       },
-  { id: "J87", originA: "1K",  originB: "3DEIJL"   },
-  { id: "J88", originA: "2D",  originB: "2G"       },
-];
+const ROUND32 = [{
+  id: "J73",
+  originA: "2A",
+  originB: "2B"
+}, {
+  id: "J74",
+  originA: "1E",
+  originB: "3ABCDF",
+  teamA: "Alemanha"
+}, {
+  id: "J75",
+  originA: "1F",
+  originB: "2C"
+}, {
+  id: "J76",
+  originA: "1C",
+  originB: "2F"
+}, {
+  id: "J77",
+  originA: "1I",
+  originB: "3CDFGH"
+}, {
+  id: "J78",
+  originA: "2E",
+  originB: "2I"
+}, {
+  id: "J79",
+  originA: "1A",
+  originB: "3CEFHI",
+  teamA: "México"
+}, {
+  id: "J80",
+  originA: "1L",
+  originB: "3EHIJK"
+}, {
+  id: "J81",
+  originA: "1D",
+  originB: "3BEFIJ",
+  teamA: "Estados Unidos"
+}, {
+  id: "J82",
+  originA: "1G",
+  originB: "3AEHIJ"
+}, {
+  id: "J83",
+  originA: "2K",
+  originB: "2L"
+}, {
+  id: "J84",
+  originA: "1H",
+  originB: "2J"
+}, {
+  id: "J85",
+  originA: "1B",
+  originB: "3EFGIJ"
+}, {
+  id: "J86",
+  originA: "1J",
+  originB: "2H"
+}, {
+  id: "J87",
+  originA: "1K",
+  originB: "3DEIJL"
+}, {
+  id: "J88",
+  originA: "2D",
+  originB: "2G"
+}];
 
 // Oitavas: cada jogo cruza vencedores de dois jogos específicos dos 32avos (não sequencial!)
-const ROUND16 = [
-  { id: "J89", feedA: "J74", feedB: "J77" },
-  { id: "J90", feedA: "J73", feedB: "J75" },
-  { id: "J91", feedA: "J76", feedB: "J78" },
-  { id: "J92", feedA: "J79", feedB: "J80" },
-  { id: "J93", feedA: "J83", feedB: "J84" },
-  { id: "J94", feedA: "J81", feedB: "J82" },
-  { id: "J95", feedA: "J86", feedB: "J88" },
-  { id: "J96", feedA: "J85", feedB: "J87" },
-];
+const ROUND16 = [{
+  id: "J89",
+  feedA: "J74",
+  feedB: "J77"
+}, {
+  id: "J90",
+  feedA: "J73",
+  feedB: "J75"
+}, {
+  id: "J91",
+  feedA: "J76",
+  feedB: "J78"
+}, {
+  id: "J92",
+  feedA: "J79",
+  feedB: "J80"
+}, {
+  id: "J93",
+  feedA: "J83",
+  feedB: "J84"
+}, {
+  id: "J94",
+  feedA: "J81",
+  feedB: "J82"
+}, {
+  id: "J95",
+  feedA: "J86",
+  feedB: "J88"
+}, {
+  id: "J96",
+  feedA: "J85",
+  feedB: "J87"
+}];
 
 // Quartas
-const QUARTERS = [
-  { id: "J97",  feedA: "J89", feedB: "J90" },
-  { id: "J98",  feedA: "J93", feedB: "J94" },
-  { id: "J99",  feedA: "J91", feedB: "J92" },
-  { id: "J100", feedA: "J95", feedB: "J96" },
-];
+const QUARTERS = [{
+  id: "J97",
+  feedA: "J89",
+  feedB: "J90"
+}, {
+  id: "J98",
+  feedA: "J93",
+  feedB: "J94"
+}, {
+  id: "J99",
+  feedA: "J91",
+  feedB: "J92"
+}, {
+  id: "J100",
+  feedA: "J95",
+  feedB: "J96"
+}];
 
 // Semis
-const SEMIS = [
-  { id: "J101", feedA: "J97", feedB: "J98" },
-  { id: "J102", feedA: "J99", feedB: "J100" },
-];
+const SEMIS = [{
+  id: "J101",
+  feedA: "J97",
+  feedB: "J98"
+}, {
+  id: "J102",
+  feedA: "J99",
+  feedB: "J100"
+}];
 
 // Final (J104). A decisão de 3º lugar (J103, perdedores das semis) não entra no bolão.
-const FINAL = [
-  { id: "J104", feedA: "J101", feedB: "J102" },
-];
+const FINAL = [{
+  id: "J104",
+  feedA: "J101",
+  feedB: "J102"
+}];
 
 // Mapa de qual jogo da fase anterior alimenta cada jogo, usado pela árvore pessoal
 const FEED_MAP = {};
-[...ROUND16, ...QUARTERS, ...SEMIS, ...FINAL].forEach(m => { FEED_MAP[m.id] = { feedA: m.feedA, feedB: m.feedB }; });
-
+[...ROUND16, ...QUARTERS, ...SEMIS, ...FINAL].forEach(m => {
+  FEED_MAP[m.id] = {
+    feedA: m.feedA,
+    feedB: m.feedB
+  };
+});
 const initialMatches = () => {
   const r32 = ROUND32.map(m => ({
-    id: m.id, phase: "32avos", label: m.id,
-    originA: m.originA, originB: m.originB,
-    teamA: m.teamA || null, teamB: m.teamB || null,
-    realScoreA: null, realScoreB: null, realPenalty: null, finished: false,
+    id: m.id,
+    phase: "32avos",
+    label: m.id,
+    originA: m.originA,
+    originB: m.originB,
+    teamA: m.teamA || null,
+    teamB: m.teamB || null,
+    realScoreA: null,
+    realScoreB: null,
+    realPenalty: null,
+    finished: false
   }));
   const rest = [...ROUND16, ...QUARTERS, ...SEMIS, ...FINAL].map(m => {
     const phase = ROUND16.includes(m) ? "oitavas" : QUARTERS.includes(m) ? "quartas" : SEMIS.includes(m) ? "semis" : "final";
-    return { id: m.id, phase, label: m.id, teamA: null, teamB: null,
-      realScoreA: null, realScoreB: null, realPenalty: null, finished: false };
+    return {
+      id: m.id,
+      phase,
+      label: m.id,
+      teamA: null,
+      teamB: null,
+      realScoreA: null,
+      realScoreB: null,
+      realPenalty: null,
+      finished: false
+    };
   });
   return [...r32, ...rest];
 };
@@ -147,7 +521,7 @@ const K = {
   people: "bolao:people",
   matches: "bolao:matches",
   phaseStatus: "bolao:phaseStatus",
-  picksPrefix: "bolao:picks:",
+  picksPrefix: "bolao:picks:"
 };
 
 /* ===================== FIREBASE REALTIME DATABASE STORAGE ===================== */
@@ -163,49 +537,67 @@ async function fbRead() {
   if (fbCache && now - fbCacheTime < FB_CACHE_TTL) return fbCache;
   try {
     const r = await fetch(`${FB_URL}/bolao.json`);
-    if (!r.ok) { console.error("fbRead error:", r.status); return fbCache || {}; }
+    if (!r.ok) {
+      console.error("fbRead error:", r.status);
+      return fbCache || {};
+    }
     const data = await r.json();
     fbCache = data || {};
     fbCacheTime = now;
     return fbCache;
-  } catch(e) { console.error("fbRead fetch error:", e); return fbCache || {}; }
+  } catch (e) {
+    console.error("fbRead fetch error:", e);
+    return fbCache || {};
+  }
 }
-
 async function fbWrite(key, value) {
   try {
-    const r = await fetch(`${FB_URL}/bolao/${encodeURIComponent(key.replace(/:/g,"-"))}.json`, {
+    const r = await fetch(`${FB_URL}/bolao/${encodeURIComponent(key.replace(/:/g, "-"))}.json`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(value)
     });
-    if (!r.ok) { console.error("fbWrite error:", r.status); return false; }
+    if (!r.ok) {
+      console.error("fbWrite error:", r.status);
+      return false;
+    }
     // Atualiza cache
     if (fbCache) fbCache[key] = value;
     return true;
-  } catch(e) { console.error("fbWrite error:", e); return false; }
+  } catch (e) {
+    console.error("fbWrite error:", e);
+    return false;
+  }
 }
-
 async function storageSet(key, value, shared = false) {
   // Backup local sempre
-  try { localStorage.setItem("bolao_" + key, JSON.stringify(value)); } catch(e) {}
+  try {
+    localStorage.setItem("bolao_" + key, JSON.stringify(value));
+  } catch (e) {}
   // Firebase
   const safeKey = key.replace(/:/g, "-").replace(/\./g, "_");
   try {
     const r = await fetch(`${FB_URL}/bolao/${safeKey}.json`, {
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(value)
     });
-    if (!r.ok) { console.error("storageSet error:", r.status); return false; }
+    if (!r.ok) {
+      console.error("storageSet error:", r.status);
+      return false;
+    }
     if (fbCache) fbCache[safeKey] = value;
     fbCacheTime = Date.now();
     return true;
-  } catch(e) {
+  } catch (e) {
     console.error("storageSet fetch error:", e);
     return false;
   }
 }
-
 async function storageGet(key, shared = false) {
   const safeKey = key.replace(/:/g, "-").replace(/\./g, "_");
   // Tenta Firebase
@@ -215,32 +607,40 @@ async function storageGet(key, shared = false) {
       const data = await r.json();
       if (data !== null && data !== undefined) return data;
     }
-  } catch(e) { console.error("storageGet fetch error:", e); }
+  } catch (e) {
+    console.error("storageGet fetch error:", e);
+  }
   // Fallback localStorage
   try {
     const v = localStorage.getItem("bolao_" + key);
     if (v) return JSON.parse(v);
-  } catch(e) {}
+  } catch (e) {}
   return null;
 }
 
 /* ===================== ÁRVORE INDIVIDUAL ===================== */
 function winnerOf(scoreA, scoreB, penalty) {
-  const a = Number(scoreA), b = Number(scoreB);
+  const a = Number(scoreA),
+    b = Number(scoreB);
   if (isNaN(a) || isNaN(b) || scoreA === "" || scoreB === "") return null;
   if (a > b) return "A";
   if (b > a) return "B";
   if (penalty === "A" || penalty === "B") return penalty;
   return null;
 }
-
 function buildPersonalBracket(matches, picks) {
   const byId = {};
-  matches.forEach(m => { byId[m.id] = m; });
+  matches.forEach(m => {
+    byId[m.id] = m;
+  });
   const tree = {};
-  matches.filter(m => m.phase === "32avos").forEach(m => { tree[m.id] = { teamA: m.teamA, teamB: m.teamB }; });
-
-  const resolveWinner = (feedId) => {
+  matches.filter(m => m.phase === "32avos").forEach(m => {
+    tree[m.id] = {
+      teamA: m.teamA,
+      teamB: m.teamB
+    };
+  });
+  const resolveWinner = feedId => {
     const feedMatch = byId[feedId];
     if (!feedMatch) return null;
     const pick = picks[feedId];
@@ -264,7 +664,10 @@ function buildPersonalBracket(matches, picks) {
     matches.filter(m => m.phase === phaseKey).forEach(m => {
       const feed = FEED_MAP[m.id];
       if (!feed) return;
-      tree[m.id] = { teamA: resolveWinner(feed.feedA), teamB: resolveWinner(feed.feedB) };
+      tree[m.id] = {
+        teamA: resolveWinner(feed.feedA),
+        teamB: resolveWinner(feed.feedB)
+      };
     });
   });
   return tree;
@@ -276,24 +679,32 @@ function BolaoApp() {
   const [booting, setBooting] = useState(true);
   const [people, setPeople] = useState({});
   const [matches, setMatches] = useState(initialMatches());
-  const [phaseStatus, setPhaseStatus] = useState({ "32avos": "open", oitavas: "tree", quartas: "tree", semis: "tree", final: "tree" });
-
+  const [phaseStatus, setPhaseStatus] = useState({
+    "32avos": "open",
+    oitavas: "tree",
+    quartas: "tree",
+    semis: "tree",
+    final: "tree"
+  });
   const [session, setSession] = useState(null);
   const [loginName, setLoginName] = useState("");
   const [loginPin, setLoginPin] = useState("");
   const [loginMode, setLoginMode] = useState(null);
   const [loginError, setLoginError] = useState("");
-
   const [view, setView] = useState("palpites");
   const [myPicks, setMyPicks] = useState({});
   const myPicksRef = useRef({});
 
   // Mantém a ref sempre sincronizada com o estado
-  useEffect(() => { myPicksRef.current = myPicks; }, [myPicks]);
+  useEffect(() => {
+    myPicksRef.current = myPicks;
+  }, [myPicks]);
   const [toast, setToast] = useState(null);
   const [celebrating, setCelebrating] = useState(false);
-  const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2400); };
-
+  const showToast = msg => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 2400);
+  };
   useEffect(() => {
     (async () => {
       const p = await storageGet(K.people, true);
@@ -305,7 +716,6 @@ function BolaoApp() {
       setBooting(false);
     })();
   }, []);
-
   useEffect(() => {
     if (!session) return;
     (async () => {
@@ -313,18 +723,25 @@ function BolaoApp() {
       setMyPicks(mine || {});
     })();
   }, [session]);
-
   const personalTree = useMemo(() => buildPersonalBracket(matches, myPicks), [matches, myPicks]);
-
-  const handleSelectName = (name) => {
-    setLoginName(name); setLoginError("");
+  const handleSelectName = name => {
+    setLoginName(name);
+    setLoginError("");
     setLoginMode(people[name] ? "existing" : "new");
     setLoginPin("");
   };
   const handleLogin = async () => {
-    if (loginPin.length !== 4) { setLoginError("O PIN deve ter 4 dígitos."); return; }
+    if (loginPin.length !== 4) {
+      setLoginError("O PIN deve ter 4 dígitos.");
+      return;
+    }
     if (loginMode === "new") {
-      const updated = { ...people, [loginName]: { pin: loginPin } };
+      const updated = {
+        ...people,
+        [loginName]: {
+          pin: loginPin
+        }
+      };
       setPeople(updated);
       await storageSet(K.people, updated, true);
       enterSession(loginName);
@@ -334,18 +751,32 @@ function BolaoApp() {
       setLoginError("PIN incorreto. Tente novamente.");
     }
   };
-  const enterSession = (name) => {
+  const enterSession = name => {
     const person = ALL_PEOPLE.find(p => p.name === name);
-    setSession({ name, family: person ? person.family : null, isAdmin: name === ADMIN_NAME });
+    setSession({
+      name,
+      family: person ? person.family : null,
+      isAdmin: name === ADMIN_NAME
+    });
     setView("palpites");
   };
   const handleLogout = () => {
-    setSession(null); setLoginName(""); setLoginPin(""); setLoginMode(null); setLoginError("");
-    setMyPicks({}); myPicksRef.current = {};
+    setSession(null);
+    setLoginName("");
+    setLoginPin("");
+    setLoginMode(null);
+    setLoginError("");
+    setMyPicks({});
+    myPicksRef.current = {};
   };
-
   const updatePick = (matchId, field, value) => {
-    setMyPicks(prev => ({ ...prev, [matchId]: { ...(prev[matchId] || {}), [field]: value } }));
+    setMyPicks(prev => ({
+      ...prev,
+      [matchId]: {
+        ...(prev[matchId] || {}),
+        [field]: value
+      }
+    }));
   };
   const savePicks = async (silent, isLast) => {
     const current = myPicksRef.current;
@@ -363,34 +794,56 @@ function BolaoApp() {
       }
     }
   };
-  const lockScroll = (scrollY) => {
+  const lockScroll = scrollY => {
     const body = document.documentElement;
     body.style.scrollBehavior = "auto";
     const release = () => {
-      window.scrollTo({ top: scrollY, behavior: "instant" });
+      window.scrollTo({
+        top: scrollY,
+        behavior: "instant"
+      });
       body.style.scrollBehavior = "";
     };
     release();
-    requestAnimationFrame(() => { release(); requestAnimationFrame(() => { release(); setTimeout(release, 50); }); });
+    requestAnimationFrame(() => {
+      release();
+      requestAnimationFrame(() => {
+        release();
+        setTimeout(release, 50);
+      });
+    });
   };
-
-  const chooseKeep = async (matchId) => {
+  const chooseKeep = async matchId => {
     const scrollY = window.scrollY;
-    const updated = { ...myPicks, [matchId]: { ...(myPicks[matchId] || {}), refeito: false } };
+    const updated = {
+      ...myPicks,
+      [matchId]: {
+        ...(myPicks[matchId] || {}),
+        refeito: false
+      }
+    };
     setMyPicks(updated);
     await storageSet(K.picksPrefix + session.name, updated, true);
     lockScroll(scrollY);
   };
-  const chooseRedo = async (matchId) => {
+  const chooseRedo = async matchId => {
     const scrollY = window.scrollY;
-    const updated = { ...myPicks, [matchId]: { ...(myPicks[matchId] || {}), refeito: true } };
+    const updated = {
+      ...myPicks,
+      [matchId]: {
+        ...(myPicks[matchId] || {}),
+        refeito: true
+      }
+    };
     setMyPicks(updated);
     await storageSet(K.picksPrefix + session.name, updated, true);
     lockScroll(scrollY);
   };
-
   const updateMatchField = (matchId, field, value) => {
-    setMatches(prev => prev.map(m => m.id === matchId ? { ...m, [field]: value } : m));
+    setMatches(prev => prev.map(m => m.id === matchId ? {
+      ...m,
+      [field]: value
+    } : m));
   };
   const fillTestData = async () => {
     // Só preenche slots ainda sem times — não sobrescreve os já confirmados
@@ -399,38 +852,49 @@ function BolaoApp() {
     let i = 0;
     const updated = matches.map(m => {
       if (m.phase !== "32avos") return m;
-      const needA = !m.teamA, needB = !m.teamB;
+      const needA = !m.teamA,
+        needB = !m.teamB;
       if (!needA && !needB) return m;
-      return { ...m, teamA: needA ? (available[i++] || m.teamA) : m.teamA, teamB: needB ? (available[i++] || m.teamB) : m.teamB };
+      return {
+        ...m,
+        teamA: needA ? available[i++] || m.teamA : m.teamA,
+        teamB: needB ? available[i++] || m.teamB : m.teamB
+      };
     });
     setMatches(updated);
     await storageSet(K.matches, updated, true);
     showToast("Slots vazios preenchidos com times de teste!");
   };
-
   const simulateResults = async () => {
     // Verifica se há times confirmados nos 32avos
     const ready = matches.filter(m => m.phase === "32avos" && m.teamA && m.teamB);
-    if (ready.length === 0) { showToast("Primeiro confirme os times dos 32avos ou use 'Preencher confrontos de teste'."); return; }
-    const scores = [[2,0],[1,0],[0,1],[1,2],[2,1],[0,2],[1,1],[3,1],[2,2],[0,0],[3,0],[1,3],[2,3],[1,0],[0,1],[2,1]];
-    const penalties = ["A","B","A","B","A","B","A","B"];
+    if (ready.length === 0) {
+      showToast("Primeiro confirme os times dos 32avos ou use 'Preencher confrontos de teste'.");
+      return;
+    }
+    const scores = [[2, 0], [1, 0], [0, 1], [1, 2], [2, 1], [0, 2], [1, 1], [3, 1], [2, 2], [0, 0], [3, 0], [1, 3], [2, 3], [1, 0], [0, 1], [2, 1]];
+    const penalties = ["A", "B", "A", "B", "A", "B", "A", "B"];
     let pi = 0;
     const updated = matches.map((m, idx) => {
       if (m.phase !== "32avos" || !m.teamA || !m.teamB) return m;
       const [a, b] = scores[idx % scores.length];
       const pen = a === b ? penalties[pi++ % penalties.length] : null;
-      return { ...m, realScoreA: String(a), realScoreB: String(b), realPenalty: pen, finished: true };
+      return {
+        ...m,
+        realScoreA: String(a),
+        realScoreB: String(b),
+        realPenalty: pen,
+        finished: true
+      };
     });
     setMatches(updated);
     await storageSet(K.matches, updated, true);
     showToast("Resultados simulados lançados! Confira o Ranking.");
   };
-
   const autoFillPicks = async () => {
     const allIds = matches.map(m => m.id);
-    const scoreOpts = ["0","1","2","3"];
-    const penOpts = ["A","B"];
-
+    const scoreOpts = ["0", "1", "2", "3"];
+    const penOpts = ["A", "B"];
     for (const person of ALL_PEOPLE) {
       const name = person.name;
       const picks = {};
@@ -438,98 +902,144 @@ function BolaoApp() {
         const a = scoreOpts[Math.floor(Math.random() * 4)];
         const b = scoreOpts[Math.floor(Math.random() * 4)];
         const pen = a === b ? penOpts[Math.floor(Math.random() * 2)] : null;
-        picks[id] = { scoreA: a, scoreB: b, penalty: pen };
+        picks[id] = {
+          scoreA: a,
+          scoreB: b,
+          penalty: pen
+        };
       });
       await storageSet(K.picksPrefix + name, picks, true);
-      try { localStorage.setItem("bolao_" + K.picksPrefix + name, JSON.stringify(picks)); } catch(e) {}
+      try {
+        localStorage.setItem("bolao_" + K.picksPrefix + name, JSON.stringify(picks));
+      } catch (e) {}
     }
     // Garante cadastro de todos com PIN 1234 se ainda não tiverem
-    const currentPeople = await storageGet(K.people, true) || {};
-    const updatedPeople = { ...currentPeople };
-    ALL_PEOPLE.forEach(p => { if (!updatedPeople[p.name]) updatedPeople[p.name] = { pin: "1234" }; });
+    const currentPeople = (await storageGet(K.people, true)) || {};
+    const updatedPeople = {
+      ...currentPeople
+    };
+    ALL_PEOPLE.forEach(p => {
+      if (!updatedPeople[p.name]) updatedPeople[p.name] = {
+        pin: "1234"
+      };
+    });
     await storageSet(K.people, updatedPeople, true);
     showToast("Palpites gerados para todos os 14 participantes! PIN: 1234");
   };
-
   const propagateWinners = async () => {
     // Lê os vencedores reais dos 32avos e preenche os confrontos das oitavas
     // usando o FEED_MAP oficial (J89=J74×J77, J90=J73×J75, etc.)
     const byId = {};
-    matches.forEach(m => { byId[m.id] = m; });
-
-    const winnerOf = (m) => {
+    matches.forEach(m => {
+      byId[m.id] = m;
+    });
+    const winnerOf = m => {
       if (!m || !m.finished || m.realScoreA === null || m.realScoreA === "") return null;
-      const a = Number(m.realScoreA), b = Number(m.realScoreB);
+      const a = Number(m.realScoreA),
+        b = Number(m.realScoreB);
       if (a > b) return m.teamA;
       if (b > a) return m.teamB;
       return m.realPenalty === "A" ? m.teamA : m.realPenalty === "B" ? m.teamB : null;
     };
-
     const updated = matches.map(m => {
       const feed = FEED_MAP[m.id];
       if (!feed) return m;
       const teamA = winnerOf(byId[feed.feedA]);
       const teamB = winnerOf(byId[feed.feedB]);
       if (!teamA && !teamB) return m;
-      return { ...m, teamA: teamA || m.teamA, teamB: teamB || m.teamB };
+      return {
+        ...m,
+        teamA: teamA || m.teamA,
+        teamB: teamB || m.teamB
+      };
     });
-
     setMatches(updated);
     await storageSet(K.matches, updated, true);
     showToast("Confrontos das fases seguintes atualizados com os vencedores reais!");
   };
-
   const clearAllData = async () => {
     const fresh = initialMatches();
     setMatches(fresh);
     await storageSet(K.matches, fresh, true);
-    const freshStatus = { "32avos": "open", oitavas: "tree", quartas: "tree", semis: "tree", final: "tree" };
+    const freshStatus = {
+      "32avos": "open",
+      oitavas: "tree",
+      quartas: "tree",
+      semis: "tree",
+      final: "tree"
+    };
     setPhaseStatus(freshStatus);
     await storageSet(K.phaseStatus, freshStatus, true);
     for (const p of ALL_PEOPLE) {
       await storageSet(K.picksPrefix + p.name, {}, true);
-      try { localStorage.removeItem("bolao_" + K.picksPrefix + p.name); } catch(e) {}
+      try {
+        localStorage.removeItem("bolao_" + K.picksPrefix + p.name);
+      } catch (e) {}
     }
     fbCache = null; // força releitura do Firebase
     showToast("✅ Todos os dados de teste removidos!");
   };
-
   const clearResults = async () => {
     const updated = matches.map(m => ({
-      ...m, realScoreA: null, realScoreB: null, realPenalty: null, finished: false
+      ...m,
+      realScoreA: null,
+      realScoreB: null,
+      realPenalty: null,
+      finished: false
     }));
     setMatches(updated);
     await storageSet(K.matches, updated, true);
     fbCache = null;
     showToast("✅ Resultados apagados. Times e palpites preservados.");
   };
-  const saveMatches = async () => { await storageSet(K.matches, matches, true); showToast("Confrontos/resultados salvos!"); };
-  const finishMatch = async (matchId) => {
+  const saveMatches = async () => {
+    await storageSet(K.matches, matches, true);
+    showToast("Confrontos/resultados salvos!");
+  };
+  const finishMatch = async matchId => {
     const m = matches.find(x => x.id === matchId);
-    if (!m || !m.teamA || !m.teamB) { showToast("Confirme os dois times antes de lançar."); return; }
-    if (m.realScoreA === null || m.realScoreA === undefined || m.realScoreA === "" ||
-        m.realScoreB === null || m.realScoreB === undefined || m.realScoreB === "") {
+    if (!m || !m.teamA || !m.teamB) {
+      showToast("Confirme os dois times antes de lançar.");
+      return;
+    }
+    if (m.realScoreA === null || m.realScoreA === undefined || m.realScoreA === "" || m.realScoreB === null || m.realScoreB === undefined || m.realScoreB === "") {
       showToast("Preencha o placar real antes de lançar.");
       return;
     }
-    const updated = matches.map(x => x.id === matchId ? { ...x, finished: true } : x);
-    setMatches(updated); await storageSet(K.matches, updated, true);
+    const updated = matches.map(x => x.id === matchId ? {
+      ...x,
+      finished: true
+    } : x);
+    setMatches(updated);
+    await storageSet(K.matches, updated, true);
     showToast("Resultado lançado!");
   };
   const setPhase = async (key, status) => {
-    const updated = { ...phaseStatus, [key]: status };
-    setPhaseStatus(updated); await storageSet(K.phaseStatus, updated, true);
-    const ph = PHASES.find(p=>p.key===key);
+    const updated = {
+      ...phaseStatus,
+      [key]: status
+    };
+    setPhaseStatus(updated);
+    await storageSet(K.phaseStatus, updated, true);
+    const ph = PHASES.find(p => p.key === key);
     showToast((ph ? ph.label : key) + ": " + (status === "open" ? "aberta (confrontos reais)" : status === "tree" ? "árvore pessoal liberada" : status === "locked" ? "travada" : "encerrada"));
   };
   const resetPin = async (name, newPin) => {
-    if (!/^\d{4}$/.test(newPin)) { showToast("PIN inválido"); return; }
-    const updated = { ...people, [name]: { pin: newPin } };
-    setPeople(updated); await storageSet(K.people, updated, true);
+    if (!/^\d{4}$/.test(newPin)) {
+      showToast("PIN inválido");
+      return;
+    }
+    const updated = {
+      ...people,
+      [name]: {
+        pin: newPin
+      }
+    };
+    setPeople(updated);
+    await storageSet(K.people, updated, true);
     showToast("PIN de " + name + " redefinido.");
   };
-
-  const computeScoreForPerson = useCallback(async (name) => {
+  const computeScoreForPerson = useCallback(async name => {
     const picks = await storageGet(K.picksPrefix + name, true);
     if (!picks) return 0;
     let total = 0;
@@ -539,15 +1049,21 @@ function BolaoApp() {
       if (!pick) return;
       let predA, predB, predPenalty;
       if (m.phase !== "32avos" && pick.refeito) {
-        predA = pick.realBasedScoreA; predB = pick.realBasedScoreB; predPenalty = pick.realBasedPenalty;
+        predA = pick.realBasedScoreA;
+        predB = pick.realBasedScoreB;
+        predPenalty = pick.realBasedPenalty;
       } else {
-        predA = pick.scoreA; predB = pick.scoreB; predPenalty = pick.penalty;
+        predA = pick.scoreA;
+        predB = pick.scoreB;
+        predPenalty = pick.penalty;
       }
       if (predA === undefined || predA === "" || predA === null) return;
-      const pA = Number(predA), pB = Number(predB);
-      const rA = Number(m.realScoreA), rB = Number(m.realScoreB);
-      const predWinner = pA > pB ? "A" : pA < pB ? "B" : (predPenalty || null);
-      const realWinner = rA > rB ? "A" : rA < rB ? "B" : (m.realPenalty || null);
+      const pA = Number(predA),
+        pB = Number(predB);
+      const rA = Number(m.realScoreA),
+        rB = Number(m.realScoreB);
+      const predWinner = pA > pB ? "A" : pA < pB ? "B" : predPenalty || null;
+      const realWinner = rA > rB ? "A" : rA < rB ? "B" : m.realPenalty || null;
       if (!predWinner || !realWinner || predWinner !== realWinner) return;
       const exactOk = pA === rA && pB === rB;
       if (m.phase === "32avos") {
@@ -555,458 +1071,912 @@ function BolaoApp() {
       } else {
         const tbl = POINTS[m.phase];
         const wasMantido = !pick.refeito;
-        if (exactOk) total += wasMantido ? tbl.exatoMantido : tbl.exatoRefeito;
-        else total += wasMantido ? tbl.vencedorMantido : tbl.vencedorRefeito;
+        if (exactOk) total += wasMantido ? tbl.exatoMantido : tbl.exatoRefeito;else total += wasMantido ? tbl.vencedorMantido : tbl.vencedorRefeito;
       }
     });
     return total;
   }, [matches]);
-
   const [ranking, setRanking] = useState([]);
   const [familyRanking, setFamilyRanking] = useState([]);
   const [loadingRanking, setLoadingRanking] = useState(false);
   const refreshRanking = useCallback(async () => {
     setLoadingRanking(true);
     const names = ALL_PEOPLE.map(p => p.name);
-    const scores = await Promise.all(names.map(async n => ({ name: n, family: ALL_PEOPLE.find(p=>p.name===n).family, score: await computeScoreForPerson(n) })));
+    const scores = await Promise.all(names.map(async n => ({
+      name: n,
+      family: ALL_PEOPLE.find(p => p.name === n).family,
+      score: await computeScoreForPerson(n)
+    })));
     scores.sort((a, b) => b.score - a.score);
     setRanking(scores);
     const famAgg = {};
-    scores.forEach(s => { if (!famAgg[s.family]) famAgg[s.family] = { total: 0, count: 0 }; famAgg[s.family].total += s.score; famAgg[s.family].count += 1; });
-    const famArr = Object.entries(famAgg).map(([fam, d]) => ({ family: fam, avg: d.count ? d.total / d.count : 0 }));
+    scores.forEach(s => {
+      if (!famAgg[s.family]) famAgg[s.family] = {
+        total: 0,
+        count: 0
+      };
+      famAgg[s.family].total += s.score;
+      famAgg[s.family].count += 1;
+    });
+    const famArr = Object.entries(famAgg).map(([fam, d]) => ({
+      family: fam,
+      avg: d.count ? d.total / d.count : 0
+    }));
     famArr.sort((a, b) => b.avg - a.avg);
     setFamilyRanking(famArr);
     setLoadingRanking(false);
   }, [computeScoreForPerson]);
-  useEffect(() => { if (view === "ranking" && session) refreshRanking(); }, [view, session, refreshRanking]);
-
+  useEffect(() => {
+    if (view === "ranking" && session) refreshRanking();
+  }, [view, session, refreshRanking]);
   if (booting) {
-    return (
-      <div style={S.bootScreen}>
-        <div style={S.bootBadge}>⚽</div>
-        <div style={{ color: "#cfead9", fontFamily: FONT_BODY, fontSize: 14, letterSpacing: 1 }}>carregando o bolão…</div>
-      </div>
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: S.bootScreen
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.bootBadge
+    }, "⚽"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        color: "#cfead9",
+        fontFamily: FONT_BODY,
+        fontSize: 14,
+        letterSpacing: 1
+      }
+    }, "carregando o bolão…"));
   }
   if (!session) {
-    return <LoginScreen loginName={loginName} loginPin={loginPin} loginMode={loginMode} loginError={loginError}
-      setLoginPin={setLoginPin} handleSelectName={handleSelectName} handleLogin={handleLogin} setLoginMode={setLoginMode} />;
+    return /*#__PURE__*/React.createElement(LoginScreen, {
+      loginName: loginName,
+      loginPin: loginPin,
+      loginMode: loginMode,
+      loginError: loginError,
+      setLoginPin: setLoginPin,
+      handleSelectName: handleSelectName,
+      handleLogin: handleLogin,
+      setLoginMode: setLoginMode
+    });
   }
-
-  return (
-    <div style={S.app}>
-      <Header session={session} onLogout={handleLogout} view={view} setView={setView} />
-      {toast && <div style={S.toast}>{toast}</div>}
-      <div style={S.body}>
-        {view === "palpites" && (
-          <PalpitesView matches={matches} phaseStatus={phaseStatus} myPicks={myPicks} personalTree={personalTree}
-            updatePick={updatePick} savePicks={savePicks} chooseKeep={chooseKeep} chooseRedo={chooseRedo}
-            celebrating={celebrating} session={session} />
-        )}
-        {view === "ranking" && (
-          <RankingView ranking={ranking} familyRanking={familyRanking} loading={loadingRanking} onRefresh={refreshRanking} session={session} />
-        )}
-        {view === "admin" && session.isAdmin && (
-          <AdminView matches={matches} phaseStatus={phaseStatus} updateMatchField={updateMatchField} fillTestData={fillTestData} simulateResults={simulateResults} autoFillPicks={autoFillPicks} propagateWinners={propagateWinners} clearAllData={clearAllData} clearResults={clearResults}
-            saveMatches={saveMatches} finishMatch={finishMatch} setPhase={setPhase} resetPin={resetPin} />
-        )}
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.app
+  }, /*#__PURE__*/React.createElement(Header, {
+    session: session,
+    onLogout: handleLogout,
+    view: view,
+    setView: setView
+  }), toast && /*#__PURE__*/React.createElement("div", {
+    style: S.toast
+  }, toast), /*#__PURE__*/React.createElement("div", {
+    style: S.body
+  }, view === "palpites" && /*#__PURE__*/React.createElement(PalpitesView, {
+    matches: matches,
+    phaseStatus: phaseStatus,
+    myPicks: myPicks,
+    personalTree: personalTree,
+    updatePick: updatePick,
+    savePicks: savePicks,
+    chooseKeep: chooseKeep,
+    chooseRedo: chooseRedo,
+    celebrating: celebrating,
+    session: session
+  }), view === "ranking" && /*#__PURE__*/React.createElement(RankingView, {
+    ranking: ranking,
+    familyRanking: familyRanking,
+    loading: loadingRanking,
+    onRefresh: refreshRanking,
+    session: session
+  }), view === "admin" && session.isAdmin && /*#__PURE__*/React.createElement(AdminView, {
+    matches: matches,
+    phaseStatus: phaseStatus,
+    updateMatchField: updateMatchField,
+    fillTestData: fillTestData,
+    simulateResults: simulateResults,
+    autoFillPicks: autoFillPicks,
+    propagateWinners: propagateWinners,
+    clearAllData: clearAllData,
+    clearResults: clearResults,
+    saveMatches: saveMatches,
+    finishMatch: finishMatch,
+    setPhase: setPhase,
+    resetPin: resetPin
+  })));
 }
-
-function LoginScreen({ loginName, loginPin, loginMode, loginError, setLoginPin, handleSelectName, handleLogin, setLoginMode }) {
-  return (
-    <div style={S.loginWrap}>
-      <div style={S.loginCard}>
-        <div style={{ textAlign: "center", marginBottom: 22 }}>
-          <div style={S.trophyBadge}><Trophy size={26} color="#0D3B26" /></div>
-          <div style={{ fontFamily: FONT_DISPLAY, fontSize: 26, color: "#FAFAF7", letterSpacing: 0.5, marginTop: 10 }}>BOLÃO COPA 2026</div>
-          <div style={{ fontFamily: FONT_BODY, fontSize: 12.5, color: "#9fbfae", marginTop: 4, display:"flex", alignItems:"center", justifyContent:"center", gap:6 }}>
-            <Plane size={13} /> Edição Espanha, Ibiza &amp; Formentera
-          </div>
-        </div>
-        {!loginMode && (
-          <div>
-            <div style={S.label}>Quem é você?</div>
-            <div style={S.nameGrid}>
-              {Object.entries(FAMILIES).map(([fam, data]) => (
-                <div key={fam} style={{ marginBottom: 14 }}>
-                  <div style={{ ...S.famTag, background: data.color, color: data.accent }}>{fam}</div>
-                  <div style={S.nameRow}>
-                    {data.members.map(n => <button key={n} style={S.nameBtn} onClick={() => handleSelectName(n)}>{n}</button>)}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-        {loginMode && (
-          <div>
-            <button style={S.backBtn} onClick={() => setLoginMode(null)}>← trocar nome</button>
-            <div style={{ ...S.label, marginTop: 10 }}>
-              {loginMode === "new"
-                ? <div><div style={{ ...S.label, marginTop: 10 }}>{"Oi, " + loginName + "! Escolha um PIN de 4 dígitos"}</div>
-                    <div style={{ fontFamily: FONT_BODY, fontSize: 11.5, color: COLORS.textMuted, marginBottom: 8, lineHeight: 1.5 }}>
-                      📌 Guarde bem esse PIN — você vai precisar dele toda vez que entrar no bolão.
-                    </div></div>
-                : <div style={{ ...S.label, marginTop: 10 }}>{"Bem-vindo de volta, " + loginName + "! Digite seu PIN"}</div>
-              }
-            </div>
-            <input type="tel" inputMode="numeric" maxLength={4} autoFocus value={loginPin}
-              onChange={e => setLoginPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
-              placeholder="• • • •" style={S.pinInput} onKeyDown={e => e.key === "Enter" && handleLogin()} />
-            {loginError && <div style={S.errorText}><AlertCircle size={13} style={{marginRight:4}}/>{loginError}</div>}
-            <button style={S.primaryBtn} onClick={handleLogin}>{loginMode === "new" ? "Criar e entrar" : "Entrar"} <ChevronRight size={16} /></button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+function LoginScreen({
+  loginName,
+  loginPin,
+  loginMode,
+  loginError,
+  setLoginPin,
+  handleSelectName,
+  handleLogin,
+  setLoginMode
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.loginWrap
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.loginCard
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "center",
+      marginBottom: 22
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.trophyBadge
+  }, /*#__PURE__*/React.createElement(Trophy, {
+    size: 26,
+    color: "#0D3B26"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_DISPLAY,
+      fontSize: 26,
+      color: "#FAFAF7",
+      letterSpacing: 0.5,
+      marginTop: 10
+    }
+  }, "BOLÃO COPA 2026"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 12.5,
+      color: "#9fbfae",
+      marginTop: 4,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement(Plane, {
+    size: 13
+  }), " Edição Espanha, Ibiza & Formentera")), !loginMode && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.label
+  }, "Quem é você?"), /*#__PURE__*/React.createElement("div", {
+    style: S.nameGrid
+  }, Object.entries(FAMILIES).map(([fam, data]) => /*#__PURE__*/React.createElement("div", {
+    key: fam,
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.famTag,
+      background: data.color,
+      color: data.accent
+    }
+  }, fam), /*#__PURE__*/React.createElement("div", {
+    style: S.nameRow
+  }, data.members.map(n => /*#__PURE__*/React.createElement("button", {
+    key: n,
+    style: S.nameBtn,
+    onClick: () => handleSelectName(n)
+  }, n))))))), loginMode && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    style: S.backBtn,
+    onClick: () => setLoginMode(null)
+  }, "← trocar nome"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.label,
+      marginTop: 10
+    }
+  }, loginMode === "new" ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.label,
+      marginTop: 10
+    }
+  }, "Oi, " + loginName + "! Escolha um PIN de 4 dígitos"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 11.5,
+      color: COLORS.textMuted,
+      marginBottom: 8,
+      lineHeight: 1.5
+    }
+  }, "📌 Guarde bem esse PIN — você vai precisar dele toda vez que entrar no bolão.")) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.label,
+      marginTop: 10
+    }
+  }, "Bem-vindo de volta, " + loginName + "! Digite seu PIN")), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 4,
+    autoFocus: true,
+    value: loginPin,
+    onChange: e => setLoginPin(e.target.value.replace(/\D/g, "").slice(0, 4)),
+    placeholder: "• • • •",
+    style: S.pinInput,
+    onKeyDown: e => e.key === "Enter" && handleLogin()
+  }), loginError && /*#__PURE__*/React.createElement("div", {
+    style: S.errorText
+  }, /*#__PURE__*/React.createElement(AlertCircle, {
+    size: 13,
+    style: {
+      marginRight: 4
+    }
+  }), loginError), /*#__PURE__*/React.createElement("button", {
+    style: S.primaryBtn,
+    onClick: handleLogin
+  }, loginMode === "new" ? "Criar e entrar" : "Entrar", " ", /*#__PURE__*/React.createElement(ChevronRight, {
+    size: 16
+  })))));
 }
-
-function Header({ session, onLogout, view, setView }) {
+function Header({
+  session,
+  onLogout,
+  view,
+  setView
+}) {
   const fam = session.family ? FAMILIES[session.family] : null;
-  return (
-    <div style={S.header}>
-      <div style={S.headerTop}>
-        <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
-          <Trophy size={18} color="#D4A537" />
-          <span style={{ fontFamily: FONT_DISPLAY, fontSize: 16, color: "#FAFAF7", letterSpacing: 0.4 }}>BOLÃO 2026</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ fontFamily: FONT_BODY, fontSize: 12, color: COLORS.textMuted }}>{session.name}</span>
-          <button style={S.logoutBtn} onClick={onLogout} title="Sair da conta">
-            <span style={{ fontSize: 10, color: COLORS.textMuted }}>Sair ⏻</span>
-          </button>
-        </div>
-      </div>
-      {fam && <div style={{ ...S.famBadgeSmall, background: fam.color, color: fam.accent }}>{session.family}</div>}
-      <div style={S.tabBar}>
-        <TabBtn active={view === "palpites"} onClick={() => setView("palpites")} icon={<Check size={14}/>} label="Palpites" />
-        <TabBtn active={view === "ranking"} onClick={() => setView("ranking")} icon={<Users size={14}/>} label="Ranking" />
-        {session.isAdmin && <TabBtn active={view === "admin"} onClick={() => setView("admin")} icon={<Settings size={14}/>} label="Admin" />}
-      </div>
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.header
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.headerTop
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 9
+    }
+  }, /*#__PURE__*/React.createElement(Trophy, {
+    size: 18,
+    color: "#D4A537"
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_DISPLAY,
+      fontSize: 16,
+      color: "#FAFAF7",
+      letterSpacing: 0.4
+    }
+  }, "BOLÃO 2026")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 12,
+      color: COLORS.textMuted
+    }
+  }, session.name), /*#__PURE__*/React.createElement("button", {
+    style: S.logoutBtn,
+    onClick: onLogout,
+    title: "Sair da conta"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 10,
+      color: COLORS.textMuted
+    }
+  }, "Sair ⏻")))), fam && /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.famBadgeSmall,
+      background: fam.color,
+      color: fam.accent
+    }
+  }, session.family), /*#__PURE__*/React.createElement("div", {
+    style: S.tabBar
+  }, /*#__PURE__*/React.createElement(TabBtn, {
+    active: view === "palpites",
+    onClick: () => setView("palpites"),
+    icon: /*#__PURE__*/React.createElement(Check, {
+      size: 14
+    }),
+    label: "Palpites"
+  }), /*#__PURE__*/React.createElement(TabBtn, {
+    active: view === "ranking",
+    onClick: () => setView("ranking"),
+    icon: /*#__PURE__*/React.createElement(Users, {
+      size: 14
+    }),
+    label: "Ranking"
+  }), session.isAdmin && /*#__PURE__*/React.createElement(TabBtn, {
+    active: view === "admin",
+    onClick: () => setView("admin"),
+    icon: /*#__PURE__*/React.createElement(Settings, {
+      size: 14
+    }),
+    label: "Admin"
+  })));
 }
-function TabBtn({ active, onClick, icon, label }) {
-  return <button onClick={onClick} style={{ ...S.tabBtn, ...(active ? S.tabBtnActive : {}) }}>{icon}<span style={{ marginLeft: 6 }}>{label}</span></button>;
+function TabBtn({
+  active,
+  onClick,
+  icon,
+  label
+}) {
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: onClick,
+    style: {
+      ...S.tabBtn,
+      ...(active ? S.tabBtnActive : {})
+    }
+  }, icon, /*#__PURE__*/React.createElement("span", {
+    style: {
+      marginLeft: 6
+    }
+  }, label));
 }
-
-function Celebration({ name }) {
-  const emojis = ["⚽","🏆","🎉","⭐","🥇","🎊","✨"];
-  const particles = Array.from({ length: 18 }, (_, i) => ({
+function Celebration({
+  name
+}) {
+  const emojis = ["⚽", "🏆", "🎉", "⭐", "🥇", "🎊", "✨"];
+  const particles = Array.from({
+    length: 18
+  }, (_, i) => ({
     id: i,
     emoji: emojis[i % emojis.length],
-    left: 5 + (i * 5.5) % 90,
-    delay: (i * 0.18) % 1.8,
-    duration: 2.2 + (i % 4) * 0.4,
+    left: 5 + i * 5.5 % 90,
+    delay: i * 0.18 % 1.8,
+    duration: 2.2 + i % 4 * 0.4
   }));
-  return (
-    <div style={S.celebrationOverlay}>
-      <style>{`
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.celebrationOverlay
+  }, /*#__PURE__*/React.createElement("style", null, `
         @keyframes fall { 0%{transform:translateY(-20px) rotate(0deg);opacity:1} 100%{transform:translateY(110vh) rotate(360deg);opacity:0} }
         @keyframes popIn { 0%{transform:scale(0.5);opacity:0} 60%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
-      `}</style>
-      {particles.map(p => (
-        <div key={p.id} style={{ position: "fixed", top: 0, left: p.left + "%", fontSize: 20,
-          animation: `fall ${p.duration}s ${p.delay}s ease-in forwards`, pointerEvents: "none", zIndex: 60 }}>
-          {p.emoji}
-        </div>
-      ))}
-      <div style={S.celebrationCard}>
-        <div style={{ fontSize: 48, marginBottom: 8 }}>🏆</div>
-        <div style={{ fontFamily: FONT_DISPLAY, fontSize: 22, color: COLORS.gold, marginBottom: 6 }}>
-          Palpites completos!
-        </div>
-        <div style={{ fontFamily: FONT_BODY, fontSize: 14, color: COLORS.textBody, lineHeight: 1.5, textAlign: "center" }}>
-          {name}, todos os seus palpites foram registrados do início ao fim da Copa. Boa sorte! 🌟
-        </div>
-      </div>
-    </div>
-  );
+      `), particles.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.id,
+    style: {
+      position: "fixed",
+      top: 0,
+      left: p.left + "%",
+      fontSize: 20,
+      animation: `fall ${p.duration}s ${p.delay}s ease-in forwards`,
+      pointerEvents: "none",
+      zIndex: 60
+    }
+  }, p.emoji)), /*#__PURE__*/React.createElement("div", {
+    style: S.celebrationCard
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 48,
+      marginBottom: 8
+    }
+  }, "🏆"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_DISPLAY,
+      fontSize: 22,
+      color: COLORS.gold,
+      marginBottom: 6
+    }
+  }, "Palpites completos!"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 14,
+      color: COLORS.textBody,
+      lineHeight: 1.5,
+      textAlign: "center"
+    }
+  }, name, ", todos os seus palpites foram registrados do início ao fim da Copa. Boa sorte! 🌟")));
 }
-
-function PalpitesView({ matches, phaseStatus, myPicks, personalTree, updatePick, savePicks, chooseKeep, chooseRedo, celebrating, session }) {
+function PalpitesView({
+  matches,
+  phaseStatus,
+  myPicks,
+  personalTree,
+  updatePick,
+  savePicks,
+  chooseKeep,
+  chooseRedo,
+  celebrating,
+  session
+}) {
   const [activePhase, setActivePhase] = useState("32avos");
   const phaseMatches = matches.filter(m => m.phase === activePhase);
   const status = phaseStatus[activePhase];
   const topRef = useRef(null);
   const [showNextPhase, setShowNextPhase] = useState(false);
   const [saved, setSaved] = useState(false);
-
-  const flashSaved = () => { setSaved(true); setTimeout(() => setSaved(false), 2000); };
-
-  const PHASE_NEXT = { "32avos": "oitavas", oitavas: "quartas", quartas: "semis", semis: "final", final: null };
-  const PHASE_LABEL = { "32avos": "32avos", oitavas: "Oitavas", quartas: "Quartas", semis: "Semis", final: "Final" };
-
+  const flashSaved = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+  const PHASE_NEXT = {
+    "32avos": "oitavas",
+    oitavas: "quartas",
+    quartas: "semis",
+    semis: "final",
+    final: null
+  };
+  const PHASE_LABEL = {
+    "32avos": "32avos",
+    oitavas: "Oitavas",
+    quartas: "Quartas",
+    semis: "Semis",
+    final: "Final"
+  };
   const handleSave = async () => {
     const isLast = activePhase === "final";
     await savePicks(false, isLast);
     flashSaved();
     if (!isLast) {
       setShowNextPhase(true);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      topRef.current && topRef.current.scrollIntoView({ behavior: "smooth" });
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+      topRef.current && topRef.current.scrollIntoView({
+        behavior: "smooth"
+      });
     }
   };
-
   const goNextPhase = () => {
     const next = PHASE_NEXT[activePhase];
-    if (next) { setActivePhase(next); setShowNextPhase(false); window.scrollTo({ top: 0, behavior: "smooth" }); }
+    if (next) {
+      setActivePhase(next);
+      setShowNextPhase(false);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
   };
-
-  return (
-    <div>
-      <div ref={topRef} />
-      {celebrating && <Celebration name={session.name} />}
-
-      {showNextPhase && PHASE_NEXT[activePhase] && (
-        <div style={S.nextPhaseModal}>
-          <div style={S.nextPhaseCard}>
-            <div style={{ fontSize: 32, marginBottom: 8 }}>✅</div>
-            <div style={{ fontFamily: FONT_DISPLAY, fontSize: 18, color: COLORS.gold, marginBottom: 8 }}>
-              Palpites salvos!
-            </div>
-            <div style={{ fontFamily: FONT_BODY, fontSize: 13.5, color: COLORS.textBody, marginBottom: 20, lineHeight: 1.5, textAlign: "center" }}>
-              Quer ir agora para a fase de <strong>{PHASE_LABEL[PHASE_NEXT[activePhase]]}</strong> e continuar preenchendo sua árvore?
-            </div>
-            <button style={S.primaryBtn} onClick={goNextPhase}>
-              Ir para {PHASE_LABEL[PHASE_NEXT[activePhase]]} →
-            </button>
-            <button style={{ ...S.secondaryBtn, marginTop: 8 }} onClick={() => setShowNextPhase(false)}>
-              Ficar aqui por enquanto
-            </button>
-          </div>
-        </div>
-      )}
-      <div style={S.phaseSelector}>
-        {PHASES.map(p => (
-          <button key={p.key} onClick={() => setActivePhase(p.key)}
-            style={{ ...S.phaseChip, ...(activePhase === p.key ? S.phaseChipActive : {}), opacity: phaseStatus[p.key] === "locked" ? 0.45 : 1 }}>
-            {p.short}{phaseStatus[p.key] === "locked" && <Lock size={10} style={{ marginLeft: 4 }} />}
-          </button>
-        ))}
-      </div>
-
-      {status === "locked" ? (
-        <div style={S.lockedBox}>
-          <Lock size={22} color="#9fbfae" />
-          <div style={{ marginTop: 8, fontFamily: FONT_BODY, color: "#cfead9", fontSize: 13.5, textAlign: "center" }}>
-            {activePhase === "32avos" ? "O administrador ainda está confirmando os confrontos desta fase." : "Essa fase ainda não foi liberada pelo administrador."}
-          </div>
-        </div>
-      ) : (
-        <div>
-          <div style={S.phaseInfo}>
-            {activePhase === "32avos"
-              ? "Preencha o placar dos confrontos já confirmados pelo administrador. Os vencedores que você escolher aqui já formam, automaticamente, os jogos das fases seguintes — confira nas próximas abas."
-              : status === "open"
-              ? "Os confrontos reais desta fase já estão definidos. Compare com o seu palpite e decida: manter ou refazer."
-              : "Esses são os confrontos da SUA árvore, gerados a partir dos seus palpites dos 32avos. Continue preenchendo — quando esta fase abrir oficialmente, você poderá manter ou refazer."}
-          </div>
-          <div style={S.matchList}>
-            {phaseMatches.map(m => (
-              <MatchCard key={m.id} match={m} pick={myPicks[m.id] || {}} updatePick={updatePick}
-                phase={activePhase} status={status} treeNode={personalTree[m.id]}
-                chooseKeep={chooseKeep} chooseRedo={chooseRedo} savePicks={savePicks} flashSaved={flashSaved} />
-            ))}
-          </div>
-          {activePhase === "final" && (
-            <div style={S.phaseInfo}>
-              🏆 Esta é a última fase! Após salvar, todos os seus palpites estarão registrados do início ao fim do torneio.
-            </div>
-          )}
-          <button style={{ ...S.primaryBtn, background: saved ? "#2d9e5f" : COLORS.gold, color: saved ? "#fff" : "#1a1306", transition: "background 0.3s, color 0.3s" }} onClick={handleSave}>
-            <Check size={15} style={{marginRight:6}}/> {saved ? "Salvo! ✓" : "Salvar palpites"}
-          </button>
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    ref: topRef
+  }), celebrating && /*#__PURE__*/React.createElement(Celebration, {
+    name: session.name
+  }), showNextPhase && PHASE_NEXT[activePhase] && /*#__PURE__*/React.createElement("div", {
+    style: S.nextPhaseModal
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.nextPhaseCard
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 32,
+      marginBottom: 8
+    }
+  }, "✅"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_DISPLAY,
+      fontSize: 18,
+      color: COLORS.gold,
+      marginBottom: 8
+    }
+  }, "Palpites salvos!"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 13.5,
+      color: COLORS.textBody,
+      marginBottom: 20,
+      lineHeight: 1.5,
+      textAlign: "center"
+    }
+  }, "Quer ir agora para a fase de ", /*#__PURE__*/React.createElement("strong", null, PHASE_LABEL[PHASE_NEXT[activePhase]]), " e continuar preenchendo sua árvore?"), /*#__PURE__*/React.createElement("button", {
+    style: S.primaryBtn,
+    onClick: goNextPhase
+  }, "Ir para ", PHASE_LABEL[PHASE_NEXT[activePhase]], " →"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 8
+    },
+    onClick: () => setShowNextPhase(false)
+  }, "Ficar aqui por enquanto"))), /*#__PURE__*/React.createElement("div", {
+    style: S.phaseSelector
+  }, PHASES.map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.key,
+    onClick: () => setActivePhase(p.key),
+    style: {
+      ...S.phaseChip,
+      ...(activePhase === p.key ? S.phaseChipActive : {}),
+      opacity: phaseStatus[p.key] === "locked" ? 0.45 : 1
+    }
+  }, p.short, phaseStatus[p.key] === "locked" && /*#__PURE__*/React.createElement(Lock, {
+    size: 10,
+    style: {
+      marginLeft: 4
+    }
+  })))), status === "locked" ? /*#__PURE__*/React.createElement("div", {
+    style: S.lockedBox
+  }, /*#__PURE__*/React.createElement(Lock, {
+    size: 22,
+    color: "#9fbfae"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      fontFamily: FONT_BODY,
+      color: "#cfead9",
+      fontSize: 13.5,
+      textAlign: "center"
+    }
+  }, activePhase === "32avos" ? "O administrador ainda está confirmando os confrontos desta fase." : "Essa fase ainda não foi liberada pelo administrador.")) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.phaseInfo
+  }, activePhase === "32avos" ? "Preencha o placar dos confrontos já confirmados pelo administrador. Os vencedores que você escolher aqui já formam, automaticamente, os jogos das fases seguintes — confira nas próximas abas." : status === "open" ? "Os confrontos reais desta fase já estão definidos. Compare com o seu palpite e decida: manter ou refazer." : "Esses são os confrontos da SUA árvore, gerados a partir dos seus palpites dos 32avos. Continue preenchendo — quando esta fase abrir oficialmente, você poderá manter ou refazer."), /*#__PURE__*/React.createElement("div", {
+    style: S.matchList
+  }, phaseMatches.map(m => /*#__PURE__*/React.createElement(MatchCard, {
+    key: m.id,
+    match: m,
+    pick: myPicks[m.id] || {},
+    updatePick: updatePick,
+    phase: activePhase,
+    status: status,
+    treeNode: personalTree[m.id],
+    chooseKeep: chooseKeep,
+    chooseRedo: chooseRedo,
+    savePicks: savePicks,
+    flashSaved: flashSaved
+  }))), activePhase === "final" && /*#__PURE__*/React.createElement("div", {
+    style: S.phaseInfo
+  }, "🏆 Esta é a última fase! Após salvar, todos os seus palpites estarão registrados do início ao fim do torneio."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.primaryBtn,
+      background: saved ? "#2d9e5f" : COLORS.gold,
+      color: saved ? "#fff" : "#1a1306",
+      transition: "background 0.3s, color 0.3s"
+    },
+    onClick: handleSave
+  }, /*#__PURE__*/React.createElement(Check, {
+    size: 15,
+    style: {
+      marginRight: 6
+    }
+  }), " ", saved ? "Salvo! ✓" : "Salvar palpites")));
 }
-
-function SaveBtn({ onSave, label }) {
+function SaveBtn({
+  onSave,
+  label
+}) {
   const [done, setDone] = useState(false);
   const handle = async () => {
     await onSave();
     setDone(true);
     setTimeout(() => setDone(false), 2000);
   };
-  return (
-    <button style={{ ...S.savePickBtn, background: done ? "#2d9e5f" : COLORS.gold, color: done ? "#fff" : "#1a1306", transition: "background 0.3s, color 0.3s" }} onClick={handle}>
-      <Check size={13} style={{marginRight:5}}/>
-      {done ? "Salvo! ✓" : (label || "Salvar este palpite")}
-    </button>
-  );
+  return /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.savePickBtn,
+      background: done ? "#2d9e5f" : COLORS.gold,
+      color: done ? "#fff" : "#1a1306",
+      transition: "background 0.3s, color 0.3s"
+    },
+    onClick: handle
+  }, /*#__PURE__*/React.createElement(Check, {
+    size: 13,
+    style: {
+      marginRight: 5
+    }
+  }), done ? "Salvo! ✓" : label || "Salvar este palpite");
 }
-
-function MatchCard({ match, pick, updatePick, phase, status, treeNode, chooseKeep, chooseRedo, savePicks, flashSaved }) {
+function MatchCard({
+  match,
+  pick,
+  updatePick,
+  phase,
+  status,
+  treeNode,
+  chooseKeep,
+  chooseRedo,
+  savePicks,
+  flashSaved
+}) {
   if (phase === "32avos") {
     const ready = !!(match.teamA && match.teamB);
-    return (
-      <div style={S.matchCard}>
-        {ready ? (
-          <div style={S.teamFixedRow}>
-            <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(match.teamA)}</span><span>{match.teamA}</span></div>
-            <span style={S.vsLabel}>x</span>
-            <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(match.teamB)}</span><span>{match.teamB}</span></div>
-          </div>
-        ) : (
-          <div style={S.teamFixedRow}>
-            <div style={S.teamPending}>🔒 {match.originA || "vaga em aberto"}</div>
-            <span style={S.vsLabel}>x</span>
-            <div style={S.teamPending}>🔒 {match.originB || "vaga em aberto"}</div>
-          </div>
-        )}
-        {ready ? (
-          <ScoreRow pick={pick} updatePick={updatePick} matchId={match.id} scoreAField="scoreA" scoreBField="scoreB" penaltyField="penalty" teamA={match.teamA} teamB={match.teamB} />
-        ) : (
-          <div style={S.waitingNote}>Aguardando o administrador confirmar esse confronto.</div>
-        )}
-        {match.finished && match.realScoreA !== null && (
-          <div style={S.realResult}>Resultado real: {match.realScoreA} × {match.realScoreB}{match.realPenalty ? " (pên. " + (match.realPenalty === "A" ? match.teamA : match.teamB) + ")" : ""}</div>
-        )}
-      </div>
-    );
+    return /*#__PURE__*/React.createElement("div", {
+      style: S.matchCard
+    }, ready ? /*#__PURE__*/React.createElement("div", {
+      style: S.teamFixedRow
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.teamFixed
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 20
+      }
+    }, flag(match.teamA)), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
+      style: S.vsLabel
+    }, "x"), /*#__PURE__*/React.createElement("div", {
+      style: S.teamFixed
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 20
+      }
+    }, flag(match.teamB)), /*#__PURE__*/React.createElement("span", null, match.teamB))) : /*#__PURE__*/React.createElement("div", {
+      style: S.teamFixedRow
+    }, /*#__PURE__*/React.createElement("div", {
+      style: S.teamPending
+    }, "🔒 ", match.originA || "vaga em aberto"), /*#__PURE__*/React.createElement("span", {
+      style: S.vsLabel
+    }, "x"), /*#__PURE__*/React.createElement("div", {
+      style: S.teamPending
+    }, "🔒 ", match.originB || "vaga em aberto")), ready ? /*#__PURE__*/React.createElement(ScoreRow, {
+      pick: pick,
+      updatePick: updatePick,
+      matchId: match.id,
+      scoreAField: "scoreA",
+      scoreBField: "scoreB",
+      penaltyField: "penalty",
+      teamA: match.teamA,
+      teamB: match.teamB
+    }) : /*#__PURE__*/React.createElement("div", {
+      style: S.waitingNote
+    }, "Aguardando o administrador confirmar esse confronto."), match.finished && match.realScoreA !== null && /*#__PURE__*/React.createElement("div", {
+      style: S.realResult
+    }, "Resultado real: ", match.realScoreA, " × ", match.realScoreB, match.realPenalty ? " (pên. " + (match.realPenalty === "A" ? match.teamA : match.teamB) + ")" : ""));
   }
-
-  const tA = treeNode ? treeNode.teamA : null, tB = treeNode ? treeNode.teamB : null;
+  const tA = treeNode ? treeNode.teamA : null,
+    tB = treeNode ? treeNode.teamB : null;
   const treeReady = tA && tB;
   const phaseIsReal = status === "open";
   const isRefeito = !!pick.refeito;
-
-  return (
-    <div style={S.matchCard}>
-      {!treeReady && !phaseIsReal && (
-        <div style={S.teamPending}>Complete os jogos anteriores da sua árvore para liberar este confronto.</div>
-      )}
-      {treeReady && !phaseIsReal && (
-        <div>
-          <div style={S.teamFixedRow}>
-            <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(tA)}</span><span>{tA}</span></div>
-            <span style={S.vsLabel}>x</span>
-            <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(tB)}</span><span>{tB}</span></div>
-          </div>
-          <div style={S.originalBadgeRow}><Shield size={11}/> seu palpite antecipado</div>
-          <ScoreRow pick={pick} updatePick={updatePick} matchId={match.id} scoreAField="scoreA" scoreBField="scoreB" penaltyField="penalty" teamA={tA} teamB={tB} />
-        </div>
-      )}
-      {phaseIsReal && (
-        <div>
-          {!isRefeito ? (
-            <div>
-              <div style={S.compareBox}>
-                <div style={S.compareLine}><span style={S.compareLabel}>Seu palpite:</span> {tA ? flag(tA) + " " + tA : "—"} x {tB ? flag(tB) + " " + tB : "—"}</div>
-                <div style={S.compareLine}><span style={S.compareLabel}>Confronto real:</span> {match.teamA ? flag(match.teamA) + " " + match.teamA : "—"} x {match.teamB ? flag(match.teamB) + " " + match.teamB : "—"}</div>
-              </div>
-              <ScoreRow pick={pick} updatePick={updatePick} matchId={match.id} scoreAField="scoreA" scoreBField="scoreB" penaltyField="penalty" teamA={tA} teamB={tB} />
-              <div style={S.keepRedoRow}>
-                <span style={S.keptTag}><Shield size={11}/> mantido</span>
-                <button style={S.redoBtn} onClick={() => chooseRedo(match.id)}><Pencil size={11} style={{marginRight:4}}/> Refazer com os times reais</button>
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div style={S.teamFixedRow}>
-                <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(match.teamA)}</span><span>{match.teamA}</span></div>
-                <span style={S.vsLabel}>x</span>
-                <div style={S.teamFixed}><span style={{fontSize:20}}>{flag(match.teamB)}</span><span>{match.teamB}</span></div>
-              </div>
-              <ScoreRow pick={pick} updatePick={updatePick} matchId={match.id} scoreAField="realBasedScoreA" scoreBField="realBasedScoreB" penaltyField="realBasedPenalty" teamA={match.teamA} teamB={match.teamB} />
-              <div style={S.keepRedoRow}>
-                <span style={S.redoneTag}><Pencil size={11}/> refeito</span>
-                <button style={S.redoBtn} onClick={() => chooseKeep(match.id)}>← voltar ao original</button>
-              </div>
-              <SaveBtn onSave={async () => { await savePicks(true); flashSaved && flashSaved(); }} />
-            </div>
-          )}
-        </div>
-      )}
-      {match.finished && match.realScoreA !== null && (
-        <div style={S.realResult}>Resultado real: {match.realScoreA} × {match.realScoreB}{match.realPenalty ? " (pên. " + (match.realPenalty === "A" ? match.teamA : match.teamB) + ")" : ""}</div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.matchCard
+  }, !treeReady && !phaseIsReal && /*#__PURE__*/React.createElement("div", {
+    style: S.teamPending
+  }, "Complete os jogos anteriores da sua árvore para liberar este confronto."), treeReady && !phaseIsReal && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixedRow
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixed
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, flag(tA)), /*#__PURE__*/React.createElement("span", null, tA)), /*#__PURE__*/React.createElement("span", {
+    style: S.vsLabel
+  }, "x"), /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixed
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, flag(tB)), /*#__PURE__*/React.createElement("span", null, tB))), /*#__PURE__*/React.createElement("div", {
+    style: S.originalBadgeRow
+  }, /*#__PURE__*/React.createElement(Shield, {
+    size: 11
+  }), " seu palpite antecipado"), /*#__PURE__*/React.createElement(ScoreRow, {
+    pick: pick,
+    updatePick: updatePick,
+    matchId: match.id,
+    scoreAField: "scoreA",
+    scoreBField: "scoreB",
+    penaltyField: "penalty",
+    teamA: tA,
+    teamB: tB
+  })), phaseIsReal && /*#__PURE__*/React.createElement("div", null, !isRefeito ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.compareBox
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.compareLine
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.compareLabel
+  }, "Seu palpite:"), " ", tA ? flag(tA) + " " + tA : "—", " x ", tB ? flag(tB) + " " + tB : "—"), /*#__PURE__*/React.createElement("div", {
+    style: S.compareLine
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.compareLabel
+  }, "Confronto real:"), " ", match.teamA ? flag(match.teamA) + " " + match.teamA : "—", " x ", match.teamB ? flag(match.teamB) + " " + match.teamB : "—")), /*#__PURE__*/React.createElement(ScoreRow, {
+    pick: pick,
+    updatePick: updatePick,
+    matchId: match.id,
+    scoreAField: "scoreA",
+    scoreBField: "scoreB",
+    penaltyField: "penalty",
+    teamA: tA,
+    teamB: tB
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.keepRedoRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.keptTag
+  }, /*#__PURE__*/React.createElement(Shield, {
+    size: 11
+  }), " mantido"), /*#__PURE__*/React.createElement("button", {
+    style: S.redoBtn,
+    onClick: () => chooseRedo(match.id)
+  }, /*#__PURE__*/React.createElement(Pencil, {
+    size: 11,
+    style: {
+      marginRight: 4
+    }
+  }), " Refazer com os times reais"))) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixedRow
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixed
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, flag(match.teamA)), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
+    style: S.vsLabel
+  }, "x"), /*#__PURE__*/React.createElement("div", {
+    style: S.teamFixed
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, flag(match.teamB)), /*#__PURE__*/React.createElement("span", null, match.teamB))), /*#__PURE__*/React.createElement(ScoreRow, {
+    pick: pick,
+    updatePick: updatePick,
+    matchId: match.id,
+    scoreAField: "realBasedScoreA",
+    scoreBField: "realBasedScoreB",
+    penaltyField: "realBasedPenalty",
+    teamA: match.teamA,
+    teamB: match.teamB
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.keepRedoRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.redoneTag
+  }, /*#__PURE__*/React.createElement(Pencil, {
+    size: 11
+  }), " refeito"), /*#__PURE__*/React.createElement("button", {
+    style: S.redoBtn,
+    onClick: () => chooseKeep(match.id)
+  }, "← voltar ao original")), /*#__PURE__*/React.createElement(SaveBtn, {
+    onSave: async () => {
+      await savePicks(true);
+      flashSaved && flashSaved();
+    }
+  }))), match.finished && match.realScoreA !== null && /*#__PURE__*/React.createElement("div", {
+    style: S.realResult
+  }, "Resultado real: ", match.realScoreA, " × ", match.realScoreB, match.realPenalty ? " (pên. " + (match.realPenalty === "A" ? match.teamA : match.teamB) + ")" : ""));
 }
-
-function ScoreRow({ pick, updatePick, matchId, scoreAField, scoreBField, penaltyField, teamA, teamB }) {
-  const a = pick[scoreAField], b = pick[scoreBField];
+function ScoreRow({
+  pick,
+  updatePick,
+  matchId,
+  scoreAField,
+  scoreBField,
+  penaltyField,
+  teamA,
+  teamB
+}) {
+  const a = pick[scoreAField],
+    b = pick[scoreBField];
   const isDraw = a !== undefined && a !== "" && b !== undefined && b !== "" && Number(a) === Number(b);
   const filled = a !== undefined && a !== "" && a !== null && b !== undefined && b !== "" && b !== null;
   const valid = filled && (!isDraw || pick[penaltyField]);
-  return (
-    <div>
-      <div style={{ ...S.scoreRow, alignItems: "center" }}>
-        <input type="tel" inputMode="numeric" maxLength={1} style={S.scoreInput} value={a == null ? "" : a}
-          onChange={e => updatePick(matchId, scoreAField, e.target.value.replace(/\D/g,"").slice(0,1))} placeholder="-" />
-        <span style={S.scoreDash}>×</span>
-        <input type="tel" inputMode="numeric" maxLength={1} style={S.scoreInput} value={b == null ? "" : b}
-          onChange={e => updatePick(matchId, scoreBField, e.target.value.replace(/\D/g,"").slice(0,1))} placeholder="-" />
-        {valid && <span style={S.pickConfirmed}><Check size={12}/> confirmado</span>}
-      </div>
-      {isDraw && (
-        <div style={S.penaltyRow}>
-          <span style={S.penaltyLabel}>Empatou — quem ganhou nos pênaltis?</span>
-          <div style={{ display: "flex", gap: 6, marginTop: 5 }}>
-            <button style={{ ...S.penaltyBtn, ...(pick[penaltyField] === "A" ? S.penaltyBtnActive : {}) }}
-              onClick={() => updatePick(matchId, penaltyField, "A")}>{teamA ? flag(teamA) + " " + teamA : "Time A"}</button>
-            <button style={{ ...S.penaltyBtn, ...(pick[penaltyField] === "B" ? S.penaltyBtnActive : {}) }}
-              onClick={() => updatePick(matchId, penaltyField, "B")}>{teamB ? flag(teamB) + " " + teamB : "Time B"}</button>
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.scoreRow,
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 1,
+    style: S.scoreInput,
+    value: a == null ? "" : a,
+    onChange: e => updatePick(matchId, scoreAField, e.target.value.replace(/\D/g, "").slice(0, 1)),
+    placeholder: "-"
+  }), /*#__PURE__*/React.createElement("span", {
+    style: S.scoreDash
+  }, "×"), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 1,
+    style: S.scoreInput,
+    value: b == null ? "" : b,
+    onChange: e => updatePick(matchId, scoreBField, e.target.value.replace(/\D/g, "").slice(0, 1)),
+    placeholder: "-"
+  }), valid && /*#__PURE__*/React.createElement("span", {
+    style: S.pickConfirmed
+  }, /*#__PURE__*/React.createElement(Check, {
+    size: 12
+  }), " confirmado")), isDraw && /*#__PURE__*/React.createElement("div", {
+    style: S.penaltyRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.penaltyLabel
+  }, "Empatou — quem ganhou nos pênaltis?"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginTop: 5
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.penaltyBtn,
+      ...(pick[penaltyField] === "A" ? S.penaltyBtnActive : {})
+    },
+    onClick: () => updatePick(matchId, penaltyField, "A")
+  }, teamA ? flag(teamA) + " " + teamA : "Time A"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.penaltyBtn,
+      ...(pick[penaltyField] === "B" ? S.penaltyBtnActive : {})
+    },
+    onClick: () => updatePick(matchId, penaltyField, "B")
+  }, teamB ? flag(teamB) + " " + teamB : "Time B"))));
 }
-
-function RankingView({ ranking, familyRanking, loading, onRefresh, session }) {
+function RankingView({
+  ranking,
+  familyRanking,
+  loading,
+  onRefresh,
+  session
+}) {
   const [tab, setTab] = useState("individual");
-  return (
-    <div>
-      <div style={S.phaseSelector}>
-        <button onClick={() => setTab("individual")} style={{ ...S.phaseChip, ...(tab === "individual" ? S.phaseChipActive : {}) }}>Individual</button>
-        <button onClick={() => setTab("familia")} style={{ ...S.phaseChip, ...(tab === "familia" ? S.phaseChipActive : {}) }}>Por família</button>
-        <button onClick={onRefresh} style={{ ...S.phaseChip, marginLeft: "auto" }}><RefreshCw size={12} style={{marginRight:4}}/>{loading ? "..." : ""}</button>
-      </div>
-      {tab === "individual" ? (
-        <div style={S.rankList}>
-          {ranking.map((r, i) => (
-            <div key={r.name} style={{ ...S.rankRow, ...(r.name === session.name ? S.rankRowMe : {}) }}>
-              <div style={S.rankPos}>{i + 1}º</div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontFamily: FONT_BODY, fontWeight: 600, color: "#FAFAF7", fontSize: 14 }}>{r.name}</div>
-                <div style={{ ...S.famBadgeTiny, background: FAMILIES[r.family] ? FAMILIES[r.family].color : "#333", color: FAMILIES[r.family] ? FAMILIES[r.family].accent : "#fff" }}>{r.family}</div>
-              </div>
-              <div style={S.rankScore}>{r.score}</div>
-            </div>
-          ))}
-          {ranking.length === 0 && <EmptyHint />}
-        </div>
-      ) : (
-        <div style={S.rankList}>
-          {familyRanking.map((r, i) => (
-            <div key={r.family} style={{ ...S.rankRow, ...(r.family === session.family ? S.rankRowMe : {}) }}>
-              <div style={S.rankPos}>{i + 1}º</div>
-              <div style={{ flex: 1 }}><div style={{ ...S.famBadge, background: FAMILIES[r.family] ? FAMILIES[r.family].color : "#333", color: FAMILIES[r.family] ? FAMILIES[r.family].accent : "#fff" }}>{r.family}</div></div>
-              <div style={S.rankScore}>{r.avg.toFixed(1)}</div>
-            </div>
-          ))}
-          {familyRanking.length === 0 && <EmptyHint />}
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.phaseSelector
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTab("individual"),
+    style: {
+      ...S.phaseChip,
+      ...(tab === "individual" ? S.phaseChipActive : {})
+    }
+  }, "Individual"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTab("familia"),
+    style: {
+      ...S.phaseChip,
+      ...(tab === "familia" ? S.phaseChipActive : {})
+    }
+  }, "Por família"), /*#__PURE__*/React.createElement("button", {
+    onClick: onRefresh,
+    style: {
+      ...S.phaseChip,
+      marginLeft: "auto"
+    }
+  }, /*#__PURE__*/React.createElement(RefreshCw, {
+    size: 12,
+    style: {
+      marginRight: 4
+    }
+  }), loading ? "..." : "")), tab === "individual" ? /*#__PURE__*/React.createElement("div", {
+    style: S.rankList
+  }, ranking.map((r, i) => /*#__PURE__*/React.createElement("div", {
+    key: r.name,
+    style: {
+      ...S.rankRow,
+      ...(r.name === session.name ? S.rankRowMe : {})
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.rankPos
+  }, i + 1, "º"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontWeight: 600,
+      color: "#FAFAF7",
+      fontSize: 14
+    }
+  }, r.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.famBadgeTiny,
+      background: FAMILIES[r.family] ? FAMILIES[r.family].color : "#333",
+      color: FAMILIES[r.family] ? FAMILIES[r.family].accent : "#fff"
+    }
+  }, r.family)), /*#__PURE__*/React.createElement("div", {
+    style: S.rankScore
+  }, r.score))), ranking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)) : /*#__PURE__*/React.createElement("div", {
+    style: S.rankList
+  }, familyRanking.map((r, i) => /*#__PURE__*/React.createElement("div", {
+    key: r.family,
+    style: {
+      ...S.rankRow,
+      ...(r.family === session.family ? S.rankRowMe : {})
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.rankPos
+  }, i + 1, "º"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.famBadge,
+      background: FAMILIES[r.family] ? FAMILIES[r.family].color : "#333",
+      color: FAMILIES[r.family] ? FAMILIES[r.family].accent : "#fff"
+    }
+  }, r.family)), /*#__PURE__*/React.createElement("div", {
+    style: S.rankScore
+  }, r.avg.toFixed(1)))), familyRanking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)));
 }
 function EmptyHint() {
-  return <div style={{ color: "#9fbfae", fontFamily: FONT_BODY, fontSize: 13, textAlign: "center", padding: 30 }}>Sem pontuação ainda — aguarde os primeiros resultados.</div>;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: "#9fbfae",
+      fontFamily: FONT_BODY,
+      fontSize: 13,
+      textAlign: "center",
+      padding: 30
+    }
+  }, "Sem pontuação ainda — aguarde os primeiros resultados.");
 }
-
-function ActionBtn({ label, onAction, color, confirmLabel, style: extraStyle }) {
+function ActionBtn({
+  label,
+  onAction,
+  color,
+  confirmLabel,
+  style: extraStyle
+}) {
   const [state, setState] = useState("idle"); // idle | confirm | loading | done
   const handle = async () => {
-    if (state === "idle") { setState("confirm"); setTimeout(() => setState(s => s === "confirm" ? "idle" : s), 4000); return; }
+    if (state === "idle") {
+      setState("confirm");
+      setTimeout(() => setState(s => s === "confirm" ? "idle" : s), 4000);
+      return;
+    }
     if (state === "confirm") {
       setState("loading");
       await onAction();
@@ -1015,281 +1985,1060 @@ function ActionBtn({ label, onAction, color, confirmLabel, style: extraStyle }) 
     }
   };
   const bg = state === "done" ? "#2d9e5f" : state === "confirm" ? "#c0392b" : state === "loading" ? "#666" : "transparent";
-  const col = state === "idle" ? (color || COLORS.textMuted) : "#fff";
+  const col = state === "idle" ? color || COLORS.textMuted : "#fff";
   const border = state === "idle" ? `1px solid ${color || COLORS.border}` : "none";
   const lbl = state === "confirm" ? `⚠️ Confirmar: ${confirmLabel || label}` : state === "loading" ? "⏳ Processando…" : state === "done" ? "✅ Concluído!" : label;
-  return (
-    <button onClick={handle}
-      style={{ ...S.secondaryBtn, marginTop: 6, background: bg, color: col, border, transition: "all 0.25s", ...extraStyle }}>
-      {lbl}
-    </button>
-  );
+  return /*#__PURE__*/React.createElement("button", {
+    onClick: handle,
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 6,
+      background: bg,
+      color: col,
+      border,
+      transition: "all 0.25s",
+      ...extraStyle
+    }
+  }, lbl);
 }
-
-function AdminView({ matches, phaseStatus, updateMatchField, saveMatches, finishMatch, setPhase, resetPin, fillTestData, simulateResults, autoFillPicks, propagateWinners, clearAllData, clearResults }) {
+function AdminView({
+  matches,
+  phaseStatus,
+  updateMatchField,
+  saveMatches,
+  finishMatch,
+  setPhase,
+  resetPin,
+  fillTestData,
+  simulateResults,
+  autoFillPicks,
+  propagateWinners,
+  clearAllData,
+  clearResults
+}) {
   const [activePhase, setActivePhase] = useState("32avos");
   const [resetName, setResetName] = useState("");
   const [resetPinVal, setResetPinVal] = useState("");
   const phaseMatches = matches.filter(m => m.phase === activePhase);
-
-  return (
-    <div>
-      <div style={S.adminSection}>
-        <div style={S.adminTitle}>🧪 Modo de teste</div>
-        <div style={S.adminHint}>Preenche os 32avos com times aleatórios de uma vez, só para testar o fluxo (árvore pessoal, manter/refazer) sem confirmar 16 jogos manualmente. Substitui qualquer confronto já confirmado.</div>
-        <button style={{ ...S.secondaryBtn, marginTop: 10 }} onClick={fillTestData}>Preencher confrontos de teste</button>
-        <div style={{ ...S.adminHint, marginTop: 12 }}>Gera palpites aleatórios para todos os 14 participantes de uma vez (PIN: 1234 para todos). Use após preencher os confrontos de teste.</div>
-        <button style={{ ...S.secondaryBtn, marginTop: 6 }} onClick={autoFillPicks}>👥 Auto-preencher palpites — todos os 14</button>
-        <div style={{ ...S.adminHint, marginTop: 12 }}>Simula resultados reais nos 32avos (placares aleatórios, todos marcados como lançados) para testar pontuação e ranking.</div>
-        <button style={{ ...S.secondaryBtn, marginTop: 6 }} onClick={simulateResults}>🎲 Simular resultados dos 32avos</button>
-        <div style={{ ...S.adminHint, marginTop: 12 }}>Após simular os resultados, propaga os vencedores reais para os confrontos das fases seguintes (oitavas, quartas, semis, final) automaticamente.</div>
-        <button style={{ ...S.secondaryBtn, marginTop: 6 }} onClick={propagateWinners}>⚡ Propagar vencedores para próximas fases</button>
-        <div style={{ ...S.adminHint, marginTop: 16, color: "#f3a3a3" }}>⚠️ Limpa TODOS os dados de simulação (times, palpites, resultados). Use antes de divulgar o bolão para valer.</div>
-        <ActionBtn label="🗑️ Limpar todos os dados de teste" confirmLabel="limpar tudo?" onAction={clearAllData} color="#c0392b" />
-      </div>
-        <div style={{ ...S.adminHint, marginTop: 12, color: "#f0c060" }}>↩️ Apaga apenas os resultados lançados, preservando times confirmados e palpites dos participantes.</div>
-        <ActionBtn label="↩️ Apagar só os resultados lançados" confirmLabel="apagar resultados?" onAction={clearResults} color="#c0a030" />
-
-      <div style={S.adminSection}>
-        <div style={S.adminTitle}>Controle de fases</div>
-        <div style={S.phaseAdminGrid}>
-          {PHASES.map(p => (
-            <div key={p.key} style={S.phaseAdminRow}>
-              <span style={{ fontFamily: FONT_BODY, color: "#FAFAF7", fontSize: 13 }}>{p.label}</span>
-              <select value={phaseStatus[p.key]} onChange={e => setPhase(p.key, e.target.value)} style={S.phaseStatusSelect}>
-                <option value="locked">Travada (esconde a aba)</option>
-                <option value="tree">Pré-preenchimento (árvore pessoal)</option>
-                <option value="open">Aberta (confrontos reais)</option>
-                <option value="closed">Encerrada</option>
-              </select>
-            </div>
-          ))}
-        </div>
-        <div style={S.adminHint}>Nos 32avos, cada jogo libera individualmente assim que você confirma os dois times — não precisa esperar todos os 16.</div>
-      </div>
-
-      <div style={S.phaseSelector}>
-        {PHASES.map(p => <button key={p.key} onClick={() => setActivePhase(p.key)} style={{ ...S.phaseChip, ...(activePhase === p.key ? S.phaseChipActive : {}) }}>{p.short}</button>)}
-      </div>
-
-      <div style={S.matchList}>
-        {phaseMatches.map(m => (
-          <div key={m.id} style={S.adminMatchCard}>
-            {m.phase === "32avos" ? (
-              <div style={S.teamPickRow}>
-                <div style={{flex:1}}>
-                  <input style={S.originInput} value={m.originA || ""} placeholder="origem (ex: 1º Grupo A)"
-                    onChange={e => updateMatchField(m.id, "originA", e.target.value)} />
-                  <select style={S.teamSelect} value={m.teamA || ""} onChange={e => updateMatchField(m.id, "teamA", e.target.value)}>
-                    <option value="">Confirmar time…</option>
-                    {teamNames.map(t => <option key={t} value={t}>{flag(t)} {t}</option>)}
-                  </select>
-                </div>
-                <span style={S.vsLabel}>x</span>
-                <div style={{flex:1}}>
-                  <input style={S.originInput} value={m.originB || ""} placeholder="origem (ex: 2º Grupo B)"
-                    onChange={e => updateMatchField(m.id, "originB", e.target.value)} />
-                  <select style={S.teamSelect} value={m.teamB || ""} onChange={e => updateMatchField(m.id, "teamB", e.target.value)}>
-                    <option value="">Confirmar time…</option>
-                    {teamNames.map(t => <option key={t} value={t}>{flag(t)} {t}</option>)}
-                  </select>
-                </div>
-              </div>
-            ) : (
-              <div style={S.teamPickRow}>
-                <select style={S.teamSelect} value={m.teamA || ""} onChange={e => updateMatchField(m.id, "teamA", e.target.value)}>
-                  <option value="">{flag(m.teamA)} Time A da chave</option>
-                  {teamNames.map(t => <option key={t} value={t}>{flag(t)} {t}</option>)}
-                </select>
-                <span style={S.vsLabel}>x</span>
-                <select style={S.teamSelect} value={m.teamB || ""} onChange={e => updateMatchField(m.id, "teamB", e.target.value)}>
-                  <option value="">{flag(m.teamB)} Time B da chave</option>
-                  {teamNames.map(t => <option key={t} value={t}>{flag(t)} {t}</option>)}
-                </select>
-              </div>
-            )}
-            <div style={S.scoreRow}>
-              <span style={{fontFamily:FONT_BODY, fontSize:11, color:"#9fbfae", marginRight:6}}>Placar real:</span>
-              <input type="tel" inputMode="numeric" maxLength={1} style={S.scoreInput} value={m.realScoreA == null ? "" : m.realScoreA}
-                onChange={e => updateMatchField(m.id, "realScoreA", e.target.value.replace(/\D/g,"").slice(0,1))} placeholder="-" />
-              <span style={S.scoreDash}>×</span>
-              <input type="tel" inputMode="numeric" maxLength={1} style={S.scoreInput} value={m.realScoreB == null ? "" : m.realScoreB}
-                onChange={e => updateMatchField(m.id, "realScoreB", e.target.value.replace(/\D/g,"").slice(0,1))} placeholder="-" />
-            </div>
-            {m.realScoreA !== null && m.realScoreA !== "" && Number(m.realScoreA) === Number(m.realScoreB) && (
-              <div style={S.penaltyRow}>
-                <span style={S.penaltyLabel}>Quem venceu nos pênaltis?</span>
-                <div style={{ display: "flex", gap: 6, marginTop: 5 }}>
-                  <button style={{ ...S.penaltyBtn, ...(m.realPenalty === "A" ? S.penaltyBtnActive : {}) }} onClick={() => updateMatchField(m.id, "realPenalty", "A")}>{m.teamA || "Time A"}</button>
-                  <button style={{ ...S.penaltyBtn, ...(m.realPenalty === "B" ? S.penaltyBtnActive : {}) }} onClick={() => updateMatchField(m.id, "realPenalty", "B")}>{m.teamB || "Time B"}</button>
-                </div>
-              </div>
-            )}
-            <div style={{ marginTop: 8 }}>
-              {m.finished
-                ? <span style={S.finishedTag}><Check size={11}/> lançado</span>
-                : (m.teamA && m.teamB && m.realScoreA !== null && m.realScoreA !== "" && m.realScoreB !== null && m.realScoreB !== "")
-                ? <button style={S.smallBtn} onClick={() => finishMatch(m.id)}>Lançar resultado</button>
-                : <span style={S.waitingNote}>Confirme times e placar para liberar o lançamento</span>}
-            </div>
-          </div>
-        ))}
-      </div>
-      <button style={S.primaryBtn} onClick={saveMatches}><Check size={15} style={{marginRight:6}}/> Salvar confrontos</button>
-
-      <div style={S.adminSection}>
-        <div style={S.adminTitle}>Resetar PIN de participante</div>
-        <select style={S.teamSelect} value={resetName} onChange={e => setResetName(e.target.value)}>
-          <option value="">Selecionar pessoa…</option>
-          {ALL_PEOPLE.map(p => <option key={p.name} value={p.name}>{p.name} ({p.family})</option>)}
-        </select>
-        <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-          <input type="tel" inputMode="numeric" maxLength={4} style={S.pinInputSmall} placeholder="novo PIN" value={resetPinVal}
-            onChange={e => setResetPinVal(e.target.value.replace(/\D/g, "").slice(0,4))} />
-          <button style={S.smallBtn} onClick={() => { resetPin(resetName, resetPinVal); setResetName(""); setResetPinVal(""); }}>Redefinir</button>
-        </div>
-      </div>
-
-      <DiagnosticPanel />
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: S.adminSection
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.adminTitle
+  }, "🧪 Modo de teste"), /*#__PURE__*/React.createElement("div", {
+    style: S.adminHint
+  }, "Preenche os 32avos com times aleatórios de uma vez, só para testar o fluxo (árvore pessoal, manter/refazer) sem confirmar 16 jogos manualmente. Substitui qualquer confronto já confirmado."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 10
+    },
+    onClick: fillTestData
+  }, "Preencher confrontos de teste"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12
+    }
+  }, "Gera palpites aleatórios para todos os 14 participantes de uma vez (PIN: 1234 para todos). Use após preencher os confrontos de teste."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 6
+    },
+    onClick: autoFillPicks
+  }, "👥 Auto-preencher palpites — todos os 14"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12
+    }
+  }, "Simula resultados reais nos 32avos (placares aleatórios, todos marcados como lançados) para testar pontuação e ranking."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 6
+    },
+    onClick: simulateResults
+  }, "🎲 Simular resultados dos 32avos"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12
+    }
+  }, "Após simular os resultados, propaga os vencedores reais para os confrontos das fases seguintes (oitavas, quartas, semis, final) automaticamente."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 6
+    },
+    onClick: propagateWinners
+  }, "⚡ Propagar vencedores para próximas fases"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 16,
+      color: "#f3a3a3"
+    }
+  }, "⚠️ Limpa TODOS os dados de simulação (times, palpites, resultados). Use antes de divulgar o bolão para valer."), /*#__PURE__*/React.createElement(ActionBtn, {
+    label: "🗑️ Limpar todos os dados de teste",
+    confirmLabel: "limpar tudo?",
+    onAction: clearAllData,
+    color: "#c0392b"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12,
+      color: "#f0c060"
+    }
+  }, "↩️ Apaga apenas os resultados lançados, preservando times confirmados e palpites dos participantes."), /*#__PURE__*/React.createElement(ActionBtn, {
+    label: "↩️ Apagar só os resultados lançados",
+    confirmLabel: "apagar resultados?",
+    onAction: clearResults,
+    color: "#c0a030"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: S.adminSection
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.adminTitle
+  }, "Controle de fases"), /*#__PURE__*/React.createElement("div", {
+    style: S.phaseAdminGrid
+  }, PHASES.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.key,
+    style: S.phaseAdminRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      color: "#FAFAF7",
+      fontSize: 13
+    }
+  }, p.label), /*#__PURE__*/React.createElement("select", {
+    value: phaseStatus[p.key],
+    onChange: e => setPhase(p.key, e.target.value),
+    style: S.phaseStatusSelect
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "locked"
+  }, "Travada (esconde a aba)"), /*#__PURE__*/React.createElement("option", {
+    value: "tree"
+  }, "Pré-preenchimento (árvore pessoal)"), /*#__PURE__*/React.createElement("option", {
+    value: "open"
+  }, "Aberta (confrontos reais)"), /*#__PURE__*/React.createElement("option", {
+    value: "closed"
+  }, "Encerrada"))))), /*#__PURE__*/React.createElement("div", {
+    style: S.adminHint
+  }, "Nos 32avos, cada jogo libera individualmente assim que você confirma os dois times — não precisa esperar todos os 16.")), /*#__PURE__*/React.createElement("div", {
+    style: S.phaseSelector
+  }, PHASES.map(p => /*#__PURE__*/React.createElement("button", {
+    key: p.key,
+    onClick: () => setActivePhase(p.key),
+    style: {
+      ...S.phaseChip,
+      ...(activePhase === p.key ? S.phaseChipActive : {})
+    }
+  }, p.short))), /*#__PURE__*/React.createElement("div", {
+    style: S.matchList
+  }, phaseMatches.map(m => /*#__PURE__*/React.createElement("div", {
+    key: m.id,
+    style: S.adminMatchCard
+  }, m.phase === "32avos" ? /*#__PURE__*/React.createElement("div", {
+    style: S.teamPickRow
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.originInput,
+    value: m.originA || "",
+    placeholder: "origem (ex: 1º Grupo A)",
+    onChange: e => updateMatchField(m.id, "originA", e.target.value)
+  }), /*#__PURE__*/React.createElement("select", {
+    style: S.teamSelect,
+    value: m.teamA || "",
+    onChange: e => updateMatchField(m.id, "teamA", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Confirmar time…"), teamNames.map(t => /*#__PURE__*/React.createElement("option", {
+    key: t,
+    value: t
+  }, flag(t), " ", t)))), /*#__PURE__*/React.createElement("span", {
+    style: S.vsLabel
+  }, "x"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    style: S.originInput,
+    value: m.originB || "",
+    placeholder: "origem (ex: 2º Grupo B)",
+    onChange: e => updateMatchField(m.id, "originB", e.target.value)
+  }), /*#__PURE__*/React.createElement("select", {
+    style: S.teamSelect,
+    value: m.teamB || "",
+    onChange: e => updateMatchField(m.id, "teamB", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Confirmar time…"), teamNames.map(t => /*#__PURE__*/React.createElement("option", {
+    key: t,
+    value: t
+  }, flag(t), " ", t))))) : /*#__PURE__*/React.createElement("div", {
+    style: S.teamPickRow
+  }, /*#__PURE__*/React.createElement("select", {
+    style: S.teamSelect,
+    value: m.teamA || "",
+    onChange: e => updateMatchField(m.id, "teamA", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, flag(m.teamA), " Time A da chave"), teamNames.map(t => /*#__PURE__*/React.createElement("option", {
+    key: t,
+    value: t
+  }, flag(t), " ", t))), /*#__PURE__*/React.createElement("span", {
+    style: S.vsLabel
+  }, "x"), /*#__PURE__*/React.createElement("select", {
+    style: S.teamSelect,
+    value: m.teamB || "",
+    onChange: e => updateMatchField(m.id, "teamB", e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, flag(m.teamB), " Time B da chave"), teamNames.map(t => /*#__PURE__*/React.createElement("option", {
+    key: t,
+    value: t
+  }, flag(t), " ", t)))), /*#__PURE__*/React.createElement("div", {
+    style: S.scoreRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 11,
+      color: "#9fbfae",
+      marginRight: 6
+    }
+  }, "Placar real:"), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 1,
+    style: S.scoreInput,
+    value: m.realScoreA == null ? "" : m.realScoreA,
+    onChange: e => updateMatchField(m.id, "realScoreA", e.target.value.replace(/\D/g, "").slice(0, 1)),
+    placeholder: "-"
+  }), /*#__PURE__*/React.createElement("span", {
+    style: S.scoreDash
+  }, "×"), /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 1,
+    style: S.scoreInput,
+    value: m.realScoreB == null ? "" : m.realScoreB,
+    onChange: e => updateMatchField(m.id, "realScoreB", e.target.value.replace(/\D/g, "").slice(0, 1)),
+    placeholder: "-"
+  })), m.realScoreA !== null && m.realScoreA !== "" && Number(m.realScoreA) === Number(m.realScoreB) && /*#__PURE__*/React.createElement("div", {
+    style: S.penaltyRow
+  }, /*#__PURE__*/React.createElement("span", {
+    style: S.penaltyLabel
+  }, "Quem venceu nos pênaltis?"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 6,
+      marginTop: 5
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.penaltyBtn,
+      ...(m.realPenalty === "A" ? S.penaltyBtnActive : {})
+    },
+    onClick: () => updateMatchField(m.id, "realPenalty", "A")
+  }, m.teamA || "Time A"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.penaltyBtn,
+      ...(m.realPenalty === "B" ? S.penaltyBtnActive : {})
+    },
+    onClick: () => updateMatchField(m.id, "realPenalty", "B")
+  }, m.teamB || "Time B"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8
+    }
+  }, m.finished ? /*#__PURE__*/React.createElement("span", {
+    style: S.finishedTag
+  }, /*#__PURE__*/React.createElement(Check, {
+    size: 11
+  }), " lançado") : m.teamA && m.teamB && m.realScoreA !== null && m.realScoreA !== "" && m.realScoreB !== null && m.realScoreB !== "" ? /*#__PURE__*/React.createElement("button", {
+    style: S.smallBtn,
+    onClick: () => finishMatch(m.id)
+  }, "Lançar resultado") : /*#__PURE__*/React.createElement("span", {
+    style: S.waitingNote
+  }, "Confirme times e placar para liberar o lançamento"))))), /*#__PURE__*/React.createElement("button", {
+    style: S.primaryBtn,
+    onClick: saveMatches
+  }, /*#__PURE__*/React.createElement(Check, {
+    size: 15,
+    style: {
+      marginRight: 6
+    }
+  }), " Salvar confrontos"), /*#__PURE__*/React.createElement("div", {
+    style: S.adminSection
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.adminTitle
+  }, "Resetar PIN de participante"), /*#__PURE__*/React.createElement("select", {
+    style: S.teamSelect,
+    value: resetName,
+    onChange: e => setResetName(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Selecionar pessoa…"), ALL_PEOPLE.map(p => /*#__PURE__*/React.createElement("option", {
+    key: p.name,
+    value: p.name
+  }, p.name, " (", p.family, ")"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8,
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "tel",
+    inputMode: "numeric",
+    maxLength: 4,
+    style: S.pinInputSmall,
+    placeholder: "novo PIN",
+    value: resetPinVal,
+    onChange: e => setResetPinVal(e.target.value.replace(/\D/g, "").slice(0, 4))
+  }), /*#__PURE__*/React.createElement("button", {
+    style: S.smallBtn,
+    onClick: () => {
+      resetPin(resetName, resetPinVal);
+      setResetName("");
+      setResetPinVal("");
+    }
+  }, "Redefinir"))), /*#__PURE__*/React.createElement(DiagnosticPanel, null));
 }
-
 function DiagnosticPanel() {
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const check = async () => {
     setLoading(true);
     const results = await Promise.all(ALL_PEOPLE.map(async p => {
       const picks = await storageGet(K.picksPrefix + p.name, true);
       const count = picks ? Object.keys(picks).filter(k => {
         const pick = picks[k];
-        return pick && (pick.scoreA !== undefined && pick.scoreA !== "" && pick.scoreA !== null);
+        return pick && pick.scoreA !== undefined && pick.scoreA !== "" && pick.scoreA !== null;
       }).length : 0;
-      return { name: p.name, family: p.family, count, hasPicks: count > 0 };
+      return {
+        name: p.name,
+        family: p.family,
+        count,
+        hasPicks: count > 0
+      };
     }));
     setReport(results);
     setLoading(false);
   };
-
-  return (
-    <div style={S.adminSection}>
-      <div style={S.adminTitle}>📊 Diagnóstico de palpites</div>
-      <div style={S.adminHint}>Verifica quem já tem palpites salvos e quantos jogos foram preenchidos.</div>
-      <button style={{ ...S.smallBtn, marginTop: 10 }} onClick={check}>{loading ? "Verificando…" : "Verificar agora"}</button>
-      {report && (
-        <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
-          {report.map(r => (
-            <div key={r.name} style={{ display: "flex", justifyContent: "space-between", alignItems: "center",
-              background: r.hasPicks ? "rgba(127,217,154,0.08)" : "rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 10px" }}>
-              <div>
-                <span style={{ fontFamily: FONT_BODY, fontSize: 13, color: r.hasPicks ? "#7fd99a" : COLORS.textMuted, fontWeight: 600 }}>{r.name}</span>
-                <span style={{ fontFamily: FONT_BODY, fontSize: 10, color: COLORS.textMuted, marginLeft: 6 }}>({r.family})</span>
-              </div>
-              <span style={{ fontFamily: FONT_DISPLAY, fontSize: 13, color: r.hasPicks ? COLORS.gold : COLORS.textMuted }}>
-                {r.hasPicks ? r.count + " jogos" : "sem palpites"}
-              </span>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.adminSection
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.adminTitle
+  }, "📊 Diagnóstico de palpites"), /*#__PURE__*/React.createElement("div", {
+    style: S.adminHint
+  }, "Verifica quem já tem palpites salvos e quantos jogos foram preenchidos."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.smallBtn,
+      marginTop: 10
+    },
+    onClick: check
+  }, loading ? "Verificando…" : "Verificar agora"), report && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, report.map(r => /*#__PURE__*/React.createElement("div", {
+    key: r.name,
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      background: r.hasPicks ? "rgba(127,217,154,0.08)" : "rgba(255,255,255,0.03)",
+      borderRadius: 8,
+      padding: "6px 10px"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 13,
+      color: r.hasPicks ? "#7fd99a" : COLORS.textMuted,
+      fontWeight: 600
+    }
+  }, r.name), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 10,
+      color: COLORS.textMuted,
+      marginLeft: 6
+    }
+  }, "(", r.family, ")")), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_DISPLAY,
+      fontSize: 13,
+      color: r.hasPicks ? COLORS.gold : COLORS.textMuted
+    }
+  }, r.hasPicks ? r.count + " jogos" : "sem palpites")))));
 }
-
 const FONT_DISPLAY = "'Archivo Black', 'Arial Black', sans-serif";
 const FONT_BODY = "'Inter', -apple-system, sans-serif";
 const COLORS = {
-  bg: "#0D3B26", bgDark: "#0a2e1d", card: "#123F2B", cardLight: "#175038",
-  cream: "#FAFAF7", gold: "#D4A537", textMuted: "#9fbfae", textBody: "#cfead9",
-  border: "rgba(255,255,255,0.08)",
+  bg: "#0D3B26",
+  bgDark: "#0a2e1d",
+  card: "#123F2B",
+  cardLight: "#175038",
+  cream: "#FAFAF7",
+  gold: "#D4A537",
+  textMuted: "#9fbfae",
+  textBody: "#cfead9",
+  border: "rgba(255,255,255,0.08)"
 };
-
 const S = {
-  app: { minHeight: "100vh", background: "linear-gradient(180deg, " + COLORS.bg + " 0%, " + COLORS.bgDark + " 100%)", fontFamily: FONT_BODY, paddingBottom: 40 },
-  bootScreen: { minHeight: "100vh", background: COLORS.bg, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 14 },
-  bootBadge: { width: 56, height: 56, borderRadius: 16, background: COLORS.gold, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 },
-  loginWrap: { minHeight: "100vh", background: "radial-gradient(circle at 50% 0%, #14492f 0%, " + COLORS.bgDark + " 70%)", display: "flex", alignItems: "center", justifyContent: "center", padding: 18 },
-  loginCard: { width: "100%", maxWidth: 420, background: COLORS.card, borderRadius: 20, padding: "26px 20px", border: "1px solid " + COLORS.border, boxShadow: "0 20px 60px rgba(0,0,0,0.4)" },
-  trophyBadge: { width: 50, height: 50, borderRadius: 14, background: COLORS.gold, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto" },
-  label: { fontFamily: FONT_BODY, fontSize: 13, color: COLORS.textMuted, marginBottom: 10, fontWeight: 600 },
-  nameGrid: { display: "flex", flexDirection: "column" },
-  famTag: { display: "inline-block", fontSize: 11, fontWeight: 700, padding: "3px 10px", borderRadius: 20, marginBottom: 6, letterSpacing: 0.3 },
-  nameRow: { display: "flex", flexWrap: "wrap", gap: 8 },
-  nameBtn: { background: COLORS.cardLight, color: COLORS.cream, border: "1px solid " + COLORS.border, borderRadius: 10, padding: "9px 14px", fontFamily: FONT_BODY, fontSize: 13.5, fontWeight: 600, cursor: "pointer" },
-  backBtn: { background: "none", border: "none", color: COLORS.textMuted, fontFamily: FONT_BODY, fontSize: 12.5, cursor: "pointer", padding: 0 },
-  pinInput: { width: "100%", textAlign: "center", fontSize: 30, letterSpacing: 14, padding: "14px 0", borderRadius: 12, border: "1px solid " + COLORS.border, background: COLORS.bgDark, color: COLORS.cream, marginTop: 6, marginBottom: 12, fontFamily: FONT_DISPLAY },
-  pinInputSmall: { flex: 1, textAlign: "center", fontSize: 16, letterSpacing: 6, padding: "8px 0", borderRadius: 8, border: "1px solid " + COLORS.border, background: COLORS.bgDark, color: COLORS.cream },
-  errorText: { display: "flex", alignItems: "center", color: "#f3a3a3", fontSize: 12.5, marginBottom: 10, fontFamily: FONT_BODY },
-  primaryBtn: { width: "100%", background: COLORS.gold, color: "#1a1306", border: "none", borderRadius: 12, padding: "13px 0", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 14.5, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" },
-  secondaryBtn: { width: "100%", background: "transparent", color: COLORS.cream, border: "1px solid " + COLORS.border, borderRadius: 12, padding: "11px 0", fontFamily: FONT_BODY, fontWeight: 600, fontSize: 13.5, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", marginTop: 8 },
-  header: { background: COLORS.bgDark, borderBottom: "1px solid " + COLORS.border, padding: "14px 16px 0", position: "sticky", top: 0, zIndex: 10 },
-  headerTop: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  logoutBtn: { background: "none", border: "none", color: COLORS.textMuted, fontFamily: FONT_BODY, fontSize: 12, cursor: "pointer" },
-  famBadgeSmall: { display: "inline-block", fontSize: 10.5, fontWeight: 700, padding: "2px 9px", borderRadius: 20, marginTop: 8 },
-  tabBar: { display: "flex", gap: 4, marginTop: 12 },
-  tabBtn: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", background: "none", border: "none", color: COLORS.textMuted, fontFamily: FONT_BODY, fontSize: 12.5, fontWeight: 600, padding: "10px 0", borderBottom: "2px solid transparent", cursor: "pointer" },
-  tabBtnActive: { color: COLORS.gold, borderBottom: "2px solid " + COLORS.gold },
-  body: { padding: "16px 14px" },
-  toast: { position: "fixed", top: 14, left: "50%", transform: "translateX(-50%)", background: COLORS.gold, color: "#1a1306", padding: "9px 18px", borderRadius: 30, fontFamily: FONT_BODY, fontWeight: 700, fontSize: 13, zIndex: 50, boxShadow: "0 8px 24px rgba(0,0,0,0.3)" },
-  phaseSelector: { display: "flex", gap: 6, overflowX: "auto", marginBottom: 14, paddingBottom: 2 },
-  phaseChip: { flexShrink: 0, display: "flex", alignItems: "center", background: COLORS.card, color: COLORS.textMuted, border: "1px solid " + COLORS.border, borderRadius: 20, padding: "7px 13px", fontFamily: FONT_BODY, fontSize: 12.5, fontWeight: 600, cursor: "pointer" },
-  phaseChipActive: { background: COLORS.gold, color: "#1a1306", border: "none" },
-  lockedBox: { display: "flex", flexDirection: "column", alignItems: "center", padding: "40px 20px", background: COLORS.card, borderRadius: 16, border: "1px dashed " + COLORS.border },
-  phaseInfo: { fontFamily: FONT_BODY, fontSize: 12.5, color: COLORS.textBody, background: "rgba(212,165,55,0.1)", border: "1px solid rgba(212,165,55,0.25)", borderRadius: 10, padding: "10px 12px", marginBottom: 14, lineHeight: 1.5 },
-  matchList: { display: "flex", flexDirection: "column", gap: 10, marginBottom: 16 },
-  matchCard: { background: COLORS.card, borderRadius: 14, padding: 14, border: "1px solid " + COLORS.border },
-  adminMatchCard: { background: COLORS.card, borderRadius: 14, padding: 14, border: "1px solid " + COLORS.border },
-  teamPickRow: { display: "flex", alignItems: "flex-end", gap: 8 },
-  teamFixedRow: { display: "flex", alignItems: "center", gap: 10 },
-  teamFixed: { flex: 1, display: "flex", alignItems: "center", gap: 8, fontFamily: FONT_BODY, fontWeight: 600, color: COLORS.cream, fontSize: 14 },
-  teamPending: { flex: 1, fontFamily: FONT_BODY, fontSize: 12.5, color: COLORS.textMuted, fontStyle: "italic" },
-  teamSelect: { width: "100%", background: COLORS.bgDark, color: COLORS.cream, border: "1px solid " + COLORS.border, borderRadius: 9, padding: "8px 6px", fontFamily: FONT_BODY, fontSize: 12.5 },
-  originLabel: { fontFamily: FONT_BODY, fontSize: 10, color: COLORS.textMuted, marginBottom: 3 },
-  originInput: { width: "100%", background: "transparent", border: "none", borderBottom: "1px dashed " + COLORS.border, color: COLORS.textMuted, fontFamily: FONT_BODY, fontSize: 10, marginBottom: 3, padding: "2px 0" },
-  vsLabel: { color: COLORS.textMuted, fontFamily: FONT_DISPLAY, fontSize: 12, paddingBottom: 8 },
-  waitingNote: { fontFamily: FONT_BODY, fontSize: 11.5, color: COLORS.textMuted, marginTop: 8, fontStyle: "italic" },
-  scoreRow: { display: "flex", alignItems: "center", gap: 8, marginTop: 10 },
-  scoreInput: { width: 44, textAlign: "center", fontSize: 18, padding: "8px 0", borderRadius: 9, border: "1px solid " + COLORS.border, background: COLORS.bgDark, color: COLORS.gold, fontFamily: FONT_DISPLAY },
-  scoreDash: { color: COLORS.textMuted, fontFamily: FONT_DISPLAY },
-  pickConfirmed: { display: "flex", alignItems: "center", gap: 3, marginLeft: 8, fontSize: 10.5, color: "#7fd99a", fontFamily: FONT_BODY, fontWeight: 700 },
-  realResult: { marginTop: 8, fontSize: 11.5, color: COLORS.textMuted, fontFamily: FONT_BODY },
-  originalBadgeRow: { display: "flex", alignItems: "center", gap: 4, fontSize: 10.5, color: COLORS.gold, fontFamily: FONT_BODY, fontWeight: 700, marginTop: 8 },
-  compareBox: { background: COLORS.bgDark, borderRadius: 10, padding: "8px 10px", marginBottom: 6 },
-  compareLine: { fontFamily: FONT_BODY, fontSize: 12, color: COLORS.textBody, marginBottom: 3 },
-  compareLabel: { color: COLORS.textMuted, fontWeight: 600 },
-  keepRedoRow: { display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, flexWrap: "wrap", gap: 8 },
-  keptTag: { display: "flex", alignItems: "center", gap: 4, fontSize: 10.5, color: COLORS.gold, fontFamily: FONT_BODY, fontWeight: 700 },
-  redoneTag: { display: "flex", alignItems: "center", gap: 4, fontSize: 10.5, color: "#e0a85c", fontFamily: FONT_BODY, fontWeight: 700 },
-  redoBtn: { background: "transparent", border: "1px solid " + COLORS.border, color: COLORS.textBody, borderRadius: 8, padding: "6px 10px", fontFamily: FONT_BODY, fontSize: 11, cursor: "pointer", display: "flex", alignItems: "center" },
-  savePickBtn: { width: "100%", background: COLORS.gold, color: "#1a1306", border: "none", borderRadius: 10, padding: "10px 0", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 13, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", marginTop: 10 },
-  penaltyRow: { marginTop: 8, background: "rgba(212,165,55,0.08)", borderRadius: 9, padding: "8px 10px" },
-  penaltyLabel: { fontFamily: FONT_BODY, fontSize: 11, color: COLORS.textMuted },
-  penaltyBtn: { flex: 1, background: COLORS.bgDark, color: COLORS.textBody, border: "1px solid " + COLORS.border, borderRadius: 8, padding: "7px 0", fontFamily: FONT_BODY, fontSize: 11.5, fontWeight: 600, cursor: "pointer" },
-  penaltyBtnActive: { background: COLORS.gold, color: "#1a1306", border: "none" },
-  rankList: { display: "flex", flexDirection: "column", gap: 8 },
-  rankRow: { display: "flex", alignItems: "center", gap: 12, background: COLORS.card, borderRadius: 12, padding: "10px 14px", border: "1px solid " + COLORS.border },
-  rankRowMe: { border: "1px solid " + COLORS.gold, background: "rgba(212,165,55,0.08)" },
-  rankPos: { width: 28, fontFamily: FONT_DISPLAY, color: COLORS.textMuted, fontSize: 14 },
-  rankScore: { fontFamily: FONT_DISPLAY, fontSize: 18, color: COLORS.gold },
-  famBadgeTiny: { display: "inline-block", fontSize: 9.5, fontWeight: 700, padding: "1px 7px", borderRadius: 20, marginTop: 3 },
-  famBadge: { display: "inline-block", fontSize: 13, fontWeight: 700, padding: "5px 12px", borderRadius: 20 },
-  adminSection: { background: COLORS.card, borderRadius: 14, padding: 14, border: "1px solid " + COLORS.border, marginBottom: 14 },
-  adminTitle: { fontFamily: FONT_BODY, fontWeight: 700, color: COLORS.cream, fontSize: 13.5, marginBottom: 10 },
-  adminHint: { fontFamily: FONT_BODY, fontSize: 11, color: COLORS.textMuted, marginTop: 10, lineHeight: 1.4 },
-  phaseAdminGrid: { display: "flex", flexDirection: "column", gap: 8 },
-  phaseAdminRow: { display: "flex", justifyContent: "space-between", alignItems: "center" },
-  phaseStatusSelect: { background: COLORS.bgDark, color: COLORS.cream, border: "1px solid " + COLORS.border, borderRadius: 8, padding: "5px 8px", fontFamily: FONT_BODY, fontSize: 12 },
-  smallBtn: { background: COLORS.gold, color: "#1a1306", border: "none", borderRadius: 8, padding: "8px 12px", fontFamily: FONT_BODY, fontWeight: 700, fontSize: 11.5, cursor: "pointer", whiteSpace: "nowrap" },
-  finishedTag: { display: "flex", alignItems: "center", gap: 4, fontSize: 10.5, color: "#7fd99a", fontFamily: FONT_BODY, fontWeight: 700 },
-  celebrationOverlay: { position: "fixed", inset: 0, background: "rgba(10,30,20,0.85)", zIndex: 55, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 },
-  celebrationCard: { background: COLORS.card, borderRadius: 24, padding: "32px 24px", border: "2px solid " + COLORS.gold, textAlign: "center", maxWidth: 320, animation: "popIn 0.5s ease forwards", boxShadow: "0 24px 60px rgba(0,0,0,0.5)" },
-  nextPhaseModal: { position: "fixed", inset: 0, background: "rgba(10,30,20,0.88)", zIndex: 54, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 },
-  nextPhaseCard: { background: COLORS.card, borderRadius: 20, padding: "28px 22px", border: "1px solid " + COLORS.border, textAlign: "center", maxWidth: 320, width: "100%", boxShadow: "0 20px 50px rgba(0,0,0,0.4)" },
+  app: {
+    minHeight: "100vh",
+    background: "linear-gradient(180deg, " + COLORS.bg + " 0%, " + COLORS.bgDark + " 100%)",
+    fontFamily: FONT_BODY,
+    paddingBottom: 40
+  },
+  bootScreen: {
+    minHeight: "100vh",
+    background: COLORS.bg,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 14
+  },
+  bootBadge: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    background: COLORS.gold,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 26
+  },
+  loginWrap: {
+    minHeight: "100vh",
+    background: "radial-gradient(circle at 50% 0%, #14492f 0%, " + COLORS.bgDark + " 70%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 18
+  },
+  loginCard: {
+    width: "100%",
+    maxWidth: 420,
+    background: COLORS.card,
+    borderRadius: 20,
+    padding: "26px 20px",
+    border: "1px solid " + COLORS.border,
+    boxShadow: "0 20px 60px rgba(0,0,0,0.4)"
+  },
+  trophyBadge: {
+    width: 50,
+    height: 50,
+    borderRadius: 14,
+    background: COLORS.gold,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    margin: "0 auto"
+  },
+  label: {
+    fontFamily: FONT_BODY,
+    fontSize: 13,
+    color: COLORS.textMuted,
+    marginBottom: 10,
+    fontWeight: 600
+  },
+  nameGrid: {
+    display: "flex",
+    flexDirection: "column"
+  },
+  famTag: {
+    display: "inline-block",
+    fontSize: 11,
+    fontWeight: 700,
+    padding: "3px 10px",
+    borderRadius: 20,
+    marginBottom: 6,
+    letterSpacing: 0.3
+  },
+  nameRow: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: 8
+  },
+  nameBtn: {
+    background: COLORS.cardLight,
+    color: COLORS.cream,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 10,
+    padding: "9px 14px",
+    fontFamily: FONT_BODY,
+    fontSize: 13.5,
+    fontWeight: 600,
+    cursor: "pointer"
+  },
+  backBtn: {
+    background: "none",
+    border: "none",
+    color: COLORS.textMuted,
+    fontFamily: FONT_BODY,
+    fontSize: 12.5,
+    cursor: "pointer",
+    padding: 0
+  },
+  pinInput: {
+    width: "100%",
+    textAlign: "center",
+    fontSize: 30,
+    letterSpacing: 14,
+    padding: "14px 0",
+    borderRadius: 12,
+    border: "1px solid " + COLORS.border,
+    background: COLORS.bgDark,
+    color: COLORS.cream,
+    marginTop: 6,
+    marginBottom: 12,
+    fontFamily: FONT_DISPLAY
+  },
+  pinInputSmall: {
+    flex: 1,
+    textAlign: "center",
+    fontSize: 16,
+    letterSpacing: 6,
+    padding: "8px 0",
+    borderRadius: 8,
+    border: "1px solid " + COLORS.border,
+    background: COLORS.bgDark,
+    color: COLORS.cream
+  },
+  errorText: {
+    display: "flex",
+    alignItems: "center",
+    color: "#f3a3a3",
+    fontSize: 12.5,
+    marginBottom: 10,
+    fontFamily: FONT_BODY
+  },
+  primaryBtn: {
+    width: "100%",
+    background: COLORS.gold,
+    color: "#1a1306",
+    border: "none",
+    borderRadius: 12,
+    padding: "13px 0",
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    fontSize: 14.5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer"
+  },
+  secondaryBtn: {
+    width: "100%",
+    background: "transparent",
+    color: COLORS.cream,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 12,
+    padding: "11px 0",
+    fontFamily: FONT_BODY,
+    fontWeight: 600,
+    fontSize: 13.5,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    marginTop: 8
+  },
+  header: {
+    background: COLORS.bgDark,
+    borderBottom: "1px solid " + COLORS.border,
+    padding: "14px 16px 0",
+    position: "sticky",
+    top: 0,
+    zIndex: 10
+  },
+  headerTop: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  logoutBtn: {
+    background: "none",
+    border: "none",
+    color: COLORS.textMuted,
+    fontFamily: FONT_BODY,
+    fontSize: 12,
+    cursor: "pointer"
+  },
+  famBadgeSmall: {
+    display: "inline-block",
+    fontSize: 10.5,
+    fontWeight: 700,
+    padding: "2px 9px",
+    borderRadius: 20,
+    marginTop: 8
+  },
+  tabBar: {
+    display: "flex",
+    gap: 4,
+    marginTop: 12
+  },
+  tabBtn: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "none",
+    border: "none",
+    color: COLORS.textMuted,
+    fontFamily: FONT_BODY,
+    fontSize: 12.5,
+    fontWeight: 600,
+    padding: "10px 0",
+    borderBottom: "2px solid transparent",
+    cursor: "pointer"
+  },
+  tabBtnActive: {
+    color: COLORS.gold,
+    borderBottom: "2px solid " + COLORS.gold
+  },
+  body: {
+    padding: "16px 14px"
+  },
+  toast: {
+    position: "fixed",
+    top: 14,
+    left: "50%",
+    transform: "translateX(-50%)",
+    background: COLORS.gold,
+    color: "#1a1306",
+    padding: "9px 18px",
+    borderRadius: 30,
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    fontSize: 13,
+    zIndex: 50,
+    boxShadow: "0 8px 24px rgba(0,0,0,0.3)"
+  },
+  phaseSelector: {
+    display: "flex",
+    gap: 6,
+    overflowX: "auto",
+    marginBottom: 14,
+    paddingBottom: 2
+  },
+  phaseChip: {
+    flexShrink: 0,
+    display: "flex",
+    alignItems: "center",
+    background: COLORS.card,
+    color: COLORS.textMuted,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 20,
+    padding: "7px 13px",
+    fontFamily: FONT_BODY,
+    fontSize: 12.5,
+    fontWeight: 600,
+    cursor: "pointer"
+  },
+  phaseChipActive: {
+    background: COLORS.gold,
+    color: "#1a1306",
+    border: "none"
+  },
+  lockedBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: "40px 20px",
+    background: COLORS.card,
+    borderRadius: 16,
+    border: "1px dashed " + COLORS.border
+  },
+  phaseInfo: {
+    fontFamily: FONT_BODY,
+    fontSize: 12.5,
+    color: COLORS.textBody,
+    background: "rgba(212,165,55,0.1)",
+    border: "1px solid rgba(212,165,55,0.25)",
+    borderRadius: 10,
+    padding: "10px 12px",
+    marginBottom: 14,
+    lineHeight: 1.5
+  },
+  matchList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 10,
+    marginBottom: 16
+  },
+  matchCard: {
+    background: COLORS.card,
+    borderRadius: 14,
+    padding: 14,
+    border: "1px solid " + COLORS.border
+  },
+  adminMatchCard: {
+    background: COLORS.card,
+    borderRadius: 14,
+    padding: 14,
+    border: "1px solid " + COLORS.border
+  },
+  teamPickRow: {
+    display: "flex",
+    alignItems: "flex-end",
+    gap: 8
+  },
+  teamFixedRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10
+  },
+  teamFixed: {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    fontFamily: FONT_BODY,
+    fontWeight: 600,
+    color: COLORS.cream,
+    fontSize: 14
+  },
+  teamPending: {
+    flex: 1,
+    fontFamily: FONT_BODY,
+    fontSize: 12.5,
+    color: COLORS.textMuted,
+    fontStyle: "italic"
+  },
+  teamSelect: {
+    width: "100%",
+    background: COLORS.bgDark,
+    color: COLORS.cream,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 9,
+    padding: "8px 6px",
+    fontFamily: FONT_BODY,
+    fontSize: 12.5
+  },
+  originLabel: {
+    fontFamily: FONT_BODY,
+    fontSize: 10,
+    color: COLORS.textMuted,
+    marginBottom: 3
+  },
+  originInput: {
+    width: "100%",
+    background: "transparent",
+    border: "none",
+    borderBottom: "1px dashed " + COLORS.border,
+    color: COLORS.textMuted,
+    fontFamily: FONT_BODY,
+    fontSize: 10,
+    marginBottom: 3,
+    padding: "2px 0"
+  },
+  vsLabel: {
+    color: COLORS.textMuted,
+    fontFamily: FONT_DISPLAY,
+    fontSize: 12,
+    paddingBottom: 8
+  },
+  waitingNote: {
+    fontFamily: FONT_BODY,
+    fontSize: 11.5,
+    color: COLORS.textMuted,
+    marginTop: 8,
+    fontStyle: "italic"
+  },
+  scoreRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    marginTop: 10
+  },
+  scoreInput: {
+    width: 44,
+    textAlign: "center",
+    fontSize: 18,
+    padding: "8px 0",
+    borderRadius: 9,
+    border: "1px solid " + COLORS.border,
+    background: COLORS.bgDark,
+    color: COLORS.gold,
+    fontFamily: FONT_DISPLAY
+  },
+  scoreDash: {
+    color: COLORS.textMuted,
+    fontFamily: FONT_DISPLAY
+  },
+  pickConfirmed: {
+    display: "flex",
+    alignItems: "center",
+    gap: 3,
+    marginLeft: 8,
+    fontSize: 10.5,
+    color: "#7fd99a",
+    fontFamily: FONT_BODY,
+    fontWeight: 700
+  },
+  realResult: {
+    marginTop: 8,
+    fontSize: 11.5,
+    color: COLORS.textMuted,
+    fontFamily: FONT_BODY
+  },
+  originalBadgeRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 10.5,
+    color: COLORS.gold,
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    marginTop: 8
+  },
+  compareBox: {
+    background: COLORS.bgDark,
+    borderRadius: 10,
+    padding: "8px 10px",
+    marginBottom: 6
+  },
+  compareLine: {
+    fontFamily: FONT_BODY,
+    fontSize: 12,
+    color: COLORS.textBody,
+    marginBottom: 3
+  },
+  compareLabel: {
+    color: COLORS.textMuted,
+    fontWeight: 600
+  },
+  keepRedoRow: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 10,
+    flexWrap: "wrap",
+    gap: 8
+  },
+  keptTag: {
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 10.5,
+    color: COLORS.gold,
+    fontFamily: FONT_BODY,
+    fontWeight: 700
+  },
+  redoneTag: {
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 10.5,
+    color: "#e0a85c",
+    fontFamily: FONT_BODY,
+    fontWeight: 700
+  },
+  redoBtn: {
+    background: "transparent",
+    border: "1px solid " + COLORS.border,
+    color: COLORS.textBody,
+    borderRadius: 8,
+    padding: "6px 10px",
+    fontFamily: FONT_BODY,
+    fontSize: 11,
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center"
+  },
+  savePickBtn: {
+    width: "100%",
+    background: COLORS.gold,
+    color: "#1a1306",
+    border: "none",
+    borderRadius: 10,
+    padding: "10px 0",
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    fontSize: 13,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    marginTop: 10
+  },
+  penaltyRow: {
+    marginTop: 8,
+    background: "rgba(212,165,55,0.08)",
+    borderRadius: 9,
+    padding: "8px 10px"
+  },
+  penaltyLabel: {
+    fontFamily: FONT_BODY,
+    fontSize: 11,
+    color: COLORS.textMuted
+  },
+  penaltyBtn: {
+    flex: 1,
+    background: COLORS.bgDark,
+    color: COLORS.textBody,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 8,
+    padding: "7px 0",
+    fontFamily: FONT_BODY,
+    fontSize: 11.5,
+    fontWeight: 600,
+    cursor: "pointer"
+  },
+  penaltyBtnActive: {
+    background: COLORS.gold,
+    color: "#1a1306",
+    border: "none"
+  },
+  rankList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8
+  },
+  rankRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    background: COLORS.card,
+    borderRadius: 12,
+    padding: "10px 14px",
+    border: "1px solid " + COLORS.border
+  },
+  rankRowMe: {
+    border: "1px solid " + COLORS.gold,
+    background: "rgba(212,165,55,0.08)"
+  },
+  rankPos: {
+    width: 28,
+    fontFamily: FONT_DISPLAY,
+    color: COLORS.textMuted,
+    fontSize: 14
+  },
+  rankScore: {
+    fontFamily: FONT_DISPLAY,
+    fontSize: 18,
+    color: COLORS.gold
+  },
+  famBadgeTiny: {
+    display: "inline-block",
+    fontSize: 9.5,
+    fontWeight: 700,
+    padding: "1px 7px",
+    borderRadius: 20,
+    marginTop: 3
+  },
+  famBadge: {
+    display: "inline-block",
+    fontSize: 13,
+    fontWeight: 700,
+    padding: "5px 12px",
+    borderRadius: 20
+  },
+  adminSection: {
+    background: COLORS.card,
+    borderRadius: 14,
+    padding: 14,
+    border: "1px solid " + COLORS.border,
+    marginBottom: 14
+  },
+  adminTitle: {
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    color: COLORS.cream,
+    fontSize: 13.5,
+    marginBottom: 10
+  },
+  adminHint: {
+    fontFamily: FONT_BODY,
+    fontSize: 11,
+    color: COLORS.textMuted,
+    marginTop: 10,
+    lineHeight: 1.4
+  },
+  phaseAdminGrid: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 8
+  },
+  phaseAdminRow: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  phaseStatusSelect: {
+    background: COLORS.bgDark,
+    color: COLORS.cream,
+    border: "1px solid " + COLORS.border,
+    borderRadius: 8,
+    padding: "5px 8px",
+    fontFamily: FONT_BODY,
+    fontSize: 12
+  },
+  smallBtn: {
+    background: COLORS.gold,
+    color: "#1a1306",
+    border: "none",
+    borderRadius: 8,
+    padding: "8px 12px",
+    fontFamily: FONT_BODY,
+    fontWeight: 700,
+    fontSize: 11.5,
+    cursor: "pointer",
+    whiteSpace: "nowrap"
+  },
+  finishedTag: {
+    display: "flex",
+    alignItems: "center",
+    gap: 4,
+    fontSize: 10.5,
+    color: "#7fd99a",
+    fontFamily: FONT_BODY,
+    fontWeight: 700
+  },
+  celebrationOverlay: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(10,30,20,0.85)",
+    zIndex: 55,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24
+  },
+  celebrationCard: {
+    background: COLORS.card,
+    borderRadius: 24,
+    padding: "32px 24px",
+    border: "2px solid " + COLORS.gold,
+    textAlign: "center",
+    maxWidth: 320,
+    animation: "popIn 0.5s ease forwards",
+    boxShadow: "0 24px 60px rgba(0,0,0,0.5)"
+  },
+  nextPhaseModal: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(10,30,20,0.88)",
+    zIndex: 54,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: 24
+  },
+  nextPhaseCard: {
+    background: COLORS.card,
+    borderRadius: 20,
+    padding: "28px 22px",
+    border: "1px solid " + COLORS.border,
+    textAlign: "center",
+    maxWidth: 320,
+    width: "100%",
+    boxShadow: "0 20px 50px rgba(0,0,0,0.4)"
+  }
 };
-
-ReactDOM.createRoot(document.getElementById("root")).render(<BolaoApp />);
-  </script>
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(BolaoApp, null));
+</script>
 </body>
 </html>
