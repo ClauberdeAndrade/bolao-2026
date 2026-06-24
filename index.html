@@ -724,30 +724,24 @@ function BolaoApp() {
     })();
   }, [session]);
   const personalTree = useMemo(() => buildPersonalBracket(matches, myPicks), [matches, myPicks]);
-  const handleSelectName = name => {
+  const handleSelectName = async name => {
     setLoginName(name);
     setLoginError("");
-    setLoginMode(people[name] ? "existing" : "new");
     setLoginPin("");
+    // Relê do Firebase para saber se a pessoa já tem PIN cadastrado
+    const freshPeople = (await storageGet(K.people, true)) || {};
+    setPeople(freshPeople);
+    setLoginMode(freshPeople[name] ? "existing" : "new");
   };
   const handleLogin = async () => {
     if (loginPin.length !== 4) {
       setLoginError("O PIN deve ter 4 dígitos.");
       return;
     }
-    // Lê people diretamente do Firebase para garantir dados atualizados
+    // Lê sempre do Firebase para garantir dados atualizados
     const freshPeople = (await storageGet(K.people, true)) || {};
     if (loginMode === "new") {
-      if (freshPeople[loginName]) {
-        // Pessoa já existe no Firebase — tenta autenticar
-        if (freshPeople[loginName].pin === loginPin) {
-          setPeople(freshPeople);
-          enterSession(loginName);
-        } else {
-          setLoginError("PIN incorreto. Tente novamente.");
-        }
-        return;
-      }
+      // Primeiro acesso — cria PIN (sobrescreve qualquer PIN antigo de teste)
       const updated = {
         ...freshPeople,
         [loginName]: {
@@ -757,11 +751,14 @@ function BolaoApp() {
       setPeople(updated);
       await storageSet(K.people, updated, true);
       enterSession(loginName);
-    } else if (freshPeople[loginName] && freshPeople[loginName].pin === loginPin) {
-      setPeople(freshPeople);
-      enterSession(loginName);
     } else {
-      setLoginError("PIN incorreto. Tente novamente.");
+      // Acesso existente — valida PIN
+      if (freshPeople[loginName] && freshPeople[loginName].pin === loginPin) {
+        setPeople(freshPeople);
+        enterSession(loginName);
+      } else {
+        setLoginError("PIN incorreto. Tente novamente.");
+      }
     }
   };
   const enterSession = name => {
