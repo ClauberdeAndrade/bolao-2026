@@ -1032,6 +1032,12 @@ function BolaoApp() {
     fbCache = null;
     showToast("✅ Resultados apagados. Times e palpites preservados.");
   };
+  const clearPins = async () => {
+    await storageSet(K.people, {}, true);
+    setPeople({});
+    fbCache = null;
+    showToast("✅ Todos os PINs foram resetados. Cada pessoa criará um novo PIN no próximo acesso.");
+  };
   const saveMatches = async () => {
     await storageSet(K.matches, matches, true);
     showToast("Confrontos/resultados salvos!");
@@ -1215,6 +1221,7 @@ function BolaoApp() {
     propagateWinners: propagateWinners,
     clearAllData: clearAllData,
     clearResults: clearResults,
+    clearPins: clearPins,
     saveMatches: saveMatches,
     finishMatch: finishMatch,
     setPhase: setPhase,
@@ -2163,7 +2170,8 @@ function AdminView({
   autoFillPicks,
   propagateWinners,
   clearAllData,
-  clearResults
+  clearResults,
+  clearPins
 }) {
   const [activePhase, setActivePhase] = useState("32avos");
   const [resetName, setResetName] = useState("");
@@ -2255,6 +2263,17 @@ function AdminView({
     confirmLabel: "apagar resultados?",
     onAction: clearResults,
     color: "#c0a030"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...S.adminHint,
+      marginTop: 12,
+      color: "#9fbfae"
+    }
+  }, "🔑 Reseta os PINs de todos, mantendo palpites e confrontos. Use quando alguém não conseguir entrar por PIN antigo."), /*#__PURE__*/React.createElement(ActionBtn, {
+    label: "🔑 Resetar todos os PINs",
+    confirmLabel: "resetar PINs?",
+    onAction: clearPins,
+    color: "#5b8dd9"
   }), /*#__PURE__*/React.createElement("div", {
     style: S.adminSection
   }, /*#__PURE__*/React.createElement("div", {
