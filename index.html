@@ -724,24 +724,38 @@ function BolaoApp() {
     })();
   }, [session]);
   const personalTree = useMemo(() => buildPersonalBracket(matches, myPicks), [matches, myPicks]);
-  const handleSelectName = async name => {
+  const handleSelectName = name => {
     setLoginName(name);
     setLoginError("");
     setLoginPin("");
-    // Relê do Firebase para saber se a pessoa já tem PIN cadastrado
-    const freshPeople = (await storageGet(K.people, true)) || {};
-    setPeople(freshPeople);
-    setLoginMode(freshPeople[name] ? "existing" : "new");
+    // Verifica estado local primeiro para resposta imediata
+    // handleLogin vai confirmar com Firebase na hora de autenticar
+    setLoginMode(people[name] ? "existing" : "new");
   };
   const handleLogin = async () => {
     if (loginPin.length !== 4) {
       setLoginError("O PIN deve ter 4 dígitos.");
       return;
     }
-    // Lê sempre do Firebase para garantir dados atualizados
     const freshPeople = (await storageGet(K.people, true)) || {};
-    if (loginMode === "new") {
-      // Primeiro acesso — cria PIN (sobrescreve qualquer PIN antigo de teste)
+    const jaExiste = !!(freshPeople[loginName] && freshPeople[loginName].pin);
+    if (!jaExiste) {
+      // Novo usuário — cria PIN
+      const updated = {
+        ...freshPeople,
+        [loginName]: {
+          pin: loginPin
+        }
+      };
+      setPeople(updated);
+      await storageSet(K.people, updated, true);
+      enterSession(loginName);
+    } else if (freshPeople[loginName].pin === loginPin) {
+      // PIN correto
+      setPeople(freshPeople);
+      enterSession(loginName);
+    } else if (loginMode === "new") {
+      // Aparecia como novo localmente mas tem PIN no Firebase — sobrescreve
       const updated = {
         ...freshPeople,
         [loginName]: {
@@ -752,13 +766,7 @@ function BolaoApp() {
       await storageSet(K.people, updated, true);
       enterSession(loginName);
     } else {
-      // Acesso existente — valida PIN
-      if (freshPeople[loginName] && freshPeople[loginName].pin === loginPin) {
-        setPeople(freshPeople);
-        enterSession(loginName);
-      } else {
-        setLoginError("PIN incorreto. Tente novamente.");
-      }
+      setLoginError("PIN incorreto. Tente novamente.");
     }
   };
   const enterSession = name => {
