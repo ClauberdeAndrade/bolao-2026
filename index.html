@@ -1626,58 +1626,6 @@ function Celebration({
     }
   }, name, ", todos os seus palpites foram registrados do início ao fim da Copa. Boa sorte! 🌟")));
 }
-function ResetMyPicksBtn({
-  session
-}) {
-  const [state, setState] = useState("idle");
-  const handle = async () => {
-    if (state === "idle") {
-      setState("confirm");
-      setTimeout(() => setState(s => s === "confirm" ? "idle" : s), 4000);
-      return;
-    }
-    if (state === "confirm") {
-      setState("loading");
-      try {
-        const safeKey = (K.picksPrefix + session.name).replace(/:/g, "-").replace(/\./g, "_");
-        await fetch(`https://bolao2026-f03cb-default-rtdb.firebaseio.com/bolao/${safeKey}.json`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(null)
-        });
-        try {
-          localStorage.removeItem("bolao_" + K.picksPrefix + session.name);
-        } catch (e) {}
-      } catch (e) {
-        console.error(e);
-      }
-      setState("done");
-      setTimeout(() => window.location.reload(), 1500);
-    }
-  };
-  const bg = state === "done" ? "#2d9e5f" : state === "confirm" ? "#c0392b" : "transparent";
-  const col = state === "idle" ? "#f3a3a3" : "#fff";
-  const lbl = state === "confirm" ? "⚠️ Confirmar: apagar TUDO?" : state === "loading" ? "⏳ Apagando…" : state === "done" ? "✅ Apagado! Recarregando…" : "↩️ Recomeçar do zero";
-  return /*#__PURE__*/React.createElement("button", {
-    onClick: handle,
-    style: {
-      width: "100%",
-      marginTop: 8,
-      background: bg,
-      border: "1px solid #c0392b",
-      color: col,
-      borderRadius: 10,
-      padding: "10px 0",
-      fontFamily: FONT_BODY,
-      fontSize: 12,
-      fontWeight: 600,
-      cursor: "pointer",
-      transition: "all 0.25s"
-    }
-  }, lbl);
-}
 function PalpitesView({
   matches,
   phaseStatus,
@@ -1857,9 +1805,7 @@ function PalpitesView({
     style: {
       marginRight: 6
     }
-  }), " ", saved ? "Salvo! ✓" : "Salvar palpites"), Object.keys(myPicks).length > 0 && /*#__PURE__*/React.createElement(ResetMyPicksBtn, {
-    session: session
-  })));
+  }), " ", saved ? "Salvo! ✓" : "Salvar palpites")));
 }
 function SaveBtn({
   onSave,
