@@ -339,70 +339,99 @@ const POINTS = {
 const ROUND32 = [{
   id: "J73",
   originA: "2A",
-  originB: "2B"
+  originB: "2B",
+  teamA: "África do Sul",
+  teamB: "Canadá"
 }, {
   id: "J74",
   originA: "1E",
   originB: "3ABCDF",
-  teamA: "Alemanha"
+  teamA: "Alemanha",
+  teamB: "Paraguai"
 }, {
   id: "J75",
   originA: "1F",
-  originB: "2C"
+  originB: "2C",
+  teamA: "Holanda",
+  teamB: "Marrocos"
 }, {
   id: "J76",
   originA: "1C",
-  originB: "2F"
+  originB: "2F",
+  teamA: "Brasil",
+  teamB: "Japão"
 }, {
   id: "J77",
   originA: "1I",
-  originB: "3CDFGH"
+  originB: "3CDFGH",
+  teamA: "Costa do Marfim",
+  teamB: "Noruega"
 }, {
   id: "J78",
   originA: "2E",
-  originB: "2I"
+  originB: "2I",
+  teamA: "França",
+  teamB: "Suécia"
 }, {
   id: "J79",
   originA: "1A",
   originB: "3CEFHI",
-  teamA: "México"
+  teamA: "México",
+  teamB: "Equador"
 }, {
   id: "J80",
   originA: "1L",
-  originB: "3EHIJK"
+  originB: "3EHIJK",
+  teamA: "Inglaterra",
+  teamB: "RD Congo"
 }, {
   id: "J81",
   originA: "1D",
   originB: "3BEFIJ",
-  teamA: "Estados Unidos"
+  teamA: "Estados Unidos",
+  teamB: "Bósnia"
 }, {
   id: "J82",
   originA: "1G",
-  originB: "3AEHIJ"
+  originB: "3AEHIJ",
+  teamA: "Bélgica",
+  teamB: "Senegal"
 }, {
   id: "J83",
   originA: "2K",
-  originB: "2L"
+  originB: "2L",
+  teamA: "Portugal",
+  teamB: "Croácia"
 }, {
   id: "J84",
   originA: "1H",
-  originB: "2J"
+  originB: "2J",
+  teamA: "Espanha",
+  teamB: "Áustria"
 }, {
   id: "J85",
   originA: "1B",
-  originB: "3EFGIJ"
+  originB: "3EFGIJ",
+  teamA: "Suíça",
+  teamB: "Argélia"
 }, {
   id: "J86",
   originA: "1J",
-  originB: "2H"
+  originB: "2H",
+  teamA: "Argentina",
+  teamB: "Cabo Verde"
 }, {
   id: "J87",
   originA: "1K",
-  originB: "3DEIJL"
+  originB: "3DEIJL",
+  teamA: "Colômbia",
+  teamB: "Gana"
 }, {
   id: "J88",
   originA: "2D",
-  originB: "2G"
+  originB: "2G",
+  teamA: "Austrália",
+  teamB: "Egito"
 }];
 
 // Oitavas: cada jogo cruza vencedores de dois jogos específicos dos 32avos (não sequencial!)
@@ -711,8 +740,34 @@ function BolaoApp() {
       const m = await storageGet(K.matches, true);
       const ps = await storageGet(K.phaseStatus, true);
       if (p) setPeople(p);
-      if (m) setMatches(m);
       if (ps) setPhaseStatus(ps);
+
+      // Sincroniza times do ROUND32 hardcoded com o que está no Firebase
+      const teamMap = {};
+      ROUND32.forEach(r => {
+        if (r.teamA) teamMap[r.id] = {
+          teamA: r.teamA,
+          teamB: r.teamB
+        };
+      });
+      if (m && m.length) {
+        let changed = false;
+        const synced = m.map(match => {
+          if (teamMap[match.id] && (!match.teamA || match.teamA !== teamMap[match.id].teamA)) {
+            changed = true;
+            return {
+              ...match,
+              teamA: teamMap[match.id].teamA,
+              teamB: teamMap[match.id].teamB
+            };
+          }
+          return match;
+        });
+        setMatches(synced);
+        if (changed) await storageSet(K.matches, synced, true);
+      } else if (m) {
+        setMatches(m);
+      }
       setBooting(false);
     })();
   }, []);
