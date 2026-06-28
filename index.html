@@ -2629,6 +2629,17 @@ function DiagnosticPanel() {
     const picks = (await storageGet(K.picksPrefix + name, true)) || {};
     const tree = buildPersonalBracket(allMatches || [], picks);
     const issues = [];
+    // Verifica 32avos — empate sem pênaltis bloqueia as oitavas
+    (allMatches || []).filter(m => m.phase === "32avos").forEach(m => {
+      const pick = picks[m.id];
+      if (!pick || pick.scoreA === undefined || pick.scoreA === "" || pick.scoreA === null) return;
+      const hasWinner = winnerOf(pick.scoreA, pick.scoreB, pick.penalty) !== null;
+      if (!hasWinner) issues.push({
+        jogo: m.id,
+        fase: "32avos",
+        problema: `empate sem pênaltis — ${m.teamA} ${pick.scoreA}x${pick.scoreB} ${m.teamB} — indique o vencedor nos pênaltis`
+      });
+    });
     const phases = ["oitavas", "quartas", "semis", "final"];
     phases.forEach(ph => {
       (allMatches || []).filter(m => m.phase === ph).forEach(m => {
@@ -2636,6 +2647,7 @@ function DiagnosticPanel() {
         const pick = picks[m.id];
         const hasTeams = node && node.teamA && node.teamB;
         const hasPick = pick && pick.scoreA !== undefined && pick.scoreA !== "" && pick.scoreA !== null;
+        const hasWinner = hasPick && winnerOf(pick.scoreA, pick.scoreB, pick.penalty) !== null;
         if (!hasTeams) issues.push({
           jogo: m.id,
           fase: ph,
@@ -2644,6 +2656,10 @@ function DiagnosticPanel() {
           jogo: m.id,
           fase: ph,
           problema: `sem palpite (${node.teamA} x ${node.teamB})`
+        });else if (!hasWinner) issues.push({
+          jogo: m.id,
+          fase: ph,
+          problema: `empate sem pênaltis — ${node.teamA} ${pick.scoreA}x${pick.scoreB} ${node.teamB} — indique o vencedor nos pênaltis`
         });
       });
     });
