@@ -2601,9 +2601,12 @@ function AdminView({
 }
 function DiagnosticPanel() {
   const [report, setReport] = useState(null);
+  const [detail, setDetail] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [loadingDetail, setLoadingDetail] = useState(null);
   const check = async () => {
     setLoading(true);
+    const allMatches = await storageGet(K.matches, true);
     const results = await Promise.all(ALL_PEOPLE.map(async p => {
       const picks = await storageGet(K.picksPrefix + p.name, true);
       const count = picks ? Object.keys(picks).filter(k => {
@@ -2619,6 +2622,36 @@ function DiagnosticPanel() {
     }));
     setReport(results);
     setLoading(false);
+  };
+  const checkDetail = async name => {
+    setLoadingDetail(name);
+    const allMatches = await storageGet(K.matches, true);
+    const picks = (await storageGet(K.picksPrefix + name, true)) || {};
+    const tree = buildPersonalBracket(allMatches || [], picks);
+    const issues = [];
+    const phases = ["oitavas", "quartas", "semis", "final"];
+    phases.forEach(ph => {
+      (allMatches || []).filter(m => m.phase === ph).forEach(m => {
+        const node = tree[m.id];
+        const pick = picks[m.id];
+        const hasTeams = node && node.teamA && node.teamB;
+        const hasPick = pick && pick.scoreA !== undefined && pick.scoreA !== "" && pick.scoreA !== null;
+        if (!hasTeams) issues.push({
+          jogo: m.id,
+          fase: ph,
+          problema: "times não resolvidos na árvore"
+        });else if (!hasPick) issues.push({
+          jogo: m.id,
+          fase: ph,
+          problema: `sem palpite (${node.teamA} x ${node.teamB})`
+        });
+      });
+    });
+    setDetail({
+      name,
+      issues
+    });
+    setLoadingDetail(null);
   };
   return /*#__PURE__*/React.createElement("div", {
     style: S.adminSection
@@ -2640,7 +2673,8 @@ function DiagnosticPanel() {
       gap: 6
     }
   }, report.map(r => /*#__PURE__*/React.createElement("div", {
-    key: r.name,
+    key: r.name
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       display: "flex",
       justifyContent: "space-between",
@@ -2663,13 +2697,45 @@ function DiagnosticPanel() {
       color: COLORS.textMuted,
       marginLeft: 6
     }
-  }, "(", r.family, ")")), /*#__PURE__*/React.createElement("span", {
+  }, "(", r.family, ")")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("span", {
     style: {
       fontFamily: FONT_DISPLAY,
       fontSize: 13,
       color: r.hasPicks ? COLORS.gold : COLORS.textMuted
     }
-  }, r.hasPicks ? r.count + " jogos" : "sem palpites")))));
+  }, r.hasPicks ? r.count + " jogos" : "sem palpites"), r.hasPicks && /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.smallBtn,
+      fontSize: 10,
+      padding: "3px 8px"
+    },
+    onClick: () => checkDetail(r.name)
+  }, loadingDetail === r.name ? "…" : "🔍"))), detail && detail.name === r.name && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: "rgba(0,0,0,0.2)",
+      borderRadius: 8,
+      padding: 10,
+      marginTop: 4,
+      fontSize: 11,
+      fontFamily: FONT_BODY
+    }
+  }, detail.issues.length === 0 ? /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: "#7fd99a"
+    }
+  }, "✅ Árvore completa — nenhum problema encontrado") : detail.issues.map((iss, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      color: "#f0c060",
+      marginBottom: 4
+    }
+  }, "⚠️ ", iss.jogo, " (", iss.fase, "): ", iss.problema)))))));
 }
 const FONT_DISPLAY = "'Archivo Black', 'Arial Black', sans-serif";
 const FONT_BODY = "'Inter', -apple-system, sans-serif";
