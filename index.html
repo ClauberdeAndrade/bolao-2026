@@ -1189,8 +1189,32 @@ function BolaoApp() {
     showToast("PIN de " + name + " redefinido.");
   };
   const resetPicksForPerson = async name => {
-    await storageSet(K.picksPrefix + name, {}, true);
-    showToast("✅ Palpites de " + name + " apagados. Os demais foram preservados.");
+    if (!name) {
+      showToast("Selecione um participante primeiro.");
+      return;
+    }
+    const key = K.picksPrefix + name;
+    // Grava {} diretamente via fetch com timeout
+    try {
+      const safeKey = key.replace(/:/g, "-").replace(/\./g, "_");
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      await fetch(`https://bolao2026-f03cb-default-rtdb.firebaseio.com/bolao/${safeKey}.json`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({}),
+        signal: controller.signal
+      });
+      clearTimeout(timeout);
+    } catch (e) {
+      console.error("resetPicksForPerson:", e);
+    }
+    try {
+      localStorage.removeItem("bolao_" + key);
+    } catch (e) {}
+    showToast("✅ Palpites de " + name + " apagados!");
   };
   const computeScoreForPerson = useCallback(async name => {
     const picks = await storageGet(K.picksPrefix + name, true);
