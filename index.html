@@ -713,12 +713,27 @@ function buildPersonalBracket(matches, picks) {
     return null;
   };
 
-  // Segue a ordem das fases, resolvendo cada jogo a partir do FEED_MAP oficial
-  ["oitavas", "quartas", "semis", "final"].forEach(phaseKey => {
-    matches.filter(m => m.phase === phaseKey).forEach(m => {
-      const feed = FEED_MAP[m.id];
+  // Resolve em ordem explícita: primeiro todas as oitavas, depois quartas, etc.
+  const phaseOrder = [{
+    phase: "oitavas",
+    ids: ["J89", "J90", "J91", "J92", "J93", "J94", "J95", "J96"]
+  }, {
+    phase: "quartas",
+    ids: ["J97", "J98", "J99", "J100"]
+  }, {
+    phase: "semis",
+    ids: ["J101", "J102"]
+  }, {
+    phase: "final",
+    ids: ["J104"]
+  }];
+  phaseOrder.forEach(({
+    ids
+  }) => {
+    ids.forEach(jid => {
+      const feed = FEED_MAP[jid];
       if (!feed) return;
-      tree[m.id] = {
+      tree[jid] = {
         teamA: resolveWinner(feed.feedA),
         teamB: resolveWinner(feed.feedB)
       };
