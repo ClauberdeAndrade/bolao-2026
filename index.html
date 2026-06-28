@@ -248,7 +248,32 @@ const Pencil = ({
 // TEAMS definido externamente como window.TEAMS_DATA
 const TEAMS = window.TEAMS_DATA;
 const teamNames = Object.keys(TEAMS);
-const flag = name => TEAMS[name] || "🏳️";
+const FLAG_IMG = {
+  "Holanda": "https://flagcdn.com/w40/nl.png",
+  "Inglaterra": "https://flagcdn.com/w40/gb-eng.png",
+  "Escócia": "https://flagcdn.com/w40/gb-sct.png"
+};
+const flagEmoji = name => TEAMS[name] || "🏳️";
+const FlagIcon = ({
+  name,
+  size = 22
+}) => {
+  if (FLAG_IMG[name]) return /*#__PURE__*/React.createElement("img", {
+    src: FLAG_IMG[name],
+    alt: name,
+    style: {
+      width: size,
+      height: Math.round(size * 0.72),
+      objectFit: "cover",
+      borderRadius: 2,
+      display: "inline-block",
+      verticalAlign: "middle"
+    }
+  });
+  return /*#__PURE__*/React.createElement("span", null, TEAMS[name] || "🏳️");
+};
+const flag = flagEmoji; // mantém compatibilidade com usos de string
+
 const FAMILIES = {
   "Vasco": {
     color: "#0a0a0a",
@@ -1788,7 +1813,10 @@ function MatchCardReadOnly({
     style: {
       fontSize: 20
     }
-  }, tA ? flag(tA) : "🔒"), /*#__PURE__*/React.createElement("span", null, tA || match.originA || "vaga")), /*#__PURE__*/React.createElement("span", {
+  }, tA ? /*#__PURE__*/React.createElement(FlagIcon, {
+    name: tA,
+    size: 20
+  }) : "🔒"), /*#__PURE__*/React.createElement("span", null, tA || match.originA || "vaga")), /*#__PURE__*/React.createElement("span", {
     style: S.vsLabel
   }, "x"), /*#__PURE__*/React.createElement("div", {
     style: S.teamFixed
@@ -1796,7 +1824,10 @@ function MatchCardReadOnly({
     style: {
       fontSize: 20
     }
-  }, tB ? flag(tB) : "🔒"), /*#__PURE__*/React.createElement("span", null, tB || match.originB || "vaga"))), /*#__PURE__*/React.createElement("div", {
+  }, tB ? /*#__PURE__*/React.createElement(FlagIcon, {
+    name: tB,
+    size: 20
+  }) : "🔒"), /*#__PURE__*/React.createElement("span", null, tB || match.originB || "vaga"))), /*#__PURE__*/React.createElement("div", {
     style: {
       ...S.scoreRow,
       marginTop: 8
@@ -1859,7 +1890,10 @@ function MatchCard({
       style: {
         fontSize: 20
       }
-    }, flag(match.teamA)), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
+    }, /*#__PURE__*/React.createElement(FlagIcon, {
+      name: match.teamA,
+      size: 20
+    })), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
       style: S.vsLabel
     }, "x"), /*#__PURE__*/React.createElement("div", {
       style: S.teamFixed
@@ -1867,7 +1901,10 @@ function MatchCard({
       style: {
         fontSize: 20
       }
-    }, flag(match.teamB)), /*#__PURE__*/React.createElement("span", null, match.teamB))) : /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement(FlagIcon, {
+      name: match.teamB,
+      size: 20
+    })), /*#__PURE__*/React.createElement("span", null, match.teamB))) : /*#__PURE__*/React.createElement("div", {
       style: S.teamFixedRow
     }, /*#__PURE__*/React.createElement("div", {
       style: S.teamPending
@@ -1907,7 +1944,10 @@ function MatchCard({
     style: {
       fontSize: 20
     }
-  }, flag(tA)), /*#__PURE__*/React.createElement("span", null, tA)), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement(FlagIcon, {
+    name: tA,
+    size: 20
+  })), /*#__PURE__*/React.createElement("span", null, tA)), /*#__PURE__*/React.createElement("span", {
     style: S.vsLabel
   }, "x"), /*#__PURE__*/React.createElement("div", {
     style: S.teamFixed
@@ -1915,7 +1955,10 @@ function MatchCard({
     style: {
       fontSize: 20
     }
-  }, flag(tB)), /*#__PURE__*/React.createElement("span", null, tB))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement(FlagIcon, {
+    name: tB,
+    size: 20
+  })), /*#__PURE__*/React.createElement("span", null, tB))), /*#__PURE__*/React.createElement("div", {
     style: S.originalBadgeRow
   }, /*#__PURE__*/React.createElement(Shield, {
     size: 11
@@ -1983,7 +2026,10 @@ function MatchCard({
     style: {
       fontSize: 20
     }
-  }, flag(match.teamA)), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
+  }, /*#__PURE__*/React.createElement(FlagIcon, {
+    name: match.teamA,
+    size: 20
+  })), /*#__PURE__*/React.createElement("span", null, match.teamA)), /*#__PURE__*/React.createElement("span", {
     style: S.vsLabel
   }, "x"), /*#__PURE__*/React.createElement("div", {
     style: S.teamFixed
@@ -1991,7 +2037,10 @@ function MatchCard({
     style: {
       fontSize: 20
     }
-  }, flag(match.teamB)), /*#__PURE__*/React.createElement("span", null, match.teamB))), /*#__PURE__*/React.createElement(ScoreRow, {
+  }, /*#__PURE__*/React.createElement(FlagIcon, {
+    name: match.teamB,
+    size: 20
+  })), /*#__PURE__*/React.createElement("span", null, match.teamB))), /*#__PURE__*/React.createElement(ScoreRow, {
     pick: pick,
     updatePick: updatePick,
     matchId: match.id,
