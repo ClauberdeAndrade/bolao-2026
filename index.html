@@ -1216,11 +1216,12 @@ function BolaoApp() {
     } catch (e) {}
     showToast("✅ Palpites de " + name + " apagados!");
   };
-  const computeScoreForPerson = useCallback(async name => {
+  const computeScoreForPerson = useCallback(async (name, freshMatches) => {
     const picks = await storageGet(K.picksPrefix + name, true);
     if (!picks) return 0;
+    const matchList = freshMatches || matches;
     let total = 0;
-    matches.forEach(m => {
+    matchList.forEach(m => {
       if (!m.finished || m.realScoreA === null || m.realScoreA === undefined || m.realScoreA === "") return;
       const pick = picks[m.id];
       if (!pick) return;
@@ -1258,11 +1259,15 @@ function BolaoApp() {
   const [loadingRanking, setLoadingRanking] = useState(false);
   const refreshRanking = useCallback(async () => {
     setLoadingRanking(true);
+    fbCache = null; // força leitura fresca
+    const freshMatches = await storageGet(K.matches, true);
+    if (freshMatches && freshMatches.length) setMatches(freshMatches);
+    const matchList = freshMatches || matches;
     const names = ALL_PEOPLE.map(p => p.name);
     const scores = await Promise.all(names.map(async n => ({
       name: n,
       family: ALL_PEOPLE.find(p => p.name === n).family,
-      score: await computeScoreForPerson(n)
+      score: await computeScoreForPerson(n, matchList)
     })));
     scores.sort((a, b) => b.score - a.score);
     setRanking(scores);
@@ -1282,7 +1287,7 @@ function BolaoApp() {
     famArr.sort((a, b) => b.avg - a.avg);
     setFamilyRanking(famArr);
     setLoadingRanking(false);
-  }, [computeScoreForPerson]);
+  }, [computeScoreForPerson, matches]);
   useEffect(() => {
     if (view === "ranking" && session) refreshRanking();
   }, [view, session, refreshRanking]);
