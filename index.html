@@ -358,6 +358,75 @@ const POINTS = {
   }
 };
 
+// Calendário oficial FIFA
+const GAME_DATES = {
+  "J73": "2026-06-28",
+  "J74": "2026-06-29",
+  "J75": "2026-06-29",
+  "J76": "2026-06-29",
+  "J77": "2026-06-30",
+  "J78": "2026-06-30",
+  "J79": "2026-06-30",
+  "J80": "2026-07-01",
+  "J81": "2026-07-01",
+  "J82": "2026-07-01",
+  "J83": "2026-07-02",
+  "J84": "2026-07-02",
+  "J85": "2026-07-02",
+  "J86": "2026-07-03",
+  "J87": "2026-07-03",
+  "J88": "2026-07-03",
+  "J89": "2026-07-04",
+  "J90": "2026-07-04",
+  "J91": "2026-07-05",
+  "J92": "2026-07-05",
+  "J93": "2026-07-06",
+  "J94": "2026-07-06",
+  "J95": "2026-07-07",
+  "J96": "2026-07-07",
+  "J97": "2026-07-09",
+  "J98": "2026-07-10",
+  "J99": "2026-07-11",
+  "J100": "2026-07-11",
+  "J101": "2026-07-14",
+  "J102": "2026-07-15",
+  "J104": "2026-07-19"
+};
+async function calcScoresForDate(targetDate, allMatches, allPicksByPerson) {
+  const matchesUntil = allMatches.filter(m => m.finished && GAME_DATES[m.id] && GAME_DATES[m.id] <= targetDate);
+  const scores = {};
+  for (const person of ALL_PEOPLE) {
+    const picks = allPicksByPerson[person.name] || {};
+    let total = 0;
+    matchesUntil.forEach(m => {
+      if (m.realScoreA === null || m.realScoreA === undefined || m.realScoreA === "") return;
+      const pick = picks[m.id];
+      if (!pick) return;
+      const predA = pick.refeito ? pick.realBasedScoreA : pick.scoreA;
+      const predB = pick.refeito ? pick.realBasedScoreB : pick.scoreB;
+      const predPen = pick.refeito ? pick.realBasedPenalty : pick.penalty;
+      if (predA === undefined || predA === "" || predA === null) return;
+      const pA = Number(predA),
+        pB = Number(predB);
+      const rA = Number(m.realScoreA),
+        rB = Number(m.realScoreB);
+      const predW = pA > pB ? "A" : pA < pB ? "B" : predPen || null;
+      const realW = rA > rB ? "A" : rA < rB ? "B" : m.realPenalty || null;
+      if (!predW || !realW || predW !== realW) return;
+      const exact = pA === rA && pB === rB;
+      if (m.phase === "32avos") {
+        total += exact ? POINTS["32avos"].exato : POINTS["32avos"].vencedor;
+      } else {
+        const tbl = POINTS[m.phase];
+        const mantido = !pick.refeito;
+        total += exact ? mantido ? tbl.exatoMantido : tbl.exatoRefeito : mantido ? tbl.vencedorMantido : tbl.vencedorRefeito;
+      }
+    });
+    scores[person.name] = total;
+  }
+  return scores;
+}
+
 // Estrutura oficial da FIFA (códigos J73 a J104), conferida via prints do site oficial.
 // 32avos: origem = posição na fase de grupos (ex: "2A" = 2º do Grupo A; "3EFGIJ" = melhor
 // 3º entre os grupos E/F/G/I/J). Times já conhecidos (sedes) vêm preenchidos.
@@ -2213,6 +2282,12 @@ function RankingView({
       ...(tab === "familia" ? S.phaseChipActive : {})
     }
   }, "Por família"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTab("evolucao"),
+    style: {
+      ...S.phaseChip,
+      ...(tab === "evolucao" ? S.phaseChipActive : {})
+    }
+  }, "📈 Evolução"), /*#__PURE__*/React.createElement("button", {
     onClick: onRefresh,
     style: {
       ...S.phaseChip,
@@ -2310,7 +2385,153 @@ function RankingView({
     }, r.family)), /*#__PURE__*/React.createElement("div", {
       style: S.rankScore
     }, r.avg.toFixed(1)));
-  }), familyRanking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)));
+  }), familyRanking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)), tab === "evolucao" && /*#__PURE__*/React.createElement(EvolucaoView, null));
+}
+function EvolucaoView() {
+  const [snapshots, setSnapshots] = useState(null);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    (async () => {
+      try {
+        const r = await fetch("https://bolao2026-f03cb-default-rtdb.firebaseio.com/bolao/bolao-snapshots.json");
+        const data = await r.json();
+        setSnapshots(data || {});
+      } catch (e) {
+        setSnapshots({});
+      }
+      setLoading(false);
+    })();
+  }, []);
+  if (loading) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 30,
+      textAlign: "center",
+      color: COLORS.textMuted,
+      fontFamily: FONT_BODY
+    }
+  }, "Carregando...");
+  const dates = Object.keys(snapshots || {}).sort();
+  if (dates.length === 0) return /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 24,
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: COLORS.textMuted,
+      fontFamily: FONT_BODY,
+      fontSize: 13,
+      marginBottom: 8
+    }
+  }, "Nenhum snapshot registrado ainda."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      color: COLORS.textMuted,
+      fontFamily: FONT_BODY,
+      fontSize: 11
+    }
+  }, "O administrador precisa registrar o snapshot do dia após lançar os resultados."));
+
+  // Cores por pessoa
+  const PERSON_COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c", "#e67e22", "#e91e63", "#00bcd4", "#8bc34a", "#ff5722", "#607d8b", "#795548", "#ff9800"];
+  const names = ALL_PEOPLE.map(p => p.name);
+  const W = 320,
+    H = 200,
+    PAD = 36;
+  const allScores = dates.flatMap(d => names.map(n => snapshots[d][n] || 0));
+  const maxScore = Math.max(...allScores, 1);
+  const xScale = i => PAD + i / Math.max(dates.length - 1, 1) * (W - PAD * 1.5);
+  const yScale = v => H - PAD - v / maxScore * (H - PAD * 1.5);
+  const fmtDate = d => {
+    const [, m, day] = d.split("-");
+    return `${day}/${m}`;
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px 8px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 11,
+      color: COLORS.textMuted,
+      textAlign: "center",
+      marginBottom: 8
+    }
+  }, "Evolução de pontos por dia"), /*#__PURE__*/React.createElement("svg", {
+    width: "100%",
+    viewBox: `0 0 ${W} ${H}`,
+    style: {
+      overflow: "visible"
+    }
+  }, [0, 0.25, 0.5, 0.75, 1].map(f => /*#__PURE__*/React.createElement("g", {
+    key: f
+  }, /*#__PURE__*/React.createElement("line", {
+    x1: PAD,
+    x2: W - PAD / 2,
+    y1: yScale(f * maxScore),
+    y2: yScale(f * maxScore),
+    stroke: "#1a5c38",
+    strokeWidth: 0.5
+  }), /*#__PURE__*/React.createElement("text", {
+    x: PAD - 4,
+    y: yScale(f * maxScore) + 3,
+    textAnchor: "end",
+    fontSize: 8,
+    fill: COLORS.textMuted
+  }, Math.round(f * maxScore)))), dates.map((d, i) => /*#__PURE__*/React.createElement("text", {
+    key: d,
+    x: xScale(i),
+    y: H - 4,
+    textAnchor: "middle",
+    fontSize: 8,
+    fill: COLORS.textMuted
+  }, fmtDate(d))), names.map((name, ni) => {
+    const pts = dates.map(d => snapshots[d][name] || 0);
+    const path = pts.map((v, i) => `${i === 0 ? "M" : "L"}${xScale(i)},${yScale(v)}`).join(" ");
+    return /*#__PURE__*/React.createElement("g", {
+      key: name
+    }, /*#__PURE__*/React.createElement("path", {
+      d: path,
+      fill: "none",
+      stroke: PERSON_COLORS[ni % PERSON_COLORS.length],
+      strokeWidth: 1.5,
+      strokeLinejoin: "round"
+    }), pts.map((v, i) => /*#__PURE__*/React.createElement("circle", {
+      key: i,
+      cx: xScale(i),
+      cy: yScale(v),
+      r: 2.5,
+      fill: PERSON_COLORS[ni % PERSON_COLORS.length]
+    })));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexWrap: "wrap",
+      gap: 6,
+      marginTop: 10,
+      padding: "0 8px"
+    }
+  }, names.map((name, ni) => /*#__PURE__*/React.createElement("div", {
+    key: name,
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 10,
+      height: 3,
+      background: PERSON_COLORS[ni % PERSON_COLORS.length],
+      borderRadius: 2
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 9,
+      color: COLORS.textBody
+    }
+  }, name)))));
 }
 function PicksDetailView({
   name,
@@ -2882,7 +3103,73 @@ function AdminView({
     style: {
       marginTop: 8
     }
-  })), /*#__PURE__*/React.createElement(DiagnosticPanel, null));
+  })), /*#__PURE__*/React.createElement(DiagnosticPanel, null), /*#__PURE__*/React.createElement(SnapshotPanel, null));
+}
+function SnapshotPanel() {
+  const [loading, setLoading] = useState(false);
+  const [lastSnap, setLastSnap] = useState(null);
+  const [done, setDone] = useState(false);
+  const takeSnapshot = async () => {
+    setLoading(true);
+    try {
+      // Lê todos os dados necessários
+      const allMatches = (await storageGet(K.matches, true)) || [];
+      const allPicksByPerson = {};
+      for (const p of ALL_PEOPLE) {
+        allPicksByPerson[p.name] = (await storageGet(K.picksPrefix + p.name, true)) || {};
+      }
+
+      // Calcula datas únicas dos jogos já finalizados
+      const finishedDates = [...new Set(allMatches.filter(m => m.finished && GAME_DATES[m.id]).map(m => GAME_DATES[m.id]))].sort();
+
+      // Busca snapshots existentes
+      const snapR = await fetch("https://bolao2026-f03cb-default-rtdb.firebaseio.com/bolao/bolao-snapshots.json");
+      const existing = (await snapR.json()) || {};
+
+      // Calcula snapshot para cada data ainda não registrada
+      const toAdd = finishedDates.filter(d => !existing[d]);
+      for (const date of toAdd) {
+        const scores = await calcScoresForDate(date, allMatches, allPicksByPerson);
+        await fetch(`https://bolao2026-f03cb-default-rtdb.firebaseio.com/bolao/bolao-snapshots/${date}.json`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(scores)
+        });
+      }
+      setLastSnap(`${toAdd.length} novos snapshots registrados (${finishedDates.join(", ")})`);
+      setDone(true);
+      setTimeout(() => setDone(false), 3000);
+    } catch (e) {
+      console.error(e);
+      setLastSnap("Erro ao gerar snapshot.");
+    }
+    setLoading(false);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: S.adminSection
+  }, /*#__PURE__*/React.createElement("div", {
+    style: S.adminTitle
+  }, "📈 Snapshot de evolução"), /*#__PURE__*/React.createElement("div", {
+    style: S.adminHint
+  }, "Registra a pontuação atual de todos os participantes para o gráfico de evolução. Acione após lançar os resultados do dia."), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...S.secondaryBtn,
+      marginTop: 10,
+      background: done ? "#2d9e5f" : "transparent",
+      color: done ? "#fff" : COLORS.textBody,
+      transition: "all 0.3s"
+    },
+    onClick: takeSnapshot
+  }, loading ? "⏳ Calculando…" : done ? "✅ Snapshots registrados!" : "📸 Registrar snapshot do dia"), lastSnap && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: FONT_BODY,
+      fontSize: 11,
+      color: COLORS.textMuted,
+      marginTop: 8
+    }
+  }, lastSnap));
 }
 function DiagnosticPanel() {
   const [report, setReport] = useState(null);
