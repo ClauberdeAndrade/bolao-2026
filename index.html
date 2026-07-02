@@ -2389,6 +2389,8 @@ function RankingView({
 function EvolucaoView() {
   const [snapshots, setSnapshots] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState("posicao"); // "pontos" ou "posicao"
+
   useEffect(() => {
     (async () => {
       try {
@@ -2429,55 +2431,117 @@ function EvolucaoView() {
       fontSize: 11
     }
   }, "O administrador precisa registrar o snapshot do dia após lançar os resultados."));
-
-  // Cores por pessoa
   const PERSON_COLORS = ["#e74c3c", "#3498db", "#2ecc71", "#f39c12", "#9b59b6", "#1abc9c", "#e67e22", "#e91e63", "#00bcd4", "#8bc34a", "#ff5722", "#607d8b", "#795548", "#ff9800"];
   const names = ALL_PEOPLE.map(p => p.name);
   const W = 320,
     H = 200,
     PAD = 36;
-  const allScores = dates.flatMap(d => names.map(n => snapshots[d][n] || 0));
-  const maxScore = Math.max(...allScores, 1);
-  const xScale = i => PAD + i / Math.max(dates.length - 1, 1) * (W - PAD * 1.5);
-  const yScale = v => H - PAD - v / maxScore * (H - PAD * 1.5);
   const fmtDate = d => {
     const [, m, day] = d.split("-");
     return `${day}/${m}`;
   };
+
+  // Calcula posição por dia (1º = melhor)
+  const getRankByDate = date => {
+    const dayScores = names.map(n => ({
+      name: n,
+      score: snapshots[date][n] || 0
+    }));
+    dayScores.sort((a, b) => b.score - a.score);
+    const rankMap = {};
+    dayScores.forEach((s, i) => {
+      // posição compartilhada
+      const pos = i === 0 ? 1 : s.score === dayScores[i - 1].score ? rankMap[dayScores[i - 1].name] : i + 1;
+      rankMap[s.name] = pos;
+    });
+    return rankMap;
+  };
+  const totalPeople = names.length;
+
+  // Valores por pessoa por data
+  const getValues = name => dates.map(d => {
+    if (mode === "pontos") return snapshots[d][name] || 0;
+    return getRankByDate(d)[name] || totalPeople;
+  });
+  const allValues = names.flatMap(n => getValues(n));
+  const maxVal = mode === "pontos" ? Math.max(...allValues, 1) : totalPeople;
+  const minVal = mode === "pontos" ? 0 : 1;
+  const xScale = i => PAD + i / Math.max(dates.length - 1, 1) * (W - PAD * 1.5);
+  const yScale = v => {
+    if (mode === "pontos") return H - PAD - v / maxVal * (H - PAD * 1.5);
+    // posição: 1º no topo, último embaixo
+    return PAD + (v - minVal) / (maxVal - minVal) * (H - PAD * 1.5);
+  };
+
+  // Linhas do grid
+  const gridLines = mode === "pontos" ? [0, 0.25, 0.5, 0.75, 1].map(f => ({
+    v: Math.round(f * maxVal),
+    y: yScale(f * maxVal)
+  })) : Array.from({
+    length: Math.min(totalPeople, 5)
+  }, (_, i) => {
+    const step = Math.ceil(totalPeople / 4);
+    const v = Math.min(1 + i * step, totalPeople);
+    return {
+      v: v + "º",
+      y: yScale(v)
+    };
+  });
   return /*#__PURE__*/React.createElement("div", {
     style: {
       padding: "12px 8px"
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
+      display: "flex",
+      gap: 6,
+      justifyContent: "center",
+      marginBottom: 10
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode("posicao"),
+    style: {
+      ...S.phaseChip,
+      ...(mode === "posicao" ? S.phaseChipActive : {}),
+      fontSize: 11
+    }
+  }, "📊 Posição"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setMode("pontos"),
+    style: {
+      ...S.phaseChip,
+      ...(mode === "pontos" ? S.phaseChipActive : {}),
+      fontSize: 11
+    }
+  }, "🔢 Pontos")), /*#__PURE__*/React.createElement("div", {
+    style: {
       fontFamily: FONT_BODY,
       fontSize: 11,
       color: COLORS.textMuted,
       textAlign: "center",
-      marginBottom: 8
+      marginBottom: 4
     }
-  }, "Evolução de pontos por dia"), /*#__PURE__*/React.createElement("svg", {
+  }, mode === "posicao" ? "Posição no ranking por dia (1º = topo)" : "Pontos acumulados por dia"), /*#__PURE__*/React.createElement("svg", {
     width: "100%",
     viewBox: `0 0 ${W} ${H}`,
     style: {
       overflow: "visible"
     }
-  }, [0, 0.25, 0.5, 0.75, 1].map(f => /*#__PURE__*/React.createElement("g", {
-    key: f
+  }, gridLines.map((g, i) => /*#__PURE__*/React.createElement("g", {
+    key: i
   }, /*#__PURE__*/React.createElement("line", {
     x1: PAD,
     x2: W - PAD / 2,
-    y1: yScale(f * maxScore),
-    y2: yScale(f * maxScore),
+    y1: g.y,
+    y2: g.y,
     stroke: "#1a5c38",
     strokeWidth: 0.5
   }), /*#__PURE__*/React.createElement("text", {
     x: PAD - 4,
-    y: yScale(f * maxScore) + 3,
+    y: g.y + 3,
     textAnchor: "end",
     fontSize: 8,
     fill: COLORS.textMuted
-  }, Math.round(f * maxScore)))), dates.map((d, i) => /*#__PURE__*/React.createElement("text", {
+  }, g.v))), dates.map((d, i) => /*#__PURE__*/React.createElement("text", {
     key: d,
     x: xScale(i),
     y: H - 4,
@@ -2485,8 +2549,8 @@ function EvolucaoView() {
     fontSize: 8,
     fill: COLORS.textMuted
   }, fmtDate(d))), names.map((name, ni) => {
-    const pts = dates.map(d => snapshots[d][name] || 0);
-    const path = pts.map((v, i) => `${i === 0 ? "M" : "L"}${xScale(i)},${yScale(v)}`).join(" ");
+    const vals = getValues(name);
+    const path = vals.map((v, i) => `${i === 0 ? "M" : "L"}${xScale(i)},${yScale(v)}`).join(" ");
     return /*#__PURE__*/React.createElement("g", {
       key: name
     }, /*#__PURE__*/React.createElement("path", {
@@ -2495,7 +2559,7 @@ function EvolucaoView() {
       stroke: PERSON_COLORS[ni % PERSON_COLORS.length],
       strokeWidth: 1.5,
       strokeLinejoin: "round"
-    }), pts.map((v, i) => /*#__PURE__*/React.createElement("circle", {
+    }), vals.map((v, i) => /*#__PURE__*/React.createElement("circle", {
       key: i,
       cx: xScale(i),
       cy: yScale(v),
