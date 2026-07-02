@@ -2298,13 +2298,12 @@ function RankingView({
     style: {
       marginRight: 4
     }
-  }), loading ? "..." : "")), tab === "individual" ? /*#__PURE__*/React.createElement("div", {
+  }), loading ? "..." : "")), tab === "individual" && /*#__PURE__*/React.createElement("div", {
     style: S.rankList
   }, ranking.map((r, i) => {
     const prevScore = i > 0 ? ranking[i - 1].score : null;
     const samePos = r.score === prevScore;
     const position = samePos ? null : (() => {
-      // conta quantas pessoas têm score maior (define a posição real)
       let pos = 1;
       for (let j = 0; j < i; j++) {
         if (ranking[j].score > r.score) pos++;
@@ -2351,7 +2350,7 @@ function RankingView({
       size: 14,
       color: COLORS.textMuted
     })));
-  }), ranking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)) : /*#__PURE__*/React.createElement("div", {
+  }), ranking.length === 0 && /*#__PURE__*/React.createElement(EmptyHint, null)), tab === "familia" && /*#__PURE__*/React.createElement("div", {
     style: S.rankList
   }, familyRanking.map((r, i) => {
     const prevAvg = i > 0 ? familyRanking[i - 1].avg : null;
