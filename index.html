@@ -16,6 +16,9 @@
 <body>
   <div id="root"></div>
   <script>
+
+</script>
+  <script>
 window.TEAMS_DATA = {"Alemanha": "🇩🇪", "Argentina": "🇦🇷", "França": "🇫🇷", "Brasil": "🇧🇷", "Espanha": "🇪🇸", "Inglaterra": "🏴", "Portugal": "🇵🇹", "Países Baixos": "🇳🇱", "Bélgica": "🇧🇪", "Croácia": "🇭🇷", "Uruguai": "🇺🇾", "Marrocos": "🇲🇦", "Colômbia": "🇨🇴", "México": "🇲🇽", "Estados Unidos": "🇺🇸", "Suíça": "🇨🇭", "Japão": "🇯🇵", "Senegal": "🇸🇳", "Equador": "🇪🇨", "Áustria": "🇦🇹", "Canadá": "🇨🇦", "Noruega": "🇳🇴", "Coreia do Sul": "🇰🇷", "Egito": "🇪🇬", "Argélia": "🇩🇿", "Tunísia": "🇹🇳", "Gana": "🇬🇭", "Costa do Marfim": "🇨🇮", "Catar": "🇶🇦", "Arábia Saudita": "🇸🇦", "Austrália": "🇦🇺", "Irã": "🇮🇷", "Paraguai": "🇵🇾", "Panamá": "🇵🇦", "Curaçao": "🇨🇼", "Haiti": "🇭🇹", "Cabo Verde": "🇨🇻", "África do Sul": "🇿🇦", "Jordânia": "🇯🇴", "Uzbequistão": "🇺🇿", "Nova Zelândia": "🇳🇿", "Escócia": "🏴", "Bósnia": "🇧🇦", "R. Tcheca": "🇨🇿", "Turquia": "🇹🇷", "Suécia": "🇸🇪", "RD Congo": "🇨🇩", "Iraque": "🇮🇶"};
 "use strict";
 
@@ -2045,10 +2048,12 @@ function MatchCard({
       style: S.realResult
     }, "Resultado real: ", match.realScoreA, " × ", match.realScoreB, match.realPenalty ? " (pên. " + (match.realPenalty === "A" ? match.teamA : match.teamB) + ")" : ""));
   }
-  const tA = treeNode ? treeNode.teamA : null,
-    tB = treeNode ? treeNode.teamB : null;
-  const treeReady = tA && tB;
   const phaseIsReal = status === "open";
+  // Quando fase está aberta com confrontos reais, usa times reais do confronto
+  // Quando está em modo árvore, usa times da árvore pessoal
+  const tA = phaseIsReal ? match.teamA : (treeNode ? treeNode.teamA : null);
+  const tB = phaseIsReal ? match.teamB : (treeNode ? treeNode.teamB : null);
+  const treeReady = tA && tB;
   const isRefeito = !!pick.refeito;
   return /*#__PURE__*/React.createElement("div", {
     style: S.matchCard
@@ -4222,4 +4227,5 @@ const S = {
   }
 };
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(BolaoApp, null));
+
 </script></body></html>
