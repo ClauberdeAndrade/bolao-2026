@@ -1214,15 +1214,6 @@ function BolaoApp() {
     await storageSet(K.matches, matches, true);
     showToast("Confrontos/resultados salvos!");
   };
-  const toggleLockMatch = async (matchId) => {
-    const m = matches.find(x => x.id === matchId);
-    if (!m) return;
-    const newLocked = !m.locked;
-    const updated = matches.map(x => x.id === matchId ? Object.assign({}, x, {locked: newLocked}) : x);
-    setMatches(updated);
-    await storageSet(K.matches, updated, true);
-    showToast(newLocked ? "Jogo travado individualmente" : "Jogo desbloqueado");
-  };
   const finishMatch = async matchId => {
     const m = matches.find(x => x.id === matchId);
     if (!m || !m.teamA || !m.teamB) {
@@ -1438,7 +1429,6 @@ function BolaoApp() {
     clearPins: clearPins,
     saveMatches: saveMatches,
     finishMatch: finishMatch,
-    toggleLockMatch: toggleLockMatch,
     setPhase: setPhase,
     resetPin: resetPin,
     resetPicksForPerson: resetPicksForPerson
@@ -2006,9 +1996,6 @@ function MatchCard({
   savePicks,
   flashSaved
 }) {
-  if (match.locked) {
-    return /*#__PURE__*/React.createElement(MatchCardReadOnly, {match: match, pick: pick, phase: phase, treeNode: treeNode});
-  }
   if (phase === "32avos") {
     const ready = !!(match.teamA && match.teamB);
     return /*#__PURE__*/React.createElement("div", {
@@ -2995,7 +2982,6 @@ function AdminView({
   updateMatchField,
   saveMatches,
   finishMatch,
-  toggleLockMatch,
   setPhase,
   resetPin,
   fillTestData,
@@ -3275,10 +3261,7 @@ function AdminView({
   }), " lançado") : m.teamA && m.teamB && m.realScoreA !== null && m.realScoreA !== "" && m.realScoreB !== null && m.realScoreB !== "" ? /*#__PURE__*/React.createElement("button", {
     style: S.smallBtn,
     onClick: () => finishMatch(m.id)
-  }, "Lançar resultado"), /*#__PURE__*/React.createElement("button", {
-      style: {background: m.locked ? "rgba(192,57,43,0.2)" : "transparent", border: "1px solid " + (m.locked ? "#c0392b" : "#9fbfae"), color: m.locked ? "#f3a3a3" : "#9fbfae", borderRadius: 8, padding: "4px 8px", fontSize: 11, cursor: "pointer", marginLeft: 6},
-      onClick: function() { toggleLockMatch(m.id); }
-    }, m.locked ? "Desbloquear" : "Travar jogo")) : /*#__PURE__*/React.createElement("span", {
+  }, "Lançar resultado") : /*#__PURE__*/React.createElement("span", {
     style: S.waitingNote
   }, "Confirme times e placar para liberar o lançamento"))))), /*#__PURE__*/React.createElement("button", {
     style: S.primaryBtn,
