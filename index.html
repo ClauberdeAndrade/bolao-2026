@@ -1857,7 +1857,8 @@ function PalpitesView({
     match: m,
     pick: myPicks[m.id] || {},
     phase: activePhase,
-    treeNode: personalTree[m.id]
+    treeNode: personalTree[m.id],
+    useRealTeams: true
   })))) : /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
     style: S.phaseInfo
   }, activePhase === "32avos" ? "Preencha o placar dos confrontos já confirmados pelo administrador. Os vencedores que você escolher aqui já formam, automaticamente, os jogos das fases seguintes — confira nas próximas abas." : status === "open" ? "Os confrontos reais desta fase já estão definidos. Compare com o seu palpite e decida: manter ou refazer." : "Esses são os confrontos da SUA árvore, gerados a partir dos seus palpites dos 32avos. Continue preenchendo — quando esta fase abrir oficialmente, você poderá manter ou refazer."), /*#__PURE__*/React.createElement("div", {
@@ -1920,10 +1921,11 @@ function MatchCardReadOnly({
   match,
   pick,
   phase,
-  treeNode
+  treeNode,
+  useRealTeams
 }) {
-  const tA = phase === "32avos" ? match.teamA : treeNode ? treeNode.teamA : null;
-  const tB = phase === "32avos" ? match.teamB : treeNode ? treeNode.teamB : null;
+  const tA = (phase === "32avos" || useRealTeams) ? match.teamA : treeNode ? treeNode.teamA : null;
+  const tB = (phase === "32avos" || useRealTeams) ? match.teamB : treeNode ? treeNode.teamB : null;
   const scoreA = pick.refeito ? pick.realBasedScoreA : pick.scoreA;
   const scoreB = pick.refeito ? pick.realBasedScoreB : pick.scoreB;
   const pen = pick.refeito ? pick.realBasedPenalty : pick.penalty;
