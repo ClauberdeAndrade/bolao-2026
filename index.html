@@ -17,10 +17,10 @@
   <div id="root"></div>
   <script>
 
-
-
+window.TEAMS_DATA = {"Alemanha": "🇩🇪", "Argentina": "🇦🇷", "França": "🇫🇷", "Brasil": "🇧🇷", "Espanha": "🇪🇸", "Inglaterra": "🏴", "Portugal": "🇵🇹", "Países Baixos": "🇳🇱", "Bélgica": "🇧🇪", "Croácia": "🇭🇷", "Uruguai": "🇺🇾", "Marrocos": "🇲🇦", "Colômbia": "🇨🇴", "México": "🇲🇽", "Estados Unidos": "🇺🇸", "Suíça": "🇨🇭", "Japão": "🇯🇵", "Senegal": "🇸🇳", "Equador": "🇪🇨", "Áustria": "🇦🇹", "Canadá": "🇨🇦", "Noruega": "🇳🇴", "Coreia do Sul": "🇰🇷", "Egito": "🇪🇬", "Argélia": "🇩🇿", "Tunísia": "🇹🇳", "Gana": "🇬🇭", "Costa do Marfim": "🇨🇮", "Catar": "🇶🇦", "Arábia Saudita": "🇸🇦", "Austrália": "🇦🇺", "Irã": "🇮🇷", "Paraguai": "🇵🇾", "Panamá": "🇵🇦", "Curaçao": "🇨🇼", "Haiti": "🇭🇹", "Cabo Verde": "🇨🇻", "África do Sul": "🇿🇦", "Jordânia": "🇯🇴", "Uzbequistão": "🇺🇿", "Nova Zelândia": "🇳🇿", "Escócia": "🏴", "Bósnia": "🇧🇦", "R. Tcheca": "🇨🇿", "Turquia": "🇹🇷", "Suécia": "🇸🇪", "RD Congo": "🇨🇩", "Iraque": "🇮🇶"};
 </script>
   <script>
+
 "use strict";
 
 const {
@@ -2280,17 +2280,10 @@ function RankingView({
 }) {
   const [tab, setTab] = useState("individual");
   const [selected, setSelected] = useState(null);
-  const [showDestaques, setShowDestaques] = useState(false);
   if (selected) {
     return /*#__PURE__*/React.createElement(PicksDetailView, {
       name: selected,
       onBack: () => setSelected(null),
-      session: session
-    });
-  }
-  if (showDestaques) {
-    return /*#__PURE__*/React.createElement(DestaquesView, {
-      onBack: () => setShowDestaques(false),
       session: session
     });
   }
@@ -2320,15 +2313,7 @@ function RankingView({
       ...S.phaseChip,
       ...(tab === "evolucaoFam" ? S.phaseChipActive : {})
     }
-  }, "📈 Família"), session && session.name === "Clauber" ? /*#__PURE__*/React.createElement("button", {
-    onClick: () => setShowDestaques(true),
-    style: {
-      ...S.phaseChip,
-      background: "rgba(212,165,55,0.15)",
-      border: "1px solid " + COLORS.gold,
-      color: COLORS.gold
-    }
-  }, "🏅 Destaques") : null, /*#__PURE__*/React.createElement("button", {
+  }, "📈 Família"), /*#__PURE__*/React.createElement("button", {
     onClick: onRefresh,
     style: {
       ...S.phaseChip,
@@ -4260,238 +4245,5 @@ const S = {
 };
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(BolaoApp, null));
 
-
-
-// ===================== PAINEL DE DESTAQUES =====================
-function DestaquesView({ onBack, session }) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      const allMatches = await storageGet(K.matches, true) || [];
-      const finished = allMatches.filter(m => m.finished && m.realScoreA !== null && m.realScoreA !== "");
-      
-      const allPicks = {};
-      for (const p of ALL_PEOPLE) {
-        allPicks[p.name] = await storageGet(K.picksPrefix + p.name, true) || {};
-      }
-
-      // Calcula stats por pessoa
-      const stats = ALL_PEOPLE.map(p => {
-        const picks = allPicks[p.name];
-        let acertos = 0, cravadas = 0, jogados = 0;
-        let mantidos = 0, mantidosAcertos = 0, refeitos = 0, refeitosAcertos = 0;
-
-        finished.forEach(m => {
-          const pick = picks[m.id];
-          if (!pick) return;
-          const predA = pick.refeito ? pick.realBasedScoreA : pick.scoreA;
-          const predB = pick.refeito ? pick.realBasedScoreB : pick.scoreB;
-          const predPen = pick.refeito ? pick.realBasedPenalty : pick.penalty;
-          if (predA === undefined || predA === "" || predA === null) return;
-          jogados++;
-          const pA = Number(predA), pB = Number(predB);
-          const rA = Number(m.realScoreA), rB = Number(m.realScoreB);
-          const predW = pA > pB ? "A" : pA < pB ? "B" : (predPen || null);
-          const realW = rA > rB ? "A" : rA < rB ? "B" : (m.realPenalty || null);
-          const acertou = predW && realW && predW === realW;
-          const cravou = acertou && pA === rA && pB === rB;
-          if (acertou) acertos++;
-          if (cravou) cravadas++;
-          if (pick.refeito) { refeitos++; if (acertou) refeitosAcertos++; }
-          else { mantidos++; if (acertou) mantidosAcertos++; }
-        });
-
-        return {
-          name: p.name, family: p.family,
-          acertos, cravadas, jogados,
-          taxa: jogados ? Math.round(acertos / jogados * 100) : 0,
-          mantidos, mantidosAcertos, refeitos, refeitosAcertos
-        };
-      });
-
-      // Jogo mais/menos acertado
-      const jogoStats = finished.map(m => {
-        let acertos = 0;
-        ALL_PEOPLE.forEach(p => {
-          const pick = allPicks[p.name][m.id];
-          if (!pick) return;
-          const predA = pick.refeito ? pick.realBasedScoreA : pick.scoreA;
-          const predB = pick.refeito ? pick.realBasedScoreB : pick.scoreB;
-          const predPen = pick.refeito ? pick.realBasedPenalty : pick.penalty;
-          if (predA === undefined || predA === "" || predA === null) return;
-          const pA = Number(predA), pB = Number(predB);
-          const rA = Number(m.realScoreA), rB = Number(m.realScoreB);
-          const predW = pA > pB ? "A" : pA < pB ? "B" : (predPen || null);
-          const realW = rA > rB ? "A" : rA < rB ? "B" : (m.realPenalty || null);
-          if (predW && realW && predW === realW) acertos++;
-        });
-        return { id: m.id, teamA: m.teamA, teamB: m.teamB, acertos, total: ALL_PEOPLE.length, fase: m.phase };
-      });
-
-      // Pontos máximos disponíveis (semis + final)
-      const PONTOS_MAX = { semis: 16, final: 24 };
-      const pontosRestantes = Object.values(PONTOS_MAX).reduce((a, b) => a + b, 0) * 2; // 2 jogos semis + 1 final
-      const pontosMaxSemis = 16 * 2; // 2 semis
-      const pontosMaxFinal = 24;
-      const maxRestante = pontosMaxSemis + pontosMaxFinal;
-
-      // Pontuação atual (soma dos scores do ranking)
-      const currentScores = {};
-      for (const p of ALL_PEOPLE) {
-        let total = 0;
-        finished.forEach(m => {
-          const pick = allPicks[p.name][m.id];
-          if (!pick) return;
-          const predA = pick.refeito ? pick.realBasedScoreA : pick.scoreA;
-          const predB = pick.refeito ? pick.realBasedScoreB : pick.scoreB;
-          const predPen = pick.refeito ? pick.realBasedPenalty : pick.penalty;
-          if (predA === undefined || predA === "" || predA === null) return;
-          const pA = Number(predA), pB = Number(predB);
-          const rA = Number(m.realScoreA), rB = Number(m.realScoreB);
-          const predW = pA > pB ? "A" : pA < pB ? "B" : (predPen || null);
-          const realW = rA > rB ? "A" : rA < rB ? "B" : (m.realPenalty || null);
-          if (!predW || !realW || predW !== realW) return;
-          const exact = pA === rA && pB === rB;
-          if (m.phase === "32avos") total += exact ? 3 : 2;
-          else {
-            const tbl = POINTS[m.phase];
-            const mantido = !pick.refeito;
-            total += exact ? (mantido ? tbl.exatoMantido : tbl.exatoRefeito) : (mantido ? tbl.vencedorMantido : tbl.vencedorRefeito);
-          }
-        });
-        currentScores[p.name] = total;
-      }
-
-      const sorted = [...ALL_PEOPLE].sort((a, b) => (currentScores[b.name] || 0) - (currentScores[a.name] || 0));
-      const leader = sorted[0];
-      const projecoes = sorted.map((p, i) => ({
-        name: p.name,
-        score: currentScores[p.name] || 0,
-        diff: i === 0 ? 0 : (currentScores[leader.name] || 0) - (currentScores[p.name] || 0),
-        podeAlcancar: i === 0 ? true : ((currentScores[p.name] || 0) + maxRestante >= (currentScores[leader.name] || 0))
-      }));
-
-      setData({
-        stats: stats.sort((a, b) => b.acertos - a.acertos),
-        jogoMaisAcertado: jogoStats.sort((a, b) => b.acertos - a.acertos)[0],
-        jogoMenosAcertado: jogoStats.filter(j => j.acertos < j.total).sort((a, b) => a.acertos - b.acertos)[0],
-        projecoes,
-        maxRestante,
-        campCravadas: [...stats].sort((a, b) => b.cravadas - a.cravadas)[0]
-      });
-      setLoading(false);
-    })();
-  }, []);
-
-  const C = { gold: "#D4A537", green: "#2d9e5f", red: "#c0392b", muted: "#9fbfae" };
-  const card = { background: "rgba(255,255,255,0.04)", borderRadius: 12, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.08)" };
-  const title = { fontFamily: FONT_DISPLAY, fontSize: 11, color: C.gold, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 };
-  const row = { display: "flex", justifyContent: "space-between", alignItems: "center", paddingBottom: 6, marginBottom: 6, borderBottom: "1px solid rgba(255,255,255,0.05)" };
-
-  return /*#__PURE__*/React.createElement("div", null,
-    /*#__PURE__*/React.createElement("div", {
-      style: { display: "flex", alignItems: "center", gap: 10, padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.08)" }
-    },
-      /*#__PURE__*/React.createElement("button", {
-        onClick: onBack,
-        style: { background: "transparent", border: "none", color: C.gold, cursor: "pointer", fontFamily: FONT_BODY, fontSize: 13 }
-      }, "← Voltar"),
-      /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_DISPLAY, fontSize: 15, color: "#FAFAF7" } }, "🏅 Painel de Destaques")
-    ),
-
-    loading ? /*#__PURE__*/React.createElement("div", { style: { padding: 30, textAlign: "center", color: C.muted, fontFamily: FONT_BODY } }, "Calculando...") :
-
-    /*#__PURE__*/React.createElement("div", { style: { padding: "12px 16px" } },
-
-      // PRECISÃO E ACERTO
-      /*#__PURE__*/React.createElement("div", { style: card },
-        /*#__PURE__*/React.createElement("div", { style: title }, "🎯 Precisão e Acerto"),
-        /*#__PURE__*/React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 60px 60px 60px", gap: 4, marginBottom: 6 } },
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted } }, "Participante"),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted, textAlign: "center" } }, "Acertos"),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted, textAlign: "center" } }, "Cravadas"),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted, textAlign: "center" } }, "Taxa%")
-        ),
-        data.stats.map((s, i) =>
-          /*#__PURE__*/React.createElement("div", {
-            key: s.name,
-            style: { display: "grid", gridTemplateColumns: "1fr 60px 60px 60px", gap: 4, padding: "4px 0", borderBottom: i < data.stats.length-1 ? "1px solid rgba(255,255,255,0.04)" : "none" }
-          },
-            /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 12, color: "#FAFAF7", fontWeight: i < 3 ? 700 : 400 } },
-              i === 0 ? "🥇 " : i === 1 ? "🥈 " : i === 2 ? "🥉 " : "",
-              s.name
-            ),
-            /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 12, color: C.green, textAlign: "center" } }, s.acertos),
-            /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 12, color: C.gold, textAlign: "center" } }, s.cravadas),
-            /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 12, color: s.taxa >= 60 ? C.green : s.taxa >= 40 ? C.gold : C.red, textAlign: "center" } }, s.taxa + "%")
-          )
-        )
-      ),
-
-      // CAMPEÃO DE CRAVADAS
-      /*#__PURE__*/React.createElement("div", { style: card },
-        /*#__PURE__*/React.createElement("div", { style: title }, "⭐ Campeão de Cravadas"),
-        /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 14, color: C.gold, fontWeight: 700 } },
-          "🏆 " + data.campCravadas.name + " — " + data.campCravadas.cravadas + " placares exatos"
-        ),
-        /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 11, color: C.muted, marginTop: 4 } },
-          "Família " + data.campCravadas.family
-        )
-      ),
-
-      // JOGOS MAIS/MENOS ACERTADOS
-      /*#__PURE__*/React.createElement("div", { style: card },
-        /*#__PURE__*/React.createElement("div", { style: title }, "📊 Jogos Mais e Menos Acertados"),
-        data.jogoMaisAcertado && /*#__PURE__*/React.createElement("div", { style: { marginBottom: 8 } },
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 11, color: C.green, marginBottom: 2 } }, "✅ Mais acertado"),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 13, color: "#FAFAF7" } },
-            data.jogoMaisAcertado.teamA + " x " + data.jogoMaisAcertado.teamB
-          ),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 11, color: C.muted } },
-            data.jogoMaisAcertado.acertos + " de " + data.jogoMaisAcertado.total + " participantes acertaram"
-          )
-        ),
-        data.jogoMenosAcertado && /*#__PURE__*/React.createElement("div", null,
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 11, color: C.red, marginBottom: 2 } }, "❌ Menos acertado"),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 13, color: "#FAFAF7" } },
-            data.jogoMenosAcertado.teamA + " x " + data.jogoMenosAcertado.teamB
-          ),
-          /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 11, color: C.muted } },
-            data.jogoMenosAcertado.acertos + " de " + data.jogoMenosAcertado.total + " participantes acertaram"
-          )
-        )
-      ),
-
-      // PROJEÇÕES PARA O PÓDIO
-      /*#__PURE__*/React.createElement("div", { style: card },
-        /*#__PURE__*/React.createElement("div", { style: title }, "🔮 Projeções — Quem Ainda Pode Chegar"),
-        /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted, marginBottom: 8 } },
-          "Máximo disponível ainda: " + data.maxRestante + " pts (semis + final)"
-        ),
-        data.projecoes.map((p, i) =>
-          /*#__PURE__*/React.createElement("div", {
-            key: p.name,
-            style: { ...row, opacity: p.podeAlcancar ? 1 : 0.5 }
-          },
-            /*#__PURE__*/React.createElement("div", null,
-              /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 12, color: "#FAFAF7" } },
-                (i+1) + "º " + p.name + (p.podeAlcancar && i > 0 ? " 🔥" : !p.podeAlcancar ? " ❌" : " 👑")
-              ),
-              i > 0 && /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 10, color: C.muted } },
-                p.podeAlcancar ? ("Precisa de +" + p.diff + " pts para liderar") : ("Fora — deficit de " + p.diff + " pts")
-              )
-            ),
-            /*#__PURE__*/React.createElement("div", { style: { fontFamily: FONT_BODY, fontSize: 13, color: p.podeAlcancar ? C.green : C.red, fontWeight: 700 } },
-              p.score + " pts"
-            )
-          )
-        )
-      )
-
-    ) // fim div padding
-  ); // fim return
-}
 
 </script></body></html>
